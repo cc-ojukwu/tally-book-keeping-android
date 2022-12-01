@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/incomeExpenseFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_book_svgrepo_com"
+        android:title="@string/bookkeeping" />
+    <item
+        android:id="@+id/inventoryFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_inventory"
+        android:title="@string/inventory" />
+    <item
+        android:id="@+id/todoFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_todo_svg"
+        android:title="@string/todos" />
+
+    <item
+        android:id="@+id/accountFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_manage_accounts_24"
+        android:title="@string/account" />
+
+</menu>

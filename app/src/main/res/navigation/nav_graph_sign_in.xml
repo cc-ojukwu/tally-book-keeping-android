@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_sign_in"
+    app:startDestination="@id/signInFragment">
+    <fragment
+        android:id="@+id/emailSignInPageFragment"
+        android:name="com.chrisojukwu.tallybookkeeping.ui.account.EmailSignInPageFragment"
+        android:label="EmailSignInPageFragment" >
+        <action
+            android:id="@+id/action_emailSignInPageFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_emailSignInPageFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_emailSignInPageFragment_to_emailCreateAccountFragment"
+            app:destination="@id/emailCreateAccountFragment"
+            app:popUpTo="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.chrisojukwu.tallybookkeeping.ui.account.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_emailSignInPageFragment"
+            app:destination="@id/emailSignInPageFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_emailCreateAccountFragment"
+            app:destination="@id/emailCreateAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailCreateAccountFragment"
+        android:name="com.chrisojukwu.tallybookkeeping.ui.account.EmailCreateAccountFragment"
+        android:label="EmailCreateAccountFragment" >
+        <action
+            android:id="@+id/action_emailCreateAccountFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_emailCreateAccountFragment_to_emailSignInPageFragment"
+            app:destination="@id/emailSignInPageFragment"
+            app:popUpTo="@id/signInFragment" />
+        <action
+            android:id="@+id/action_emailCreateAccountFragment_to_accountCreatedFragment"
+            app:destination="@id/accountCreatedFragment"
+            app:popUpTo="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.chrisojukwu.tallybookkeeping.ui.account.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_emailSignInPageFragment"
+            app:destination="@id/emailSignInPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountCreatedFragment"
+        android:name="com.chrisojukwu.tallybookkeeping.ui.account.AccountCreatedFragment"
+        android:label="AccountCreatedFragment" >
+        <action
+            android:id="@+id/action_accountCreatedFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_accountCreatedFragment_to_emailSignInPageFragment"
+            app:destination="@id/emailSignInPageFragment" />
+        <action
+            android:id="@+id/action_accountCreatedFragment_to_emailCreateAccountFragment"
+            app:destination="@id/emailCreateAccountFragment"
+            app:popUpTo="@id/signInFragment" />
+    </fragment>
+</navigation>
