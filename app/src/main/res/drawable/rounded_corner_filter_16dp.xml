@@ -3,9 +3,9 @@
 
     <item >
         <shape>
-            <solid android:color="@color/edit_text_background"/>
+            <solid android:color="@color/light_blue_shade_2"/>
             <corners
-                android:radius="4dp" />
+                android:radius="16dp" />
         </shape>
     </item>
 

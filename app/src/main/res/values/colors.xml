@@ -15,18 +15,23 @@
     <color name="profile_icon_green">#297513</color>
     <color name="green">#B5E499</color>
     <color name="alert_red">#E1A1A1</color>
-    <color name="income_red">#5E0505</color>
+    <color name="expense_red">#5E0505</color>
     <color name="income_green">#316510</color>
+    <color name="income_button_green">#CDEABB</color>
+    <color name="expense_button_red">#F6C2C2</color>
     <color name="text_color1">#000000</color>
     <color name="text_color2">#222121</color>
     <color name="text_color3">#636161</color>
     <color name="reverse_text_color">#FFFFFF</color>
     <color name="edit_text_background">#C9EFF1F1</color>
-    <color name="very_light_blue">#E1E5FA</color>
+    <color name="light_blue_shade_1">#F0F1FC</color>
+    <color name="light_blue_shade_2">#DAE0FB</color>
     <color name="background_color">#FFFFFF</color>
     <color name="outline_blue">#425195</color>
     <color name="faint_line_color">#C9DDE1E1</color>
     <color name="very_light_red">#FDEEEE</color>
+    <color name="deep_sky_blue">#1a73e8</color>
+    <color name="line_divider">#8F8988</color>
 
 
 </resources>

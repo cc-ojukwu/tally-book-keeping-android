@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="productItem"
+            type="com.chrisojukwu.tallybookkeeping.data.models.Product" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/text_view_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/text_color3"
+            android:textSize="18sp"
+            tools:text="Coke"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{productItem.productName}" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/edit_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_product_name">
+
+            <TextView
+                android:id="@+id/text_view_total_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:maxLength="16"
+                android:maxLines="1"
+                android:textColor="@color/text_color2"
+                android:textSize="16sp"
+                app:formatBigDecimal="@{productItem.productTotalPrice}"
+                tools:text="$1100.00 " />
+
+            <TextView
+                android:id="@+id/text_view_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/text_color3"
+                android:maxLines="1"
+                android:maxLength="14"
+                android:textSize="16sp"
+                tools:text="= 2 x "
+                android:text="@{` = `+ productItem.productQuantity + ` x `}"/>
+
+            <TextView
+                android:id="@+id/text_view_unit_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/text_color3"
+                android:maxLines="1"
+                android:maxLength="12"
+                android:textSize="16sp"
+                app:formatBigDecimal="@{productItem.productPrice}"
+                tools:text="5500.00" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/delete_button"
+            android:layout_width="32dp"
+            android:layout_height="34dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_baseline_delete_outline_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/edit_button"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_edit_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/delete_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

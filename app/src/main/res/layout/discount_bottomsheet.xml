@@ -8,7 +8,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="16dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="16dp"
     android:clickable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -94,10 +94,10 @@
     <Button
         android:id="@+id/button_save_discount"
         android:layout_width="wrap_content"
-        android:enabled="false"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_height="wrap_content"
+        android:enabled="false"
         android:text="SAVE"
         android:textColor="@color/reverse_text_color" />
 
@@ -112,7 +112,7 @@
         android:layout_centerVertical="true"
         android:fontFamily="sans-serif-medium"
         android:textSize="20sp"
-        android:textColor="@color/income_red"/>
+        android:textColor="@color/expense_red"/>
 
 </RelativeLayout>
 

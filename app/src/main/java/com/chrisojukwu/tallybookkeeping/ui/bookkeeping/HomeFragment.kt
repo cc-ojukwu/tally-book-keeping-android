@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
@@ -27,13 +32,17 @@ class HomeFragment : Fragment() {
             sharedViewmodel = sharedViewModel
         }
 
-
-
-
-
-//        sharedViewModel.displayList.observe(viewLifecycleOwner) { list->
-//            adapter.submitList(list)
+//        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarHomePage) { theView, windowInsets ->
+//            val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+//            println(insets.top)
+//            theView.updatePadding(top = insets.top)
+//            WindowInsetsCompat.CONSUMED
 //        }
+
+        val adapter = IncomeExpenseAdapter(sharedViewModel.displayList.value!!) { entry -> onEntryClick(entry) }
+        binding.recyclerViewRecords.adapter = adapter
+
+        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
 
         return binding.root
     }
@@ -41,11 +50,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = IncomeExpenseAdapter(sharedViewModel.displayList.value!!) { entry -> onEntryClick(entry) }
-        binding.recyclerViewRecords.adapter = adapter
-
         binding.cardViewMoneyIn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_editIncomeFragment)
+        }
+
+        binding.cardViewMoneyOut.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_editExpenseFragment)
         }
 
     }

@@ -30,13 +30,16 @@
     <string name="sign_in">Sign In</string>
     <string name="next_button">NEXT</string>
     <string name="finish_button">FINISH</string>
-    <string name="spacing">  .  </string>
-    <string name="percentsign">%</string>
+    <string name="open_bracket">(</string>
+    <string name="percentsign">%)</string>
     <string name="required">(required)</string>
     <string name="optional">(optional)</string>
     <string name="amount_received_error">Amount received cannot be greater than total or sub-total amount</string>
     <string name="discount_error">Discount amount cannot be greater than total amount.</string>
     <string name="total_amount_error">Total amount must be greater than 0.</string>
-    <string name="items_total_error">Items total cost should be equal to total or subtotal amount.</string>
+    <string name="items_total_error1">Items total cost should be equal to: Total Amount</string>
+    <string name="items_total_error2">Items total cost should be equal to: Subtotal Amount</string>
     <string name="customer_error">Customer details required for this entry</string>
+    <string name="desc_text">2 boxes</string>
+    <string name="supplier_error">Supplier details required for this entry</string>
 </resources>

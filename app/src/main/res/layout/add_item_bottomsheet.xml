@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Selling Price"
+            android:hint="Price"
             android:textColorHint="@color/black"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusTopStart="8dp"
@@ -88,7 +88,7 @@
                 android:id="@+id/edit_text_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="9"
+                android:maxLength="12"
                 android:background="@drawable/edit_text_style2"
                 android:hint="0.00"
                 android:inputType="numberDecimal"
@@ -115,13 +115,20 @@
             android:text="Quantity"
             android:textColor="@color/text_color1"
             android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/plus"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add_svgrepo_com" />
 
         <ImageView
             android:id="@+id/minus"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/edit_text_quantity"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_remove_svgrepo_com" />
 
@@ -130,7 +137,7 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_toStartOf="@+id/minus"
+            android:layout_toStartOf="@+id/plus"
             android:inputType="number"
             android:gravity="center"
             android:maxLength="9"
@@ -138,13 +145,7 @@
             android:paddingHorizontal="8dp"
             android:text="1" />
 
-        <ImageView
-            android:id="@+id/plus"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/edit_text_quantity"
-            android:src="@drawable/ic_add_svgrepo_com" />
+
 
     </RelativeLayout>
 

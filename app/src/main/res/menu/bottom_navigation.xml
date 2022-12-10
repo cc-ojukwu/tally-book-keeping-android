@@ -2,7 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/incomeExpenseFragment"
+        android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/ic_book_svgrepo_com"
         android:title="@string/bookkeeping" />

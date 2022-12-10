@@ -2,103 +2,119 @@
 <layout>
 
     <data>
+
         <variable
             name="incomeRecord"
             type="com.chrisojukwu.tallybookkeeping.data.models.RecordHolder.Income" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        app:cardElevation="0dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginBottom="4dp"
+            app:cardElevation="4dp">
 
-            <TextView
-                android:id="@+id/record_description"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
-                android:maxLines="1"
-                android:text="@{incomeRecord.description}"
-                tools:text="3 cans of sardine, 2 loafs of bread"
-                android:textColor="@color/text_color1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/record_cost"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/record_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="sans-serif"
-                android:text="@{incomeRecord.amountReceived.toString()}"
+                android:orientation="vertical"
                 android:paddingStart="16dp"
-                android:textColor="#105511"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/button_edit_record"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="$9,050.00" />
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp">
 
-            <ImageView
-                android:id="@+id/button_edit_record"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/ic_edit_svgrepo_com"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@{incomeRecord.customer.customerName}"
-                tools:text="Mama Peace"
-                android:textColor="@color/text_color1"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/record_description" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="36dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/record_cost">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#E1E5FA"
-                    android:fontFamily="sans-serif-light"
-                    android:paddingStart="24dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="24dp"
-                    android:paddingBottom="4dp"
-                    android:text="Receipt"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_color1"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
 
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/record_description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:maxLines="1"
+                        android:text="@{incomeRecord.description}"
+                        android:textColor="@color/text_color1"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toStartOf="@+id/record_cost"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="3 cans of sardine, 2 loafs of bread" />
+
+                    <TextView
+                        android:id="@+id/record_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:paddingStart="16dp"
+                        android:textColor="@color/income_green"
+                        android:textSize="16sp"
+                        app:formatBigDecimal="@{incomeRecord.amountReceived}"
+                        app:layout_constraintEnd_toStartOf="@+id/button_edit_record"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="$9,050.00" />
+
+                    <ImageView
+                        android:id="@+id/button_edit_record"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_edit_svgrepo_com"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@{incomeRecord.customer.customerName}"
+                        android:textColor="@color/text_color1"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/record_description"
+                        tools:text="Mama Peace" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="36dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/record_cost">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/light_blue_shade_1"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingStart="24dp"
+                            android:paddingTop="2dp"
+                            android:paddingEnd="24dp"
+                            android:paddingBottom="4dp"
+                            android:text="Receipt"
+                            android:textAlignment="center"
+                            android:textColor="@color/text_color1"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -8,8 +8,10 @@ import java.time.LocalTime
 sealed class RecordHolder() {
 
     abstract var date: LocalDateTime
+    abstract val recordId: String
 
     data class Income(
+        override val recordId: String,
         override var date: LocalDateTime = LocalDateTime.now(),
         var totalAmount: BigDecimal = BigDecimal.ZERO,
         var amountReceived: BigDecimal = BigDecimal.ZERO,
@@ -23,17 +25,20 @@ sealed class RecordHolder() {
     ) : RecordHolder()
 
     data class Expense(
+        override val recordId: String,
         override var date: LocalDateTime = LocalDateTime.now(),
         var totalAmount: BigDecimal = BigDecimal.ZERO,
         var amountPaid: BigDecimal = BigDecimal.ZERO,
         var balanceDue: BigDecimal = BigDecimal.ZERO,
         var description: String = "",
+        var category: String? = "",
         var productList: MutableList<Product>? = mutableListOf(),
         var supplier: Supplier? = Supplier("", ""),
         var paymentMode: PaymentMode = PaymentMode.CASH
     ) : RecordHolder()
 
     data class Header(
+        override val recordId: String,
         override var date: LocalDateTime = LocalDateTime.now(),
         var incomeTotal: BigDecimal = BigDecimal.ZERO,
         var expenseTotal: BigDecimal = BigDecimal.ZERO,

@@ -44,8 +44,8 @@
                 android:maxLength="16"
                 android:maxLines="1"
                 android:textColor="@color/text_color2"
-                android:textSize="18sp"
-                android:text="@{productItem.productTotalPrice.toString()}"
+                android:textSize="16sp"
+                app:formatBigDecimal="@{productItem.productTotalPrice}"
                 tools:text="$1100.00 " />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:textColor="@color/text_color3"
                 android:maxLines="1"
                 android:maxLength="14"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 tools:text="= 2 x "
                 android:text="@{` = `+ productItem.productQuantity + ` x `}"/>
 
@@ -68,17 +68,17 @@
                 android:textColor="@color/text_color3"
                 android:maxLines="1"
                 android:maxLength="12"
-                android:textSize="18sp"
-                android:text="@{productItem.productPrice.toString()}"
-                tools:text="550.00" />
+                android:textSize="16sp"
+                app:formatBigDecimal="@{productItem.productPrice}"
+                tools:text="5500.00" />
 
         </LinearLayout>
 
 
         <ImageView
             android:id="@+id/delete_button"
-            android:layout_width="34dp"
-            android:layout_height="38dp"
+            android:layout_width="32dp"
+            android:layout_height="34dp"
             android:padding="4dp"
             android:src="@drawable/ic_baseline_delete_outline_24"
             app:layout_constraintBottom_toBottomOf="parent"

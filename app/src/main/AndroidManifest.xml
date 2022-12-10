@@ -36,7 +36,7 @@
 
         <activity
             android:name=".ui.HomePageActivity"
-            android:exported="false" />
+            android:exported="false"/>
 
         <activity
             android:name=".ui.account.SignInActivity"
@@ -44,7 +44,8 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         </activity>
 
         <meta-data

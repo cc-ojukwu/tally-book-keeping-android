@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditIncomeViewModel" />
+            type="com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditExpenseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Income"
+                android:text="Expense"
                 android:textColor="@color/text_color1"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -162,7 +162,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_weight="0.5"
-                                android:hint="Amount Received"
+                                android:hint="Amount Paid"
                                 app:boxCornerRadiusTopEnd="8dp"
                                 app:boxCornerRadiusTopStart="8dp"
                                 app:boxStrokeWidth="0dp"
@@ -171,7 +171,7 @@
                                 app:hintEnabled="true">
 
                                 <EditText
-                                    android:id="@+id/edit_text_amount_received"
+                                    android:id="@+id/edit_text_amount_paid"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/edit_text_style2"
@@ -186,148 +186,18 @@
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
-                            android:background="@color/faint_line_color" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/add_discount"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:clickable="false">
-
-                            <TextView
-                                android:id="@+id/text_view_discount_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:fontFamily="sans-serif-light"
-                                android:padding="4dp"
-                                android:text="Discount"
-                                android:textColor="@color/grey"
-                                android:textSize="14dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/text_view_add_discount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:padding="4dp"
-                                android:text="Add +"
-                                android:textColor="@color/grey"
-                                android:textSize="14dp"
-                                android:visibility="visible"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:id="@+id/open_discount_icon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
-                                android:padding="4dp"
-                                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                                android:visibility="gone"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <LinearLayout
-                            android:id="@+id/layout_discount_values"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/text_view_discount_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:fontFamily="sans-serif-light"
-                                android:paddingStart="4dp"
-                                app:formatBigDecimal="@{viewModel.discountAmount}"
-                                android:textColor="@color/text_color1"
-                                android:textSize="14sp"
-                                android:visibility="visible"
-                                tools:text="165.00" />
-
-                            <TextView
-                                android:id="@+id/text_view_discount_percent"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-light"
-                                android:layout_marginStart="8dp"
-                                app:formatPercentage="@{viewModel.discountPercentage}"
-                                android:textColor="@color/text_color1"
-                                android:textSize="14sp"
-                                android:visibility="visible"
-                                tools:text="35%" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="8dp"
-                            android:background="@color/faint_line_color" />
-
-                        <RelativeLayout
-                            android:id="@+id/layout_subtotal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:id="@+id/text_view_subtotal_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_marginStart="16dp"
-                                android:fontFamily="sans-serif-light"
-                                android:padding="4dp"
-                                android:text="Sub Total"
-                                android:textColor="@color/text_color1"
-                                android:textSize="14dp"
-                                android:visibility="visible" />
-
-                            <TextView
-                                android:id="@+id/text_view_subtotal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="16dp"
-                                android:fontFamily="sans-serif-light"
-                                android:padding="4dp"
-                                app:formatBigDecimal="@{viewModel.subTotalAmount}"
-                                android:textColor="@color/text_color1"
-                                android:textSize="14dp"
-                                android:visibility="visible"
-                                tools:text="1,070.00" />
-                        </RelativeLayout>
-
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
 
                             <TextView
                                 android:id="@+id/text_view_balance_due_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
-                                android:layout_marginStart="8dp"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="sans-serif-medium"
-                                android:padding="4dp"
                                 android:text="Balance Due"
                                 android:textColor="@color/text_color1"
                                 android:textSize="16sp" />
@@ -338,9 +208,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginTop="4dp"
-                                android:layout_marginEnd="8dp"
                                 android:fontFamily="sans-serif-medium"
-                                android:padding="4dp"
                                 android:textColor="@color/text_color1"
                                 android:textSize="16sp"
                                 app:formatBigDecimal="@{viewModel.balanceDue}"
@@ -358,7 +226,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:cardCornerRadius="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -369,7 +237,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="vertical">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -405,11 +273,11 @@
                             android:id="@+id/product_list_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:layout_marginTop="8dp"
-                            app:incomeProductList="@{viewModel.productList}"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:expenseProductList="@{viewModel.productList}"
                             tools:itemCount="1"
-                            tools:listitem="@layout/income_product_item" />
+                            tools:listitem="@layout/expense_product_item" />
 
                         <View
                             android:layout_width="match_parent"
@@ -439,9 +307,9 @@
                                 android:fontFamily="sans-serif-medium"
                                 android:maxLength="12"
                                 android:maxLines="1"
-                                app:formatBigDecimal="@{viewModel.itemsTotalCost}"
                                 android:textColor="@color/text_color1"
                                 android:textSize="16sp"
+                                app:formatBigDecimal="@{viewModel.itemsTotalCost}"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:text="$1,100.00" />
@@ -521,7 +389,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -593,6 +460,63 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="CATEGORY"
+                                android:textColor="@color/text_color3"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/layout_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:background="@drawable/edit_text_style">
+
+                            <TextView
+                                android:id="@+id/text_view_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Select Category"
+                                android:layout_alignParentStart="true"
+                                android:textSize="16sp"
+                                android:fontFamily="sans-serif"
+                                android:textColor="@color/text_color2"
+                                android:layout_marginHorizontal="8dp"
+                                android:layout_marginVertical="12dp"
+                                android:layout_centerVertical="true"/>
+
+                            <ImageView
+                                android:id="@+id/open_category_icon"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginHorizontal="8dp"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+                            <ImageView
+                                android:id="@+id/remove_category_icon"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginHorizontal="8dp"
+                                android:visibility="gone"
+                                android:src="@drawable/ic_baseline_close_24" />
+
+
+                        </RelativeLayout>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -619,40 +543,40 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/text_view_customer_title1"
+                                android:id="@+id/text_view_supplier_title1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:layout_centerVertical="true"
-                                android:text="CUSTOMER "
+                                android:text="SUPPLIER "
                                 android:textColor="@color/text_color3"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/text_view_customer_title2"
+                                android:id="@+id/text_view_supplier_title2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toEndOf="@+id/text_view_customer_title1"
+                                android:layout_toEndOf="@+id/text_view_supplier_title1"
                                 android:text="@string/optional"
                                 android:textColor="@color/text_color3"
                                 android:textSize="12sp" />
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/card_view_add_customer"
+                                android:id="@+id/card_view_add_supplier"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginVertical="8dp"
                                 android:layout_centerVertical="true"
+                                android:layout_marginVertical="8dp"
                                 android:visibility="visible"
                                 app:cardCornerRadius="16dp"
                                 app:cardElevation="0dp">
 
                                 <TextView
-                                    android:id="@+id/text_view_add_customer"
+                                    android:id="@+id/text_view_add_supplier"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@color/light_blue_shade_1"
@@ -661,7 +585,7 @@
                                     android:paddingTop="8dp"
                                     android:paddingEnd="14dp"
                                     android:paddingBottom="8dp"
-                                    android:text="+  Add Customer"
+                                    android:text="+  Add Supplier"
                                     android:textAlignment="center"
                                     android:textColor="@color/text_color1"
                                     android:textSize="12sp" />
@@ -669,18 +593,18 @@
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/card_view_remove_customer"
+                                android:id="@+id/card_view_remove_supplier"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginVertical="8dp"
                                 android:layout_centerVertical="true"
+                                android:layout_marginVertical="8dp"
                                 android:visibility="gone"
                                 app:cardCornerRadius="16dp"
                                 app:cardElevation="0dp">
 
                                 <TextView
-                                    android:id="@+id/text_view_remove_customer"
+                                    android:id="@+id/text_view_remove_supplier"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@color/very_light_red"
@@ -696,13 +620,13 @@
                         </RelativeLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/layout_customer_details"
+                            android:id="@+id/layout_supplier_details"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="visible">
 
                             <ImageView
-                                android:id="@+id/image_view_customer_icon"
+                                android:id="@+id/image_view_supplier_icon"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="8dp"
@@ -711,35 +635,35 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/text_view_customer_name"
+                                android:id="@+id/text_view_supplier_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="12dp"
                                 android:layout_marginTop="10dp"
                                 android:fontFamily="sans-serif"
-                                android:text="@{viewModel.customerInfo.customerName}"
+                                android:text="@{viewModel.supplierInfo.supplierName}"
                                 android:textColor="@color/text_color1"
                                 android:textSize="14sp"
-                                app:layout_constraintStart_toEndOf="@+id/image_view_customer_icon"
+                                app:layout_constraintStart_toEndOf="@+id/image_view_supplier_icon"
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:text="Emeka Bakery" />
 
                             <TextView
-                                android:id="@+id/text_view_customer_phone"
+                                android:id="@+id/text_view_supplier_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="36dp"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="sans-serif"
+                                android:text="@{viewModel.supplierInfo.supplierPhone}"
                                 android:textColor="@color/text_color2"
                                 android:textSize="14sp"
-                                android:text="@{viewModel.customerInfo.customerPhone}"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view_customer_name"
+                                app:layout_constraintTop_toBottomOf="@+id/text_view_supplier_name"
                                 tools:text="+44756382923" />
 
                             <ImageView
-                                android:id="@+id/edit_customer_button"
+                                android:id="@+id/edit_supplier_button"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="16dp"
@@ -817,11 +741,9 @@
 
                 </androidx.cardview.widget.CardView>
 
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
         <Button
             android:id="@+id/button_save"
@@ -835,43 +757,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </layout>
-
-
-    <!--<androidx.cardview.widget.CardView-->
-    <!--android:id="@+id/card_view_save_record"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="16dp"-->
-    <!--app:cardCornerRadius="4dp"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent">-->
-
-    <!--<LinearLayout-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:background="@color/purple_500"-->
-    <!--    android:gravity="center_horizontal"-->
-    <!--    android:orientation="horizontal">-->
-
-    <!--    <TextView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center_horizontal"-->
-    <!--        android:fontFamily="sans-serif"-->
-    <!--        android:padding="8dp"-->
-    <!--        android:text="Save"-->
-    <!--        android:textAlignment="center"-->
-    <!--        android:textColor="@color/reverse_text_color"-->
-    <!--        android:textSize="16sp" />-->
-    <!--</LinearLayout>-->
-    <!--</androidx.cardview.widget.CardView>-->
-<!--    android:text="@{String.valueOf(viewModel.discountAmount).concat(@string/spacing).concat(String.valueOf(viewModel.discountPercentage)).concat(@string/percentsign)}"-->

@@ -2,7 +2,13 @@ package com.chrisojukwu.tallybookkeeping.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.view.WindowManager
+import androidx.core.view.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,6 +16,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.ActivityHomePageBinding
+import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditIncomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +28,9 @@ class HomePageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityHomePageBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         //set custom toolbar as ActionBar
@@ -32,10 +41,18 @@ class HomePageActivity : AppCompatActivity() {
 
         val bottomNavView: BottomNavigationView = binding.bottomNavHomeActivity
 
+        bottomNavView.setOnItemReselectedListener { } // prevent navigating to the same item
+
         //list of fragments that should be regarded as first level destinations
         //this tells the navController to remove the up navigate button from these destinations
         val appBarConfiguration = AppBarConfiguration
-            .Builder(R.id.incomeExpenseFragment, R.id.inventoryFragment, R.id.todoFragment, R.id.accountFragment)
+            .Builder(
+                R.id.homeFragment,
+                R.id.inventoryFragment,
+                R.id.todoFragment,
+                R.id.accountFragment,
+                R.id.editIncomeFragment
+            )
             .build()
 
         //setup navController
@@ -48,7 +65,16 @@ class HomePageActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(bottomNavView, navController)
 
         //link the appBarConfiguration to the navController
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        //setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.editIncomeFragment
+            ) {
+                bottomNavView.visibility = View.GONE
+            } else {
+                bottomNavView.visibility = View.VISIBLE
+            }
+        }
     }
 
     //call the navController to handle up button clicks from the ActionBar

@@ -7,9 +7,21 @@
             type="com.chrisojukwu.tallybookkeeping.data.models.RecordHolder.Expense" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:cardElevation="4dp">
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -33,7 +45,7 @@
                 tools:text="2 bags of flour, 3 cartons of Indomie"
                 android:text="@{expenseRecord.description}"
                 android:textColor="@color/text_color1"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/record_cost"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,11 +57,11 @@
                 android:layout_marginEnd="16dp"
                 android:fontFamily="sans-serif"
                 android:paddingStart="16dp"
-                android:textColor="#5E1010"
-                android:textSize="18sp"
+                android:textColor="@color/expense_red"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/button_edit_record"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{expenseRecord.amountPaid.toString()}"
+                app:formatBigDecimal="@{expenseRecord.amountPaid}"
                 tools:text="$13,250.00" />
 
             <ImageView
@@ -85,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#E1E5FA"
+                    android:background="@color/light_blue_shade_1"
                     android:fontFamily="sans-serif-light"
                     android:paddingStart="24dp"
                     android:paddingTop="2dp"
@@ -101,4 +113,8 @@
 
 
     </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
 </layout>

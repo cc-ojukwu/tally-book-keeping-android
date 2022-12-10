@@ -11,12 +11,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.data.models.Customer
 import com.chrisojukwu.tallybookkeeping.data.models.PaymentMode
 import com.chrisojukwu.tallybookkeeping.data.models.Product
-import com.chrisojukwu.tallybookkeeping.data.models.RecordHolder
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditIncomeBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @AndroidEntryPoint
@@ -35,13 +35,20 @@ class EditIncomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentEditIncomeBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
         }
-        binding.productListRecyclerView.adapter = EditIncomeProductListAdapter()
+//        ViewCompat.setOnApplyWindowInsetsListener(binding.titleSection) { theView, windowInsets ->
+//            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            println(insets.top)
+//            theView.updatePadding(top = insets.top)
+//            WindowInsetsCompat.CONSUMED
+//        }
+
+        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
 
         return binding.root
     }
@@ -49,7 +56,18 @@ class EditIncomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = EditIncomeProductListAdapter(
+            mutableListOf(),
+            { productItem -> vm.removeFromProductList(productItem) },
+            { productItem -> openAddItemBottomSheet(productItem) })
+
+        binding.productListRecyclerView.adapter = adapter
+
         setDateTime()
+
+        binding.imageViewBackButton.setOnClickListener {
+            Navigation.findNavController(it).navigateUp()
+        }
 
         binding.datePicker.setOnClickListener {
             openDateBottomSheet()
@@ -60,13 +78,20 @@ class EditIncomeFragment : Fragment() {
         }
 
         binding.cardViewAddItems.setOnClickListener {
-            openAddItemBottomSheet()
+            openAddItemBottomSheet(null)
+        }
+
+        binding.cardViewAddMoreItemsButton.setOnClickListener {
+            openAddItemBottomSheet(null)
         }
 
         binding.cardViewAddCustomer.setOnClickListener {
             openAddCustomerBottomSheet()
         }
 
+        binding.cardViewRemoveCustomer.setOnClickListener {
+            removeCustomerDetails()
+        }
 
         binding.buttonSave.setOnClickListener {
             onSaveButtonClicked()
@@ -79,10 +104,8 @@ class EditIncomeFragment : Fragment() {
     }
 
     private fun setDateTime() {
-        val localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now())
-        vm.saveDate(localDateTime)
+        vm.saveDate(LocalDateTime.now())
     }
-
 
     private fun onEditTextChangedCallback() {
         binding.editTextTotalAmount.doOnTextChanged { text, _, _, _ ->
@@ -104,7 +127,8 @@ class EditIncomeFragment : Fragment() {
                     binding.addDiscount.isClickable = true
                 }
             } else {
-                vm.updateTotalAmount(0.toBigDecimal())
+                vm.updateTotalAmount(BigDecimal.ZERO)
+                binding.editTextAmountReceived.setText(text)
                 binding.textViewAddDiscount.setTextColor(requireContext().resources.getColor(R.color.grey, null))
                 binding.addDiscount.isClickable = false
             }
@@ -119,23 +143,31 @@ class EditIncomeFragment : Fragment() {
                     vm.setAmountReceived(text.toString().toBigDecimal())
                 }
             } else {
-                vm.setAmountReceived(0.toBigDecimal())
+                vm.setAmountReceived(BigDecimal.ZERO)
             }
         }
 
         binding.editTextDescription.doOnTextChanged { text, _, _, _ ->
             binding.buttonSave.isEnabled = text!!.isNotBlank()
         }
+
+//        binding.editTextDescription.setOnFocusChangeListener { view, focus ->
+//            if (focus) {
+//                binding.editTextDescription.hint = ""
+//            } else {binding.editTextDescription.hint = "2 boxes"}
+//        }
     }
 
     private fun callObservers() {
-        vm.subTotalAmount.observe(viewLifecycleOwner) { subtotalAmount ->
-            vm.amountReceived.observe(viewLifecycleOwner) { amountReceived ->
-                binding.textViewBalanceDue.text = (subtotalAmount - amountReceived).toString()
-            }
-        }
+        binding.addDiscount.isClickable = false
 
-        vm.discountAmount.observe(viewLifecycleOwner) { discountAmount ->
+//        vm.subTotalAmount.observe(viewLifecycleOwner) {
+//            vm.amountReceived.observe(viewLifecycleOwner) {
+//                vm.updateBalanceDue()
+//            }
+//        }
+
+        vm.discountAmount.observe(viewLifecycleOwner) {
             binding.editTextAmountReceived.setText(vm.updateAmountReceived())
         }
 
@@ -150,7 +182,7 @@ class EditIncomeFragment : Fragment() {
             } else {
                 binding.apply {
                     openDiscountIcon.visibility = View.GONE
-                    textViewDiscountValues.visibility = View.GONE
+                    layoutDiscountValues.visibility = View.GONE
                     textViewAddDiscount.visibility = View.VISIBLE
                     layoutSubtotal.visibility = View.GONE
 
@@ -159,9 +191,15 @@ class EditIncomeFragment : Fragment() {
         }
 
         vm.productList.observe(viewLifecycleOwner) { productList ->
+            binding.editTextDescription.setText(
+                productList.joinToString(", ") {
+                    "${it.productQuantity} ${it.productName}"
+                }
+            )
             if (productList.size > 0) {
                 binding.cardViewAddItems.visibility = View.GONE
                 binding.cardViewAddedItems.visibility = View.VISIBLE
+
             } else {
                 binding.cardViewAddItems.visibility = View.VISIBLE
                 binding.cardViewAddedItems.visibility = View.GONE
@@ -170,24 +208,25 @@ class EditIncomeFragment : Fragment() {
 
         vm.amountReceived.observe(viewLifecycleOwner) { amountReceived ->
             vm.subTotalAmount.observe(viewLifecycleOwner) { subTotal ->
+                vm.updateBalanceDue()
                 if (amountReceived != subTotal) {
                     binding.textViewCustomerTitle2.apply {
                         setText(R.string.required)
                         setTextColor(requireContext().resources.getColor(R.color.red, null))
                     }
-                    vm.isCustomerRequired.value = true
+                    vm.setCustomerRequirement(true)
                 } else {
                     binding.textViewCustomerTitle2.apply {
                         setText(R.string.optional)
                         setTextColor(requireContext().resources.getColor(R.color.text_color3, null))
                     }
-                    vm.isCustomerRequired.value = false
+                    vm.setCustomerRequirement(false)
                 }
             }
         }
 
-        vm.isCustomerAdded.observe(viewLifecycleOwner) { isCustomerAdded ->
-            if (isCustomerAdded) {
+        vm.isCustomerAdded.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.cardViewAddCustomer.visibility = View.GONE
                 binding.cardViewRemoveCustomer.visibility = View.VISIBLE
                 binding.layoutCustomerDetails.visibility = View.VISIBLE
@@ -209,16 +248,15 @@ class EditIncomeFragment : Fragment() {
 
         datePickerDone?.setOnClickListener {
             val day = datePicker!!.dayOfMonth
-            val month = datePicker.month
+            val month = datePicker.month + 1
             val year = datePicker.year
 
             val selectedDate = LocalDate.of(year, month, day)
             if (selectedDate.compareTo(LocalDate.now()) == 0) {
-                val localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.now())
-                vm.saveDate(localDateTime)
+                vm.saveDate(LocalDateTime.now())
             } else {
-                val localDateTime = LocalDateTime.of(year, month, day, 0, 0)
-                vm.saveDate(localDateTime)
+                val transactionDate = LocalDateTime.of(year, month, day, 0, 0)
+                vm.saveDate(transactionDate)
             }
 
             dateBottomSheetDialog.dismiss()
@@ -226,7 +264,9 @@ class EditIncomeFragment : Fragment() {
 
         val today = Calendar.getInstance()
         datePicker?.maxDate = today.timeInMillis
-        today.time
+        val pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val date = LocalDate.parse(vm.transactionDate.value, pattern)
+        datePicker?.updateDate(date.year, date.monthValue - 1, date.dayOfMonth)
         dateBottomSheetDialog.setCancelable(true)
         dateBottomSheetDialog.show()
     }
@@ -256,27 +296,22 @@ class EditIncomeFragment : Fragment() {
             val discountTypeBottomSheetDialog = BottomSheetDialog(requireContext())
             discountTypeBottomSheetDialog.setContentView(R.layout.discount_type_bottomsheet)
 
-            val selectPercent =
+            val discountPercentLayout =
                 discountTypeBottomSheetDialog.findViewById<RelativeLayout>(R.id.layout_discount_type_percent)
-            val selectAmount =
+            val discountAmountLayout =
                 discountTypeBottomSheetDialog.findViewById<RelativeLayout>(R.id.layout_discount_type_amount)
-            val discountTypeCloseIcon = discountTypeBottomSheetDialog.findViewById<ImageView>(R.id.close_icon2)
+            val discountTypeCloseIcon =
+                discountTypeBottomSheetDialog.findViewById<ImageView>(R.id.discount_type_close_icon_2)
 
 
-            selectPercent?.setOnClickListener {
-                vm.setDiscountType(true)
+            discountPercentLayout?.setOnClickListener {
+                vm.updateDiscountUI(true)
                 discountTypeBottomSheetDialog.dismiss()
             }
 
-            selectAmount?.setOnClickListener {
-                vm.setDiscountType(false)
+            discountAmountLayout?.setOnClickListener {
+                vm.updateDiscountUI(false)
                 discountTypeBottomSheetDialog.dismiss()
-            }
-
-            removeButton?.setOnClickListener {
-                vm.setDiscountAmount(0.00.toBigDecimal())
-                vm.isDiscountAdded.value = false
-                discountBottomSheetDialog.dismiss()
             }
 
             discountTypeCloseIcon?.setOnClickListener { discountTypeBottomSheetDialog.dismiss() }
@@ -285,14 +320,29 @@ class EditIncomeFragment : Fragment() {
             discountTypeBottomSheetDialog.show()
         }
 
-        saveButton?.setOnClickListener {
-            vm.discountIsPercent.observe(viewLifecycleOwner) { discountIsPercent ->
-                if (discountIsPercent) {
-                    vm.updateDiscountPercentage(editTextDiscount?.text.toString().toDouble())
-                } else {
-                    vm.setDiscountAmount(editTextDiscount?.text.toString().toBigDecimal())
-                }
+        removeButton?.setOnClickListener {
+            vm.setDiscountAmount(0.00.toBigDecimal())
+            vm.isDiscountAdded.value = false
+            discountBottomSheetDialog.dismiss()
+        }
+
+        vm.isDiscountAdded.observe(viewLifecycleOwner) { discountAdded ->
+            if (discountAdded) {
+                removeButton?.visibility = View.VISIBLE
+            } else {
+                removeButton?.visibility = View.GONE
             }
+        }
+
+        saveButton?.setOnClickListener {
+            if (vm.showPercent.value!!) {
+                vm.saveDiscountType(true)
+                vm.setDiscountPercentage(editTextDiscount?.text.toString().toDouble())
+            } else {
+                vm.saveDiscountType(false)
+                vm.setDiscountAmount(editTextDiscount?.text.toString().toBigDecimal())
+            }
+
             vm.isDiscountAdded.value = true
             discountBottomSheetDialog.dismiss()
         }
@@ -310,11 +360,11 @@ class EditIncomeFragment : Fragment() {
             }
         }
 
-        vm.discountIsPercent.observe(viewLifecycleOwner) {
-            if (!it) {
-                textView?.setText("Amount")
+        vm.showPercent.observe(viewLifecycleOwner) {
+            if (it) {
+                textView?.text = "Percentage(%)"
             } else {
-                textView?.setText("Percentage(%)")
+                textView?.text = "Amount"
             }
         }
 
@@ -326,12 +376,12 @@ class EditIncomeFragment : Fragment() {
     }
 
 
-    private fun openAddItemBottomSheet() {
+    private fun openAddItemBottomSheet(productItem: Product?) {
         val addItemsBottomSheetDialog = BottomSheetDialog(requireContext())
 
         addItemsBottomSheetDialog.setContentView(R.layout.add_item_bottomsheet)
 
-        val product = Product("", 0.toBigDecimal(), 1)
+        val product = Product("${(0..20).random()}${(0..20).random()}${(0..20).random()}")
 
         val itemCloseButton = addItemsBottomSheetDialog.findViewById<ImageView>(R.id.item_close_icon)
         val plusButton = addItemsBottomSheetDialog.findViewById<ImageView>(R.id.plus)
@@ -340,6 +390,12 @@ class EditIncomeFragment : Fragment() {
         val editTextProductName = addItemsBottomSheetDialog.findViewById<EditText>(R.id.edit_text_product_name)
         val editTextPrice = addItemsBottomSheetDialog.findViewById<EditText>(R.id.edit_text_price)
         val saveButton = addItemsBottomSheetDialog.findViewById<Button>(R.id.button_save_item)
+
+        if (productItem != null) {
+            editTextProductName?.setText(productItem.productName)
+            editTextPrice?.setText(productItem.productPrice.toString())
+            editTextQuantity?.setText(productItem.productQuantity.toString())
+        }
 
         itemCloseButton?.setOnClickListener { addItemsBottomSheetDialog.dismiss() }
 
@@ -351,26 +407,33 @@ class EditIncomeFragment : Fragment() {
             if (product.productQuantity != 0) product.productQuantity--
             editTextQuantity?.setText(product.productQuantity.toString())
         }
-        editTextQuantity?.doOnTextChanged { text, _, _, _ ->
-            try {
-                product.productQuantity = text.toString().toInt()
-            } catch (e: Exception) {
-            }
-        }
 
         editTextProductName?.doOnTextChanged { text, _, _, _ ->
             editTextPrice?.setText("")
             if (text!!.isNotBlank()) {
-                product.productName = text as String
+                product.productName = text.toString()
             }
         }
 
         editTextPrice?.doOnTextChanged { text, _, _, _ ->
             try {
-                if (text!!.toString().toDouble() > 0 && product.productName.isNotBlank()) {
+                if (text!!.toString().toDouble() > 0 && editTextProductName!!.text.isNotBlank()) {
                     product.productPrice = text.toString().toBigDecimal()
                     saveButton?.isEnabled = true
+                } else {
+                    saveButton?.isEnabled = false
                 }
+            } catch (e: Exception) {
+                saveButton?.isEnabled = false
+            }
+        }
+
+        editTextQuantity?.doOnTextChanged { text, _, _, _ ->
+            try {
+                product.productQuantity = text.toString().toInt()
+                saveButton?.isEnabled = editTextProductName!!.text.isNotBlank() &&
+                        (editTextPrice!!.text.toString().toDouble() > 0) &&
+                        editTextQuantity.text.toString().toInt() > 0
             } catch (e: Exception) {
             }
         }
@@ -378,9 +441,25 @@ class EditIncomeFragment : Fragment() {
 
         saveButton?.setOnClickListener {
             try {
+                if (productItem != null) {
+                    productItem.productName = editTextProductName?.text.toString()
+                    productItem.productPrice = editTextPrice?.text.toString().toBigDecimal()
+                    productItem.productQuantity = editTextQuantity?.text.toString().toInt()
+                    productItem.productTotalPrice =
+                        productItem.productPrice.multiply(productItem.productQuantity.toBigDecimal())
+                    vm.updateProductList(productItem)
+                    addItemsBottomSheetDialog.dismiss()
+                }
                 product.productQuantity = editTextQuantity?.text.toString().toInt()
-                if (product.productName.isNotBlank() && product.productPrice > BigDecimal.ZERO) {
-                    vm.updateProductList(product)
+                if (product.productName.isNotBlank() &&
+                    (product.productPrice > BigDecimal.ZERO) &&
+                    product.productQuantity > 0
+                ) {
+                    product.productTotalPrice =
+                        product.productPrice.multiply(product.productQuantity.toBigDecimal())
+
+                    vm.addToProductList(product)
+
                     addItemsBottomSheetDialog.dismiss()
                 }
             } catch (e: Exception) {
@@ -396,7 +475,7 @@ class EditIncomeFragment : Fragment() {
 
         addCustomerBottomSheetDialog.setContentView(R.layout.add_customer_bottomsheet)
 
-        val doneButton = addCustomerBottomSheetDialog.findViewById<Button>(R.id.button_done)
+        val doneButton = addCustomerBottomSheetDialog.findViewById<Button>(R.id.customer_button_done)
         val customerCloseButton = addCustomerBottomSheetDialog.findViewById<ImageView>(R.id.customer_close_icon)
         val customerName = addCustomerBottomSheetDialog.findViewById<EditText>(R.id.edit_text_customer_name)
         val customerPhone = addCustomerBottomSheetDialog.findViewById<EditText>(R.id.edit_text_customer_phone)
@@ -410,8 +489,8 @@ class EditIncomeFragment : Fragment() {
         }
 
         doneButton?.setOnClickListener {
-            vm.updateCustomer(Customer(customerName?.text.toString(), customerPhone?.text.toString()))
-            vm.isCustomerAdded.value = true
+            vm.updateCustomerInfo(Customer(customerName?.text.toString(), customerPhone?.text.toString()))
+            vm.customerAdded(true)
             addCustomerBottomSheetDialog.dismiss()
         }
         customerCloseButton?.setOnClickListener { addCustomerBottomSheetDialog.dismiss() }
@@ -421,23 +500,31 @@ class EditIncomeFragment : Fragment() {
         addCustomerBottomSheetDialog.show()
     }
 
+    private fun removeCustomerDetails() {
+        vm.updateCustomerInfo(Customer("", ""))
+        vm.customerAdded(false)
+    }
+
     private fun onSaveButtonClicked() {
         when (binding.radioGroup.checkedRadioButtonId) {
-            R.id.radio_cash -> vm.paymentMode = PaymentMode.CASH
-            R.id.radio_bank_transfer -> vm.paymentMode = PaymentMode.BANK_TRANSFER
-            R.id.radio_pos -> vm.paymentMode = PaymentMode.POS
+            R.id.radio_cash -> vm.setPaymentModeIncome(PaymentMode.CASH)
+            R.id.radio_bank_transfer -> vm.setPaymentModeIncome(PaymentMode.BANK_TRANSFER)
+            R.id.radio_pos -> vm.setPaymentModeIncome(PaymentMode.POS)
         }
 
         vm.updateDescription(binding.editTextDescription.text.toString())
 
         when {
-            vm.totalAmount.value!! == BigDecimal.ZERO -> showErrorSnackBar(ERROR1)
-            vm.amountReceived.value!! > vm.subTotalAmount.value -> showErrorSnackBar(ERROR2)
-            vm.discountAmount.value!! >= vm.totalAmount.value!! -> showErrorSnackBar(ERROR3)
-            vm.productList.value!!.size > 0 && vm.itemsTotalCost.value != vm.subTotalAmount.value -> showErrorSnackBar(
-                ERROR4
-            )
-            vm.isCustomerRequired.value!! && !vm.isCustomerAdded.value!! -> showErrorSnackBar(ERROR5)
+            vm.totalAmount.value!! <= BigDecimal.ZERO -> showErrorSnackBar(R.string.total_amount_error)
+            vm.amountReceived.value!! > vm.subTotalAmount.value -> showErrorSnackBar(R.string.amount_received_error)
+            vm.discountAmount.value!! >= vm.totalAmount.value!! -> showErrorSnackBar(R.string.discount_error)
+            vm.productList.value!!.size > 0 && vm.itemsTotalCost.value != vm.subTotalAmount.value &&
+                    vm.isDiscountAdded.value!! ->
+                showErrorSnackBar(R.string.items_total_error2)
+            vm.productList.value!!.size > 0 && vm.itemsTotalCost.value != vm.subTotalAmount.value &&
+                    !vm.isDiscountAdded.value!! ->
+                showErrorSnackBar(R.string.items_total_error1)
+            vm.isCustomerRequired.value!! && !vm.isCustomerAdded.value!! -> showErrorSnackBar(R.string.customer_error)
             else -> {
                 if (vm.saveAllDetails()) {
                     Toast.makeText(requireContext(), "Entry saved!", Toast.LENGTH_LONG).show()
@@ -448,16 +535,10 @@ class EditIncomeFragment : Fragment() {
     }
 
     private fun showErrorSnackBar(error_text: Int) {
-        Snackbar.make(binding.buttonSave, error_text, Snackbar.LENGTH_LONG)
-            .setTextColor(Color.WHITE)
-            .setBackgroundTint(Color.RED)
+        Snackbar.make(binding.buttonSave, error_text, 4000)
+            .setTextColor(Color.BLACK)
+            .setBackgroundTint(requireContext().resources.getColor(R.color.expense_button_red, null))
             .show()
     }
 
 }
-
-const val ERROR1 = R.string.total_amount_error
-const val ERROR2 = R.string.amount_received_error
-const val ERROR3 = R.string.discount_error
-const val ERROR4 = R.string.items_total_error
-const val ERROR5 = R.string.customer_error
