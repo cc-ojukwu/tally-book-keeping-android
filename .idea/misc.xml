@@ -41,7 +41,7 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/activity_onboarding.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/activity_sign_in.xml" value="0.1859375" />
-        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/add_customer_bottomsheet.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/add_customer_bottomsheet.xml" value="0.10606060606060606" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/add_item_bottomsheet.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/add_supplier_bottomsheet.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/date_picker_bottomsheet.xml" value="0.2" />
@@ -62,7 +62,7 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_and_expense.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_details.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_expense.xml" value="0.22" />
-        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_expense_details.xml" value="0.2" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_expense_details.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_onboarding_first.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_onboarding_second.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_onboarding_third.xml" value="0.1" />
