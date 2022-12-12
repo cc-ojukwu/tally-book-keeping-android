@@ -6,14 +6,12 @@ import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,9 +24,6 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.snackbar.Snackbar
@@ -40,8 +35,6 @@ import timber.log.Timber
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private val accountViewModel: AccountViewModel by activityViewModels()
-    private lateinit var gso: GoogleSignInOptions
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     private lateinit var oneTapClient: SignInClient
     private lateinit var signUpRequest: BeginSignInRequest
@@ -56,7 +49,6 @@ class SignInFragment : Fragment() {
                 val idToken = credential.googleIdToken
                 if (idToken != null) {
                     Timber.d("idToken acquired")
-                    Log.d("token from google", idToken)
                     //Use idToken to authenticate with backend here
                     accountViewModel.googleLogin(idToken).observe(viewLifecycleOwner) { returnValue ->
                         if (returnValue == ServerResponse.SUCCESS) {
@@ -87,7 +79,7 @@ class SignInFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
         binding = FragmentSignInBinding.inflate(inflater)
@@ -173,7 +165,4 @@ class SignInFragment : Fragment() {
                 Timber.e("Didn't find any google account on device")
             }
     }
-
-
-
 }

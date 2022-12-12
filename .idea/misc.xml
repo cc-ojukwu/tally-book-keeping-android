@@ -16,6 +16,8 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_baseline_delete_outline_24.xml" value="0.129" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_baseline_delete_red_outline_24.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_baseline_remove_circle_outline_24.xml" value="0.103" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_baseline_save_alt_24.xml" value="0.172" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.172" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_currency_gbp_duotone_svgrepo_com.xml" value="0.1035" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_edit_svgrepo_com.xml" value="0.1585" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/ic_tilted_scale_svg.xml" value="0.104" />
@@ -23,6 +25,7 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/line_divider.xml" value="0.129" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/loading_animation.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/loading_img.xml" value="0.1" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/no_button_background.xml" value="0.129" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/recycler_view_background.xml" value="0.129" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/rounded_corner_4dp.xml" value="0.186" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/rounded_corner_8dp.xml" value="0.1" />
@@ -30,6 +33,7 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/rounded_corner_filter_8dp.xml" value="0.11" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/tab_background.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/update_payment_background.xml" value="0.129" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/drawable/yes_button_background.xml" value="0.129" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/font/chakrapetch_semibold.xml" value="0.19722222222222222" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/font/merriweather_sans.xml" value="0.19722222222222222" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/font/merriweather_sans_light.xml" value="0.19722222222222222" />
@@ -41,6 +45,7 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/add_item_bottomsheet.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/add_supplier_bottomsheet.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/date_picker_bottomsheet.xml" value="0.2" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/delete_transaction_bottomsheet.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/discount_bottomsheet.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/discount_type_bottomsheet.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/expense_categories_bottomsheet.xml" value="0.16666666666666666" />
@@ -55,21 +60,26 @@
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_forgot_password.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_and_expense.xml" value="0.2" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_details.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_expense.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_income_expense_details.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_onboarding_first.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_onboarding_second.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_onboarding_third.xml" value="0.1" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_receipt.xml" value="0.1859375" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/fragment_sign_in.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/income_details_item.xml" value="0.19895833333333332" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/income_details_payment_history.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/income_product_item.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/product_item.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/receipt_item.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/receipt_payment_history.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/record_item.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/record_item_expense.xml" value="0.22" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/record_item_header.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/record_item_income.xml" value="0.2704791344667697" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/units_bottomsheet.xml" value="0.2" />
+        <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/layout/update_payment_bottomsheet.xml" value="0.2" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/menu/bottom_navigation.xml" value="0.1" />
         <entry key="..\:/Users/ojukw/Downloads/android-studio-projects/tally_book_keeping/app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>

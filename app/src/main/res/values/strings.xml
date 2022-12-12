@@ -42,4 +42,13 @@
     <string name="customer_error">Customer details required for this entry</string>
     <string name="desc_text">2 boxes</string>
     <string name="supplier_error">Supplier details required for this entry</string>
+    <string name="select_category">Select Category</string>
+    <string name="percentage">Percentage(%)</string>
+    <string name="discount_amount">Amount</string>
+    <string name="main_activity">Main Activity</string>
+    <string name="add_customer">Add Customer</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="phone_number_hint">07689775742</string>
+    <string name="done">Done</string>
 </resources>

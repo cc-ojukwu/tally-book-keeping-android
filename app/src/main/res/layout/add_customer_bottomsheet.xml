@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
@@ -20,10 +21,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Add Customer"
+            android:text="@string/add_customer"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/text_color1"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:ignore="RelativeOverlap" />
 
         <ImageView
             android:id="@+id/customer_close_icon"
@@ -44,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Customer Name"
+            android:hint="@string/customer_name"
             android:textColorHint="@color/text_color1"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxStrokeWidth="0dp"
@@ -77,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Phone number"
+            android:hint="@string/phone_number"
             android:textColorHint="@color/black"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusTopStart="8dp"
@@ -94,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="12"
                 android:background="@drawable/edit_text_style2"
-                android:hint="07689775742"
+                android:hint="@string/phone_number_hint"
                 android:inputType="phone"
                 android:textCursorDrawable="@drawable/edit_text_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -110,6 +112,6 @@
         android:textAllCaps="false"
         android:textSize="18sp"
         android:enabled="true"
-        android:text="Done"
+        android:text="@string/done"
         android:textColor="#FFFFFF" />
 </LinearLayout>

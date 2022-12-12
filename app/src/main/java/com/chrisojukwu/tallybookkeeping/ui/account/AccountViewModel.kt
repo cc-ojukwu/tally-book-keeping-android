@@ -31,11 +31,6 @@ class AccountViewModel @Inject constructor(
     private val _jwtToken = MutableLiveData<String>()
     val jwtToken: LiveData<String> = _jwtToken
 
-//    @BindingAdapter("visibleGone")
-//    fun showHide(view: View, show: Boolean) {
-//        view.visibility = if (show) View.VISIBLE else View.GONE
-//    }
-
     fun createAccount(email: String, password: String): LiveData<ServerResponse> {
         val result = MutableLiveData<ServerResponse>()
         _isLoading.value = true
@@ -112,7 +107,7 @@ class AccountViewModel @Inject constructor(
             try {
                 val response = Api.retrofitService.googleSignIn(idToken)
                 if (response.isSuccessful) {
-                    Log.d("good-google", "server success")
+                    Timber.d("server success")
                     val token = response.body()?.jwtToken
                     if (token != null) {
                         _jwtToken.postValue(token!!)
@@ -122,19 +117,19 @@ class AccountViewModel @Inject constructor(
                     } else {
                         result.postValue(ServerResponse.FAILURE)
                         Timber.e("google login token is null")
-                        Log.d("failure", "no token for server")
+                        Timber.d("no token")
                     }
                 } else {
                     result.postValue(ServerResponse.UNAVAILABLE)
                     Timber.e("google login token - server-side error")
-                    Log.d("failure", "server-side error")
+                    Timber.d("server side error")
 
                 }
 
             } catch (e: Exception) {
                 result.postValue(ServerResponse.FAILURE)
                 Timber.e("google login token error - failed")
-                Log.d("failure", "my server failed")
+                Timber.d("server failure")
 
             }
         }

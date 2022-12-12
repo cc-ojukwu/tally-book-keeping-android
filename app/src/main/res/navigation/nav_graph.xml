@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_homeFragment_to_editExpenseFragment"
             app:destination="@id/editExpenseFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_incomeExpenseDetailsFragment"
+            app:destination="@id/incomeExpenseDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/editIncomeFragment"
@@ -44,6 +47,14 @@
         android:label="EditExpenseFragment" >
         <action
             android:id="@+id/action_editExpenseFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/incomeExpenseDetailsFragment"
+        android:name="com.chrisojukwu.tallybookkeeping.ui.bookkeeping.IncomeExpenseDetailsFragment"
+        android:label="IncomeExpenseDetailsFragment" >
+        <action
+            android:id="@+id/action_incomeExpenseDetailsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

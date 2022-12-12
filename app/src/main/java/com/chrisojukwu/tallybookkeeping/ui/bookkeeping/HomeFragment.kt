@@ -5,12 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.data.models.RecordHolder
@@ -20,7 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val sharedViewModel: HomeViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by viewModels()
+    private val sharedViewModel: IncomeExpenseDetailsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,18 +27,8 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            sharedViewmodel = sharedViewModel
+            sharedViewmodel = viewModel
         }
-
-//        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarHomePage) { theView, windowInsets ->
-//            val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-//            println(insets.top)
-//            theView.updatePadding(top = insets.top)
-//            WindowInsetsCompat.CONSUMED
-//        }
-
-        val adapter = IncomeExpenseAdapter(sharedViewModel.displayList.value!!) { entry -> onEntryClick(entry) }
-        binding.recyclerViewRecords.adapter = adapter
 
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
 
@@ -49,6 +37,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adapter =
+            IncomeExpenseAdapter(viewModel.displayList.value!!) { transaction -> onTransactionClick(transaction) }
+        binding.recyclerViewRecords.adapter = adapter
 
         binding.cardViewMoneyIn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_editIncomeFragment)
@@ -60,7 +52,9 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun onEntryClick(entry: RecordHolder) {
-
+    private fun onTransactionClick(transaction: RecordHolder) {
+        val record = viewModel.getRecordUsingId(transaction.recordId)
+        if (record != null) sharedViewModel.setRecord(record)
+        findNavController().navigate(R.id.action_homeFragment_to_incomeExpenseDetailsFragment)
     }
 }

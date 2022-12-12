@@ -1,46 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginVertical="4dp"
-    android:weightSum="100">
 
-    <TextView
-        android:id="@+id/text_view_item_name"
-        android:layout_width="0dp"
+<layout>
+
+    <data>
+        <variable
+            name="productItem"
+            type="com.chrisojukwu.tallybookkeeping.data.models.Product" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textSize="16sp"
-        android:paddingEnd="4dp"
-        android:textColor="@color/text_color2"
-        tools:text="Furniture"
-        android:layout_weight="50"/>
+        android:layout_marginVertical="4dp"
+        android:orientation="horizontal"
+        android:weightSum="100">
 
-    <TextView
-        android:id="@+id/text_view_item_qty"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textSize="16sp"
-        android:textColor="@color/text_color2"
-        android:text="1"
-        android:maxLines="1"
-        android:textAlignment="center"
-        android:layout_weight="12"/>
+        <TextView
+            android:id="@+id/text_view_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:fontFamily="sans-serif"
+            android:paddingEnd="4dp"
+            android:text="@{productItem.productName}"
+            android:textColor="@color/text_color2"
+            android:textSize="16sp"
+            tools:text="Furniture" />
 
-    <TextView
-        android:id="@+id/text_view_item_amount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textSize="16sp"
-        android:paddingStart="4dp"
-        android:maxLines="1"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/text_color2"
-        tools:text="$350.00"
-        android:layout_weight="38"/>
+        <TextView
+            android:id="@+id/text_view_item_qty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:text="@{String.valueOf(productItem.productQuantity)}"
+            android:textAlignment="center"
+            android:textColor="@color/text_color2"
+            android:textSize="16sp"
+            tools:text="1" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_view_item_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="38"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:paddingStart="4dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/text_color2"
+            android:textSize="16sp"
+            app:formatBigDecimal="@{productItem.productTotalPrice}"
+            tools:text="$350.00" />
+
+    </LinearLayout>
+</layout>

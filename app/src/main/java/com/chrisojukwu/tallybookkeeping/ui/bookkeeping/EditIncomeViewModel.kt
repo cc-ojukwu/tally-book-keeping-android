@@ -1,10 +1,7 @@
 package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
 import androidx.lifecycle.*
-import com.chrisojukwu.tallybookkeeping.data.models.Customer
-import com.chrisojukwu.tallybookkeeping.data.models.PaymentMode
-import com.chrisojukwu.tallybookkeeping.data.models.Product
-import com.chrisojukwu.tallybookkeeping.data.models.RecordHolder
+import com.chrisojukwu.tallybookkeeping.data.models.*
 import com.chrisojukwu.tallybookkeeping.utils.formatDateToString
 import com.chrisojukwu.tallybookkeeping.utils.notifyObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,58 +15,58 @@ import javax.inject.Inject
 class EditIncomeViewModel @Inject constructor() : ViewModel() {
 
 
-    private var _transactionDate = MutableLiveData<LocalDateTime>(LocalDateTime.now())
+    private var _transactionDate = MutableLiveData(LocalDateTime.now())
     val transactionDate: LiveData<String> =
         Transformations.switchMap(_transactionDate) { date -> formatDateToString(date) }
 
-    private val _discountIsPercent = MutableLiveData<Boolean>(true)
+    private val _discountIsPercent = MutableLiveData(true)
     val discountIsPercent: LiveData<Boolean> = _discountIsPercent
 
-    private val _showPercent = MutableLiveData<Boolean>(true)
+    private val _showPercent = MutableLiveData(true)
     val showPercent: LiveData<Boolean> = _showPercent
 
-    private val _discountAmount = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _discountAmount = MutableLiveData(BigDecimal.ZERO)
     val discountAmount: LiveData<BigDecimal> = _discountAmount
 
-    private val _discountPercentage = MutableLiveData<Double>(0.0)
+    private val _discountPercentage = MutableLiveData(0.0)
     val discountPercentage: LiveData<Double> = _discountPercentage
 
-    private val _totalAmount = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _totalAmount = MutableLiveData(BigDecimal.ZERO)
     val totalAmount: LiveData<BigDecimal> = _totalAmount
 
     private val _subTotalAmount =
-        MutableLiveData<BigDecimal>(_totalAmount.value!!.minus(_discountAmount.value!!))
+        MutableLiveData(_totalAmount.value!!.minus(_discountAmount.value!!))
     val subTotalAmount: LiveData<BigDecimal> = _subTotalAmount
 
-    private val _amountReceived = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _amountReceived = MutableLiveData(BigDecimal.ZERO)
     val amountReceived: LiveData<BigDecimal> = _amountReceived
 
-    private val _balanceDue = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _balanceDue = MutableLiveData(BigDecimal.ZERO)
     val balanceDue: LiveData<BigDecimal> = _balanceDue
 
-    val isDiscountAdded = MutableLiveData<Boolean>(false)
+    val isDiscountAdded = MutableLiveData(false)
 
     private val _productList = MutableLiveData<MutableList<Product>>(mutableListOf())
     val productList: LiveData<MutableList<Product>> = _productList
 
-    val _productCount = Transformations.map(_productList) { list -> list.size }
+    private val _productCount = Transformations.map(_productList) { list -> list.size }
     val productCount = _productCount
 
-    private val _itemsTotalCost = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _itemsTotalCost = MutableLiveData(BigDecimal.ZERO)
     val itemsTotalCost: LiveData<BigDecimal> = _itemsTotalCost
 
-    private val _isCustomerRequired = MutableLiveData<Boolean>(false)
+    private val _isCustomerRequired = MutableLiveData(false)
     val isCustomerRequired: LiveData<Boolean> = _isCustomerRequired
 
-    private val _isCustomerAdded = MutableLiveData<Boolean>(false)
+    private val _isCustomerAdded = MutableLiveData(false)
     val isCustomerAdded: LiveData<Boolean> = _isCustomerAdded
 
     private val _customerInfo = MutableLiveData<Customer>()
     val customerInfo: LiveData<Customer> = _customerInfo
 
-    private val _description = MutableLiveData<String>("")
+    private val _description = MutableLiveData("")
 
-    var paymentMode: PaymentMode = PaymentMode.CASH
+    private var _paymentMode: PaymentMode = PaymentMode.CASH
 
 
     fun saveDate(date: LocalDateTime) {
@@ -139,7 +136,7 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
         updateItemsTotalCost()
     }
 
-    fun updateItemsTotalCost() {
+    private fun updateItemsTotalCost() {
         _itemsTotalCost.value = _productList.value?.sumOf { it.productTotalPrice }
     }
 
@@ -147,7 +144,7 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
         _customerInfo.value = customer
     }
 
-    fun updateSubtotal() {
+    private fun updateSubtotal() {
         _subTotalAmount.value = _totalAmount.value!! - _discountAmount.value!!
         updateBalanceDue()
     }
@@ -171,7 +168,8 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = _balanceDue.value!!,
             description = _description.value!!,
             productList = _productList.value,
-            paymentMode = paymentMode
+            paymentList = mutableListOf(
+                Payment(_amountReceived.value!!,_transactionDate.value!!,_paymentMode))
         )
         return true
     }
@@ -185,6 +183,6 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setPaymentModeIncome(mode: PaymentMode) {
-        paymentMode = mode
+        _paymentMode = mode
     }
 }

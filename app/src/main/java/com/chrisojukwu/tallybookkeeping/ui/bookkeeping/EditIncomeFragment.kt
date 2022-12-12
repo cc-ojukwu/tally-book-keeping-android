@@ -41,12 +41,6 @@ class EditIncomeFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
         }
-//        ViewCompat.setOnApplyWindowInsetsListener(binding.titleSection) { theView, windowInsets ->
-//            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            println(insets.top)
-//            theView.updatePadding(top = insets.top)
-//            WindowInsetsCompat.CONSUMED
-//        }
 
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
 
@@ -110,7 +104,7 @@ class EditIncomeFragment : Fragment() {
     private fun onEditTextChangedCallback() {
         binding.editTextTotalAmount.doOnTextChanged { text, _, _, _ ->
             vm.clearDiscountFields()
-            if (text!!.toString().equals(".")) {
+            if (text!!.toString() == ".") {
                 binding.editTextTotalAmount.setText("0.")
                 binding.editTextAmountReceived.setText("0.")
                 binding.editTextTotalAmount.setSelection(text.length + 1)
@@ -135,7 +129,7 @@ class EditIncomeFragment : Fragment() {
 
         }
         binding.editTextAmountReceived.doOnTextChanged { text, _, _, _ ->
-            if (text!!.toString().equals(".")) {
+            if (text!!.toString() == ".") {
                 binding.editTextAmountReceived.setText("0.")
                 binding.editTextAmountReceived.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
@@ -348,7 +342,7 @@ class EditIncomeFragment : Fragment() {
         }
 
         editTextDiscount?.doOnTextChanged { text, _, _, _ ->
-            if (text!!.toString().equals(".")) {
+            if (text!!.toString() == ".") {
                 editTextDiscount.setText("0.")
                 editTextDiscount.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
@@ -362,9 +356,9 @@ class EditIncomeFragment : Fragment() {
 
         vm.showPercent.observe(viewLifecycleOwner) {
             if (it) {
-                textView?.text = "Percentage(%)"
+                textView?.text = getString(R.string.percentage)
             } else {
-                textView?.text = "Amount"
+                textView?.text = getString(R.string.discount_amount)
             }
         }
 

@@ -88,3 +88,15 @@ fun formatDate(textView: TextView, date: LocalDateTime?) {
         }
     }
 }
+
+@BindingAdapter("formatDateText")
+fun formatDateText(textView: TextView, date: LocalDateTime?) {
+    val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+    textView.text = date?.format(formatter)
+}
+
+@BindingAdapter("formatDateAndTime")
+fun formatDateAndTime(textView: TextView, date: LocalDateTime?) {
+    val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy - H:m")
+    textView.text = date?.format(formatter)
+}

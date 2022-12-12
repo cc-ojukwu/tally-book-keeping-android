@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chrisojukwu.tallybookkeeping.data.models.Product
 import com.chrisojukwu.tallybookkeeping.databinding.ExpenseProductItemBinding
-import com.chrisojukwu.tallybookkeeping.databinding.IncomeProductItemBinding
 
 
 class EditExpenseProductListAdapter(
@@ -16,8 +15,6 @@ class EditExpenseProductListAdapter(
     RecyclerView.Adapter<EditExpenseProductListAdapter.EditExpenseProductListViewHolder>() {
 
     override fun getItemCount(): Int = list.size
-
-    //private var productList = mutableListOf<Product>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditExpenseProductListViewHolder {
         val view = ExpenseProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

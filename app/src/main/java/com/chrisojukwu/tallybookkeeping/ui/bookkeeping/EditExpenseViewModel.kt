@@ -15,17 +15,17 @@ import javax.inject.Inject
 @HiltViewModel
 class EditExpenseViewModel @Inject constructor() : ViewModel() {
 
-    private var _transactionDate = MutableLiveData<LocalDateTime>(LocalDateTime.now())
+    private var _transactionDate = MutableLiveData(LocalDateTime.now())
     val transactionDate: LiveData<String> =
         Transformations.switchMap(_transactionDate) { date -> formatDateToString(date) }
 
-    private val _totalAmount = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _totalAmount = MutableLiveData(BigDecimal.ZERO)
     val totalAmount: LiveData<BigDecimal> = _totalAmount
 
-    private val _amountPaid = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _amountPaid = MutableLiveData(BigDecimal.ZERO)
     val amountPaid: LiveData<BigDecimal> = _amountPaid
 
-    private val _balanceDue = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _balanceDue = MutableLiveData(BigDecimal.ZERO)
     val balanceDue: LiveData<BigDecimal> = _balanceDue
 
     private val _productList = MutableLiveData<MutableList<Product>>(mutableListOf())
@@ -34,27 +34,27 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
     private val _productCount = Transformations.map(_productList) { list -> list.size }
     val productCount = _productCount
 
-    private val _itemsTotalCost = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _itemsTotalCost = MutableLiveData(BigDecimal.ZERO)
     val itemsTotalCost: LiveData<BigDecimal> = _itemsTotalCost
 
-    private val _description = MutableLiveData<String>("")
+    private val _description = MutableLiveData("")
 
     private val _category = MutableLiveData<String>()
     val category: LiveData<String> = _category
 
-    private val _isCategorySelected = MutableLiveData<Boolean>(false)
+    private val _isCategorySelected = MutableLiveData(false)
     val isCategorySelected: LiveData<Boolean> = _isCategorySelected
 
     private val _supplierInfo = MutableLiveData<Supplier>()
     val supplierInfo: LiveData<Supplier> = _supplierInfo
 
-    private val _isSupplierRequired = MutableLiveData<Boolean>(false)
+    private val _isSupplierRequired = MutableLiveData(false)
     val isSupplierRequired: LiveData<Boolean> = _isSupplierRequired
 
-    private val _isSupplierAdded = MutableLiveData<Boolean>(false)
+    private val _isSupplierAdded = MutableLiveData(false)
     val isSupplierAdded: LiveData<Boolean> = _isSupplierAdded
 
-    private var paymentMode: PaymentMode = PaymentMode.CASH
+    private var _paymentMode: PaymentMode = PaymentMode.CASH
 
     fun updateProductList(product: Product) {
         _productList.value?.filter { it.id == product.id }?.forEach {
@@ -78,7 +78,7 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
         updateItemsTotalCost()
     }
 
-    fun updateItemsTotalCost() {
+    private fun updateItemsTotalCost() {
         _itemsTotalCost.value = _productList.value?.sumOf { it.productTotalPrice }
     }
 
@@ -123,7 +123,7 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setPaymentModeExpense(mode: PaymentMode) {
-        paymentMode = mode
+        _paymentMode = mode
     }
 
     fun saveAllDetails(): Boolean {
@@ -136,8 +136,11 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
             description = _description.value!!,
             category = _category.value,
             productList = _productList.value,
-            paymentMode = paymentMode
+            paymentList = mutableListOf(
+                Payment(_amountPaid.value!!, _transactionDate.value!!, _paymentMode)
+            )
         )
+
         return true
     }
 }

@@ -14,13 +14,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.chrisojukwu.tallybookkeeping.R
-import com.chrisojukwu.tallybookkeeping.data.models.Customer
 import com.chrisojukwu.tallybookkeeping.data.models.PaymentMode
 import com.chrisojukwu.tallybookkeeping.data.models.Product
 import com.chrisojukwu.tallybookkeeping.data.models.Supplier
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditExpenseBinding
 import com.chrisojukwu.tallybookkeeping.utils.setupMaxHeight
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import java.math.BigDecimal
@@ -37,7 +35,7 @@ class EditExpenseFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentEditExpenseBinding.inflate(layoutInflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -108,7 +106,7 @@ class EditExpenseFragment : Fragment() {
 
     private fun onEditTextChangedCallback() {
         binding.editTextTotalAmount.doOnTextChanged { text, _, _, _ ->
-            if (text!!.toString().equals(".")) {
+            if (text!!.toString() == ".") {
                 binding.editTextTotalAmount.setText("0.")
                 binding.editTextAmountPaid.setText("0.")
                 binding.editTextTotalAmount.setSelection(text.length + 1)
@@ -124,7 +122,7 @@ class EditExpenseFragment : Fragment() {
         }
 
         binding.editTextAmountPaid.doOnTextChanged { text, _, _, _ ->
-            if (text!!.toString().equals(".")) {
+            if (text!!.toString() == ".") {
                 binding.editTextAmountPaid.setText("0.")
                 binding.editTextAmountPaid.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
@@ -372,7 +370,7 @@ class EditExpenseFragment : Fragment() {
     }
 
     private fun removeCategory() {
-        binding.textViewCategory.text = "Select Category"
+        binding.textViewCategory.text = getString(R.string.select_category)
         vm.updateCategory("")
         vm.categorySelected(false)
     }

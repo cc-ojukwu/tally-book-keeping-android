@@ -1,48 +1,42 @@
 package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
 import androidx.lifecycle.*
-import com.chrisojukwu.tallybookkeeping.data.models.Customer
-import com.chrisojukwu.tallybookkeeping.data.models.PaymentMode
-import com.chrisojukwu.tallybookkeeping.data.models.RecordHolder
-import com.chrisojukwu.tallybookkeeping.data.models.Supplier
+import com.chrisojukwu.tallybookkeeping.data.models.*
 import com.chrisojukwu.tallybookkeeping.utils.formatNumber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
-import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
 
-    private val _allTimeIncome = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _allTimeIncome = MutableLiveData(BigDecimal.ZERO)
     val allTimeIncome: LiveData<String> = Transformations.switchMap(_allTimeIncome) { value -> formatNumber(value) }
 
-    private val _allTimeExpense = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _allTimeExpense = MutableLiveData(BigDecimal.ZERO)
     val allTimeExpense: LiveData<String> = Transformations.switchMap(_allTimeExpense) { value -> formatNumber(value) }
 
     private val _allTimeBalance = MediatorLiveData<BigDecimal>()
     val allTimeBalance: LiveData<String> = Transformations.switchMap(_allTimeBalance) { value -> formatNumber(value) }
 
 
-    private val _incomeToday = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _incomeToday = MutableLiveData(BigDecimal.ZERO)
     val incomeToday: LiveData<String> = Transformations.switchMap(_incomeToday) { value -> formatNumber(value) }
 
-    private val _expenseToday = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _expenseToday = MutableLiveData(BigDecimal.ZERO)
     val expenseToday: LiveData<String> = Transformations.switchMap(_expenseToday) { value -> formatNumber(value) }
 
     private val _balanceToday = MediatorLiveData<BigDecimal>()
     val balanceToday: LiveData<String> = Transformations.switchMap(_balanceToday) { value -> formatNumber(value) }
 
-
     private val _displayList = MutableLiveData<MutableList<RecordHolder>>(mutableListOf())
     val displayList: LiveData<MutableList<RecordHolder>> = _displayList
 
 
-    private val list = mutableListOf(
+    private val testList = mutableListOf(
         RecordHolder.Income(
             recordId = "134227",
             date = LocalDateTime.of(2022, 3, 10, 13, 44),
@@ -52,8 +46,15 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             subTotal = 3600.00.toBigDecimal(),
             balanceDue = BigDecimal.ZERO,
             description = "1 cake",
+            productList = mutableListOf(
+                Product("564", "meat", 500.00.toBigDecimal(), 5, 2500.00.toBigDecimal()),
+                Product("780", "fish", 1100.00.toBigDecimal(), 1, 1100.00.toBigDecimal())
+            ),
             customer = Customer("Emeka", "07438938753"),
-            paymentMode = PaymentMode.CASH
+            paymentList = mutableListOf(
+                Payment(1500.00.toBigDecimal(), LocalDateTime.of(2022, 9, 15, 13, 44), PaymentMode.POS),
+                Payment(900.00.toBigDecimal(), LocalDateTime.of(2022, 10, 22, 20, 15), PaymentMode.CASH)
+            )
         ),
         RecordHolder.Expense(
             recordId = "3745241",
@@ -63,7 +64,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = BigDecimal.ZERO,
             description = "2 honey",
             supplier = Supplier("Obinna", "08067387647"),
-            paymentMode = PaymentMode.POS
+            paymentList = mutableListOf(
+                Payment(1200.00.toBigDecimal(), LocalDateTime.of(2022, 1, 15, 13, 44), PaymentMode.POS)
+            )
         ),
         RecordHolder.Income(
             recordId = "1374533",
@@ -75,7 +78,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = 300.00.toBigDecimal(),
             description = "5 drinks",
             customer = Customer("Chioma", "0743883653"),
-            paymentMode = PaymentMode.BANK_TRANSFER
+            paymentList = mutableListOf(
+                Payment(600.00.toBigDecimal(), LocalDateTime.of(2022, 9, 15, 13, 44), PaymentMode.POS),
+                Payment(300.00.toBigDecimal(), LocalDateTime.of(2022, 11, 1, 13, 44), PaymentMode.POS)
+            )
         ),
         RecordHolder.Expense(
             recordId = "4322105",
@@ -85,7 +91,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = BigDecimal.ZERO,
             description = "2 honey",
             supplier = Supplier("Nonso", "08069967467"),
-            paymentMode = PaymentMode.POS
+            paymentList = mutableListOf(
+                Payment(1500.00.toBigDecimal(), LocalDateTime.of(2022, 7, 11, 7, 22), PaymentMode.BANK_TRANSFER),
+            )
         ),
         RecordHolder.Expense(
             recordId = "1728365",
@@ -95,7 +103,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = BigDecimal.ZERO,
             description = "1 bicycle",
             supplier = Supplier("Ugoo", "0806321367"),
-            paymentMode = PaymentMode.CASH
+            paymentList = mutableListOf(
+                Payment(400.00.toBigDecimal(), LocalDateTime.of(2022, 8, 5, 17, 44), PaymentMode.CASH)
+            )
         ),
         RecordHolder.Expense(
             recordId = "9102144",
@@ -105,7 +115,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = 500.00.toBigDecimal(),
             description = "5 bottles coke",
             supplier = Supplier("Nkoli", "0806323457"),
-            paymentMode = PaymentMode.POS
+            paymentList = mutableListOf(
+                Payment(2000.00.toBigDecimal(), LocalDateTime.of(2022, 12, 9, 15, 12), PaymentMode.POS)
+            )
         ),
         RecordHolder.Income(
             recordId = "1237254",
@@ -117,7 +129,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             balanceDue = BigDecimal.ZERO,
             description = "3 books",
             customer = Customer("Oge", "0743669653"),
-            paymentMode = PaymentMode.CASH
+            paymentList = mutableListOf(
+                Payment(1500.00.toBigDecimal(), LocalDateTime.of(2022, 12, 9, 20, 30), PaymentMode.CASH),
+            )
         )
     )
 
@@ -144,9 +158,53 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun sortList() {
-        val sortedList = list.sortedByDescending { it.date }
-        val recordsByDate = sortedList.groupBy { it.date.toLocalDate() }
-        _displayList.value = processList(recordsByDate)
+        val newList = mutableListOf<RecordHolder>()
+        testList.forEach { record ->
+            when (record) {
+                is RecordHolder.Income -> {
+                    record.paymentList.forEach {
+                        newList.add(
+                            RecordHolder.Income(
+                                record.recordId,
+                                it.date,
+                                BigDecimal.ZERO,
+                                it.paymentAmount,
+                                BigDecimal.ZERO,
+                                BigDecimal.ZERO,
+                                BigDecimal.ZERO,
+                                record.description,
+                                mutableListOf(),
+                                record.customer,
+                                mutableListOf()
+                            )
+                        )
+                    }
+                }
+                is RecordHolder.Expense -> {
+                    record.paymentList.forEach {
+                        newList.add(
+                            RecordHolder.Expense(
+                                record.recordId,
+                                it.date,
+                                BigDecimal.ZERO,
+                                it.paymentAmount,
+                                BigDecimal.ZERO,
+                                record.description,
+                                record.category,
+                                mutableListOf(),
+                                record.supplier,
+                                mutableListOf()
+                            )
+                        )
+                    }
+                }
+                is RecordHolder.Header -> {}
+            }
+        }
+
+        val sortedList = newList.sortedByDescending { it.date }
+        val transactionsByDate = sortedList.groupBy { it.date.toLocalDate() }
+        _displayList.value = processList(transactionsByDate)
     }
 
     private fun processList(recordsByDate: Map<LocalDate, List<RecordHolder>>): MutableList<RecordHolder> {
@@ -194,5 +252,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
         return finalList
     }
+
+    fun getRecordUsingId(recordId: String): RecordHolder? {
+        return testList.find { it.recordId == recordId }
+    }
+
 
 }

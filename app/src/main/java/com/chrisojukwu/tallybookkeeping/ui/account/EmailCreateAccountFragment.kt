@@ -29,13 +29,7 @@ class EmailCreateAccountFragment : Fragment() {
         binding = FragmentEmailCreateAccountBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
-        // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
-//        binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-//            val systemInsets = insets.getInsets(
-//                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
-//            )
-//            v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
-//        }
+
         return binding.root
     }
 

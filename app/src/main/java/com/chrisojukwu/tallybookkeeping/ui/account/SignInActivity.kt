@@ -15,13 +15,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
 
-    //private lateinit var binding: ActivitySignInBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
+
         //setup navController
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragment_container_view_sign_in_activity) as NavHostFragment
