@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 fun formatNumber(number: BigDecimal): MutableLiveData<String> {
@@ -26,7 +27,7 @@ fun BigDecimal.formatAsCurrency() : String {
     return numberFormat.format(this)
 }
 
-fun formatDateToString(localDateTime: LocalDateTime) : MutableLiveData<String> {
+fun formatDateToString(offsetDateTime: OffsetDateTime) : MutableLiveData<String> {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-    return MutableLiveData(localDateTime.toLocalDate().format(formatter))
+    return MutableLiveData(offsetDateTime.toLocalDate().format(formatter))
 }

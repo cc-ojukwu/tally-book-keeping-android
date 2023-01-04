@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class EmailSignInPageFragment : Fragment() {
 
     private lateinit var binding: FragmentEmailSignInPageBinding
-    private val accountViewModel: AccountViewModel by activityViewModels()
+    private val accountViewModel: SignInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

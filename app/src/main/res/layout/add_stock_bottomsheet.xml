@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="24dp"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Add Stock"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/text_color1"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/add_stock_close_icon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_baseline_close_24" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_expense_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="8dp">
+
+            <ImageView
+                android:id="@+id/stock_icon"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_baseline_image_24"/>
+
+            <TextView
+                android:id="@+id/stock_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/stock_icon"
+                tools:text="Walkers Crisps 100g"
+                android:layout_marginHorizontal="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/text_color3"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/text_view_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/stock_item_name"
+                android:text="Left:"
+                android:layout_marginTop="4dp"
+                android:layout_alignStart="@+id/stock_item_name"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/text_color3"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/stock_qty_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="8"
+                android:layout_toEndOf="@+id/text_view_left"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/stock_item_name"
+                android:layout_marginHorizontal="16dp"
+                android:textColor="@color/text_color1"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/stock_item_selling_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                tools:text="$1,400.00"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/text_color1"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corner_4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:paddingStart="12dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="Quantity"
+            android:textColor="@color/text_color1"
+            android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/stock_qty_plus"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add_svgrepo_com" />
+
+        <ImageView
+            android:id="@+id/stock_qty_minus"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_toStartOf="@id/stock_edit_text_quantity"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_remove_svgrepo_com" />
+
+        <EditText
+            android:id="@+id/stock_edit_text_quantity"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_toStartOf="@+id/stock_qty_plus"
+            android:inputType="number"
+            android:gravity="center"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:paddingHorizontal="8dp"
+            android:text="1" />
+
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/add_stock_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:textAllCaps="false"
+        android:text="Save"
+        android:textColor="@color/reverse_text_color" />
+</LinearLayout>

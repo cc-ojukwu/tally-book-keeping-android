@@ -3,10 +3,13 @@ package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chrisojukwu.tallybookkeeping.data.models.Payment
+import com.chrisojukwu.tallybookkeeping.domain.model.Payment
 import com.chrisojukwu.tallybookkeeping.databinding.IncomeDetailsPaymentHistoryBinding
 
-class TransactionPagePaymentAdapter(var list: List<Payment>) :
+class TransactionPagePaymentAdapter(
+    private val list: List<Payment>,
+    private val onReceiptClick: (payment: Payment) -> Unit
+) :
     RecyclerView.Adapter<TransactionPagePaymentAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = list.size
@@ -19,6 +22,9 @@ class TransactionPagePaymentAdapter(var list: List<Payment>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val payment = list[position]
         holder.bind(payment)
+        holder.binding.textViewReceipt.setOnClickListener {
+            onReceiptClick(payment)
+        }
     }
 
     class ViewHolder(val binding: IncomeDetailsPaymentHistoryBinding) : RecyclerView.ViewHolder(binding.root) {

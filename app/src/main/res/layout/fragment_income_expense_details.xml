@@ -196,13 +196,13 @@
                     android:text="Fully Paid"/>
 
                 <TextView
-                    android:id="@+id/text_view_partly_paid"
+                    android:id="@+id/text_view_update_payment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="24dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@drawable/update_payment_background"
                     android:fontFamily="sans-serif"
                     android:paddingVertical="10dp"
@@ -283,7 +283,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="12dp"
                         tools:itemCount="2"
-                        tools:listitem="@layout/income_details_item" />
+                        tools:listitem="@layout/record_details_item" />
 
                 </LinearLayout>
 
@@ -348,7 +348,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="12dp"
-                        tools:listitem="@layout/income_details_payment_history"
+                        tools:listitem="@layout/record_details_payment_history"
                         tools:itemCount="2" />
 
                 </LinearLayout>

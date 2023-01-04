@@ -2,7 +2,6 @@
 <layout>
 
     <data>
-
         <variable
             name="viewModel"
             type="com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditIncomeViewModel" />
@@ -822,56 +821,50 @@
 
         </androidx.core.widget.NestedScrollView>
 
-
-        <Button
-            android:id="@+id/button_save"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="16dp"
-            android:enabled="false"
-            android:text="Save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/chakra_petch_semibold"
+                android:textAllCaps="false"
+                android:text="Save"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:buttonLoadingStatus="@{viewModel.isLoading}"/>
+
+
+            <ProgressBar
+                android:id="@+id/image_view_progress_bar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:elevation="4dp"
+                android:indeterminateTint="@color/white"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/button_save"
+                app:layout_constraintBottom_toBottomOf="@+id/button_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:imageLoadingStatus="@{viewModel.isLoading}"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>
-
-
-    <!--<androidx.cardview.widget.CardView-->
-    <!--android:id="@+id/card_view_save_record"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginBottom="16dp"-->
-    <!--app:cardCornerRadius="4dp"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent">-->
-
-    <!--<LinearLayout-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:background="@color/purple_500"-->
-    <!--    android:gravity="center_horizontal"-->
-    <!--    android:orientation="horizontal">-->
-
-    <!--    <TextView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center_horizontal"-->
-    <!--        android:fontFamily="sans-serif"-->
-    <!--        android:padding="8dp"-->
-    <!--        android:text="Save"-->
-    <!--        android:textAlignment="center"-->
-    <!--        android:textColor="@color/reverse_text_color"-->
-    <!--        android:textSize="16sp" />-->
-    <!--</LinearLayout>-->
-    <!--</androidx.cardview.widget.CardView>-->
-<!--    android:text="@{String.valueOf(viewModel.discountAmount).concat(@string/spacing).concat(String.valueOf(viewModel.discountPercentage)).concat(@string/percentsign)}"-->

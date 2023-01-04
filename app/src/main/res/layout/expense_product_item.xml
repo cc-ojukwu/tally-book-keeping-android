@@ -6,7 +6,7 @@
     <data>
         <variable
             name="productItem"
-            type="com.chrisojukwu.tallybookkeeping.data.models.Product" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.Product" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,62 +1,106 @@
 package com.chrisojukwu.tallybookkeeping.data.source.remote
 
-import com.chrisojukwu.tallybookkeeping.data.models.SignInUser
-import com.chrisojukwu.tallybookkeeping.data.models.Token
-import com.chrisojukwu.tallybookkeeping.data.models.User
-import com.google.gson.GsonBuilder
+import com.chrisojukwu.tallybookkeeping.data.dto.NetworkExpense
+import com.chrisojukwu.tallybookkeeping.data.dto.NetworkIncome
+import com.chrisojukwu.tallybookkeeping.data.dto.NetworkStockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.SignInUser
+import com.chrisojukwu.tallybookkeeping.domain.model.Token
+import com.chrisojukwu.tallybookkeeping.domain.model.User
+import com.chrisojukwu.tallybookkeeping.data.dto.network.*
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-
-
-private const val BASE_URL = "http://10.0.2.2:8080"
-//private const val BASE_URL = "https://c8f9dc74-ef82-4c2c-a831-edf3fe8c6148.mock.pstmn.io"
-//private const val BASE_URL = "https://3c915b37-e37d-416f-b297-01f2c4e2bb98.mock.pstmn.io"
-
-//use moshi library to parse json into kotlin classes
-//private val moshi = Moshi.Builder()
-//    .add(KotlinJsonAdapterFactory())
-//    .build()
-
-private val gson = GsonBuilder()
-    //.setLenient()
-    .create()
 
 interface ApiService {
     //create new user account
-    @Headers("Content-Type: application/json")
-    @POST("/process-register")
+    @POST("process-register")
     suspend fun createNewUserAccount(
         @Body userInfo: User
     ): Response<String>
 
-    @GET("/get")
-    suspend fun getIt(): Response<String>
-
     //login user
-    @POST("/auth/login")
+    @POST("auth/login")
     suspend fun signInUser(
         @Body userInfo: SignInUser
     ): Response<Token>
 
     //login google user
-    @POST("/auth/oauth2/logintest")
+    @POST("auth/oauth2/logintest")
     suspend fun googleSignIn(
         @Header("google_id_token") idToken: String
     ): Response<Token>
 
+    @GET("get-all-income")
+    suspend fun getAllIncome(): Response<List<NetworkIncome>>
+
+    //insert income
+    @POST("insert-income")
+    suspend fun insertIncome(
+        @Body income: NetworkIncome
+    ): Response<String>
+
+    //update income
+    @POST("update-income")
+    suspend fun updateIncome(
+        @Body income: NetworkIncome
+    ): Response<String>
+
+    //delete income
+    @POST("delete-income")
+    suspend fun deleteIncome(
+        @Body income: NetworkIncome
+    ): Response<String>
+
+    @GET("get-all-expense")
+    suspend fun getAllExpense(): Response<List<NetworkExpense>>
+
+    //insert expense
+    @POST("insert-expense")
+    suspend fun insertExpense(
+        @Body expense: NetworkExpense
+    ): Response<String>
+
+    //update expense
+    @POST("update-expense")
+    suspend fun updateExpense(
+        @Body expense: NetworkExpense
+    ): Response<String>
+
+    //delete income
+    @POST("delete-expense")
+    suspend fun deleteExpense(
+        @Body expense: NetworkExpense
+    ): Response<String>
+
+    @GET("get-all-inventory")
+    suspend fun getAllInventory(): Response<List<NetworkStockItem>>
+
+    //insert income
+    @POST("insert-inventory")
+    suspend fun insertInventory(
+        @Body stockItem: NetworkStockItem
+    ): Response<String>
+
+    //update inventory
+    @POST("update-stock")
+    suspend fun updateInventory(
+        @Body stockItem: NetworkStockItem
+    ): Response<String>
+
+    //delete income
+    @POST("delete-inventory")
+    suspend fun deleteInventory(
+        @Body stockItem: NetworkStockItem
+    ): Response<String>
 
 }
 
 //use retrofit object to retrieve REST API response
-object Api {
-    val retrofitService: ApiService by lazy {
-        Retrofit.Builder()
-            //.addConverterFactory(MoshiConverterFactory.create(moshi))
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl(BASE_URL)
-            .build()
-            .create(ApiService::class.java)
-    }
-}
+//object Api {
+//    val retrofitService: ApiService by lazy {
+//        Retrofit.Builder()
+//            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+//            .baseUrl(BASE_URL)
+//            .build()
+//            .create(ApiService::class.java)
+//    }
+//}

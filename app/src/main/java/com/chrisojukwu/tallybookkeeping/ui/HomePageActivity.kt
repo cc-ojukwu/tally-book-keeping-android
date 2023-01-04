@@ -49,7 +49,7 @@ class HomePageActivity : AppCompatActivity() {
             .Builder(
                 R.id.homeFragment,
                 R.id.inventoryFragment,
-                R.id.todoFragment,
+                R.id.debtFragment,
                 R.id.accountFragment,
                 R.id.editIncomeFragment
             )

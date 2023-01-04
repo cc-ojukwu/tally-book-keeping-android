@@ -3,21 +3,17 @@ package com.chrisojukwu.tallybookkeeping.utils
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.chrisojukwu.tallybookkeeping.R
-import com.chrisojukwu.tallybookkeeping.data.models.Product
-import com.chrisojukwu.tallybookkeeping.data.models.RecordHolder
+import com.chrisojukwu.tallybookkeeping.domain.model.Product
 import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditExpenseProductListAdapter
-import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditExpenseViewModel
 import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditIncomeProductListAdapter
-import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.IncomeExpenseAdapter
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @BindingAdapter("imageLoadingStatus")
@@ -40,7 +36,6 @@ fun showHideButtonText(view: Button, isLoading: Boolean?) {
         view.isEnabled = true
         view.setText(R.string.sign_in)
     }
-
 }
 
 @BindingAdapter("incomeProductList")
@@ -55,12 +50,6 @@ fun bindEditExpenseRecyclerView(recyclerView: RecyclerView, data: MutableList<Pr
     adapter.updateItems(data)
 }
 
-@BindingAdapter("recordsList")
-fun bindRecordsRecyclerView(recyclerView: RecyclerView, list: MutableList<RecordHolder>?) {
-    val adapter = recyclerView.adapter as IncomeExpenseAdapter
-    // adapter.submitList(list)
-}
-
 @BindingAdapter("formatBigDecimal")
 fun formatBigDecimal(textView: TextView, bigDecimal: BigDecimal?) {
     val numberFormat = NumberFormat.getCurrencyInstance()
@@ -68,7 +57,9 @@ fun formatBigDecimal(textView: TextView, bigDecimal: BigDecimal?) {
     numberFormat.minimumFractionDigits = 2
     numberFormat.maximumFractionDigits = 2
     numberFormat.roundingMode = RoundingMode.DOWN
-    textView.text = numberFormat.format(bigDecimal)
+    if (bigDecimal != null) {
+        textView.text = numberFormat.format(bigDecimal)
+    }
 }
 
 @BindingAdapter("formatPercentage")
@@ -78,7 +69,7 @@ fun formatDoubleToPercent(textView: TextView, double: Double?) {
 }
 
 @BindingAdapter("formatDate")
-fun formatDate(textView: TextView, date: LocalDateTime?) {
+fun formatDate(textView: TextView, date: OffsetDateTime?) {
     when (date?.toLocalDate()) {
         LocalDate.now() -> textView.text = "Today"
         LocalDate.now().minusDays(1) -> textView.text = "Yesterday"
@@ -90,13 +81,13 @@ fun formatDate(textView: TextView, date: LocalDateTime?) {
 }
 
 @BindingAdapter("formatDateText")
-fun formatDateText(textView: TextView, date: LocalDateTime?) {
+fun formatDateText(textView: TextView, date: OffsetDateTime?) {
     val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
     textView.text = date?.format(formatter)
 }
 
 @BindingAdapter("formatDateAndTime")
-fun formatDateAndTime(textView: TextView, date: LocalDateTime?) {
+fun formatDateAndTime(textView: TextView, date: OffsetDateTime?) {
     val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy - H:m")
     textView.text = date?.format(formatter)
 }

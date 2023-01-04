@@ -3,8 +3,8 @@ package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chrisojukwu.tallybookkeeping.data.models.Product
-import com.chrisojukwu.tallybookkeeping.databinding.IncomeDetailsItemBinding
+import com.chrisojukwu.tallybookkeeping.domain.model.Product
+import com.chrisojukwu.tallybookkeeping.databinding.RecordDetailsItemBinding
 
 class TransactionPageItemAdapter(var list: List<Product>) :
     RecyclerView.Adapter<TransactionPageItemAdapter.ViewHolder>() {
@@ -12,7 +12,7 @@ class TransactionPageItemAdapter(var list: List<Product>) :
     override fun getItemCount(): Int = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = IncomeDetailsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = RecordDetailsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -21,12 +21,7 @@ class TransactionPageItemAdapter(var list: List<Product>) :
         holder.bind(item)
     }
 
-    fun updateItems(items: MutableList<Product>?) {
-        list = items ?: mutableListOf()
-        notifyDataSetChanged()
-    }
-
-    class ViewHolder(val binding: IncomeDetailsItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: RecordDetailsItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
             binding.productItem = product

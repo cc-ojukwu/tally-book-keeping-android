@@ -1,5 +1,6 @@
 package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,37 +10,47 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.chrisojukwu.tallybookkeeping.R
-import com.chrisojukwu.tallybookkeeping.data.models.PaymentMode
-import com.chrisojukwu.tallybookkeeping.data.models.Product
-import com.chrisojukwu.tallybookkeeping.data.models.Supplier
+import com.chrisojukwu.tallybookkeeping.domain.model.PaymentMode
+import com.chrisojukwu.tallybookkeeping.domain.model.Product
+import com.chrisojukwu.tallybookkeeping.domain.model.Supplier
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditExpenseBinding
+import com.chrisojukwu.tallybookkeeping.utils.Result
+import com.chrisojukwu.tallybookkeeping.utils.getRandomProductId
 import com.chrisojukwu.tallybookkeeping.utils.setupMaxHeight
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
-import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class EditExpenseFragment : Fragment() {
 
     private lateinit var binding: FragmentEditExpenseBinding
-    private val vm: EditExpenseViewModel by viewModels()
+    private val vm: EditExpenseViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val adapter = EditExpenseProductListAdapter(
+            mutableListOf(),
+            { productItem -> vm.removeFromProductList(productItem) },
+            { productItem -> openAddItemBottomSheet(productItem) })
+
         // Inflate the layout for this fragment
-        binding = FragmentEditExpenseBinding.inflate(layoutInflater, container, false).apply {
+        binding = FragmentEditExpenseBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
+            productListRecyclerView.adapter = adapter
         }
 
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
@@ -49,13 +60,6 @@ class EditExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val adapter = EditExpenseProductListAdapter(
-            mutableListOf(),
-            { productItem -> vm.removeFromProductList(productItem) },
-            { productItem -> openAddItemBottomSheet(productItem) })
-
-        binding.productListRecyclerView.adapter = adapter
 
         setDateTime()
 
@@ -98,10 +102,34 @@ class EditExpenseFragment : Fragment() {
         onEditTextChangedCallback()
 
         callObservers()
+
+        setInitialValues()
     }
 
     private fun setDateTime() {
-        vm.saveDate(LocalDateTime.now())
+        vm.saveDate(
+            vm.recordToEdit.value!!.date
+        )
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setInitialValues() {
+        val record = vm.recordToEdit.value!!
+
+        binding.editTextTotalAmount.setText(record.totalAmount.toString())
+
+        binding.editTextAmountPaid.setText(record.amountPaid.toString())
+
+        if (record.productList!!.size > 0) {
+            vm.addListToProductList(record.productList!!)
+        } else {
+            binding.editTextDescription.setText(record.description)
+        }
+        if (record.supplier != null) {
+            vm.updateSupplierInfo(record.supplier!!)
+            vm.supplierAdded(true)
+        }
+
     }
 
     private fun onEditTextChangedCallback() {
@@ -214,9 +242,9 @@ class EditExpenseFragment : Fragment() {
 
             val selectedDate = LocalDate.of(year, month, day)
             if (selectedDate.compareTo(LocalDate.now()) == 0) {
-                vm.saveDate(LocalDateTime.now())
+                vm.saveDate(OffsetDateTime.now(ZoneId.systemDefault()))
             } else {
-                val transactionDate = LocalDateTime.of(year, month, day, 0, 0)
+                val transactionDate = OffsetDateTime.of(year, month, day, 0, 0, 0, 0, OffsetDateTime.now().offset)
                 vm.saveDate(transactionDate)
             }
 
@@ -237,7 +265,7 @@ class EditExpenseFragment : Fragment() {
 
         addItemsBottomSheetDialog.setContentView(R.layout.add_item_bottomsheet)
 
-        val product = Product("${(0..20).random()}${(0..20).random()}${(0..20).random()}")
+        val product = Product(getRandomProductId(), "", BigDecimal.ZERO, 1, BigDecimal.ZERO)
 
         val itemCloseButton = addItemsBottomSheetDialog.findViewById<ImageView>(R.id.item_close_icon)
         val plusButton = addItemsBottomSheetDialog.findViewById<ImageView>(R.id.plus)
@@ -411,6 +439,8 @@ class EditExpenseFragment : Fragment() {
     }
 
     private fun onSaveButtonClicked() {
+        vm.setIsLoading(true)
+
         when (binding.radioGroup.checkedRadioButtonId) {
             R.id.radio_cash -> vm.setPaymentModeExpense(PaymentMode.CASH)
             R.id.radio_bank_transfer -> vm.setPaymentModeExpense(PaymentMode.BANK_TRANSFER)
@@ -426,9 +456,21 @@ class EditExpenseFragment : Fragment() {
                 showErrorSnackBar(R.string.items_total_error1)
             vm.isSupplierRequired.value!! && !vm.isSupplierAdded.value!! -> showErrorSnackBar(R.string.supplier_error)
             else -> {
-                if (vm.saveAllDetails()) {
-                    Toast.makeText(requireContext(), "Entry saved!", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.action_editExpenseFragment_to_homeFragment)
+                lifecycleScope.launch {
+                    vm.saveEditExpenseDetails().collect { result ->
+                        when (result) {
+                            is Result.Success -> {
+                                vm.setIsLoading(false)
+                                Toast.makeText(requireContext(), "Entry saved!", Toast.LENGTH_LONG).show()
+                                findNavController().navigate(R.id.action_editExpenseFragment_to_homeFragment)
+                            }
+                            is Result.Error -> {
+                                vm.setIsLoading(false)
+                                Toast.makeText(requireContext(), "Error - please try again", Toast.LENGTH_LONG).show()
+                            }
+                            is Result.Loading -> {}
+                        }
+                    }
                 }
             }
         }

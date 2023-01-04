@@ -10,14 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentAccountCreatedBinding
 import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
 
 class AccountCreatedFragment : Fragment() {
 
     private lateinit var binding: FragmentAccountCreatedBinding
-    private val accountViewModel: AccountViewModel by activityViewModels()
+    private val accountViewModel: SignInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

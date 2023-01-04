@@ -4,7 +4,7 @@
     <data>
         <variable
             name="expenseRecord"
-            type="com.chrisojukwu.tallybookkeeping.data.models.RecordHolder.Expense" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -86,6 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/record_description" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/receipt_card_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

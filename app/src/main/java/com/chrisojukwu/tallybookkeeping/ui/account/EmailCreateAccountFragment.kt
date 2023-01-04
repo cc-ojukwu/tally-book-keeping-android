@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EmailCreateAccountFragment : Fragment() {
-    private val accountViewModel: AccountViewModel by activityViewModels()
+    private val accountViewModel: SignInViewModel by activityViewModels()
     private lateinit var binding: FragmentEmailCreateAccountBinding
 
     override fun onCreateView(

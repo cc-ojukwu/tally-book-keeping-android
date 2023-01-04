@@ -6,8 +6,8 @@ import org.gradle.api.JavaVersion
 
 object Config {
     const val minSdkVersion = 26
-    const val compileSdkVersion = 32
-    const val targetSdkVersion = 32
+    const val compileSdkVersion = 33
+    const val targetSdkVersion = 33
     const val versionName = "1.0"
     const val versionCode = 1
     val javaVersion = JavaVersion.VERSION_1_8
@@ -17,7 +17,7 @@ object Config {
 
 object Plugins {
     object Version {
-        const val gradleAndroidVersion = "7.2.1"
+        const val gradleAndroidVersion = "7.3.1"
         const val googleServices = "4.3.5"
     }
 
@@ -110,10 +110,11 @@ object Network : Libraries {
     }
 
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    //const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
-    //const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
+    const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
+    const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
     //const val okhttpInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
-    //const val moshi = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
+    const val moshi = "com.squareup.moshi:moshi:${Versions.moshi}"
 
 
     override val components: List<String>

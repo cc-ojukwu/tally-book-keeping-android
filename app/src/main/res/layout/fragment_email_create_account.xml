@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.chrisojukwu.tallybookkeeping.ui.account.AccountViewModel"/>
+            type="com.chrisojukwu.tallybookkeeping.ui.account.SignInViewModel"/>
     </data>
 
     <LinearLayout

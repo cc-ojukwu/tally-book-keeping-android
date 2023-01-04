@@ -3,7 +3,7 @@ package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chrisojukwu.tallybookkeeping.data.models.Product
+import com.chrisojukwu.tallybookkeeping.domain.model.Product
 import com.chrisojukwu.tallybookkeeping.databinding.IncomeProductItemBinding
 
 

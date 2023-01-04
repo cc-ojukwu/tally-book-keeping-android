@@ -34,7 +34,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
-    private val accountViewModel: AccountViewModel by activityViewModels()
+    private val accountViewModel: SignInViewModel by activityViewModels()
 
     private lateinit var oneTapClient: SignInClient
     private lateinit var signUpRequest: BeginSignInRequest
@@ -82,7 +82,9 @@ class SignInFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
-        binding = FragmentSignInBinding.inflate(inflater)
+        binding = FragmentSignInBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
         return binding.root
     }
 

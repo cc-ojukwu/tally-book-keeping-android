@@ -2,28 +2,36 @@ package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chrisojukwu.tallybookkeeping.data.models.*
 import com.chrisojukwu.tallybookkeeping.databinding.RecordItemExpenseBinding
 import com.chrisojukwu.tallybookkeeping.databinding.RecordItemHeaderBinding
 import com.chrisojukwu.tallybookkeeping.databinding.RecordItemIncomeBinding
+import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
 
 
 class IncomeExpenseAdapter(
-    private val recordsList: MutableList<RecordHolder>,
-    private val onTransactionClick: (record: RecordHolder) -> Unit
+    private val onTransactionClick: (record: RecordHolder) -> Unit,
+    private val onEditClick: (record: RecordHolder) -> Unit,
+    private val onReceiptClick: (record: RecordHolder) -> Unit
 ) :
-    ListAdapter<RecordHolder, RecyclerView.ViewHolder>(DiffCallback) {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val differ = AsyncListDiffer(this, IncomeExpenseAdapter)
+    var recordsList: List<RecordHolder> = emptyList()
+        set(value) {
+            field = value
+            differ.submitList(value)
+        }
 
     companion object DiffCallback : DiffUtil.ItemCallback<RecordHolder>() {
         override fun areItemsTheSame(oldItem: RecordHolder, newItem: RecordHolder): Boolean {
-            return oldItem.recordId == newItem.recordId
+            return oldItem === newItem
         }
 
         override fun areContentsTheSame(oldItem: RecordHolder, newItem: RecordHolder): Boolean {
-            return oldItem.date == newItem.date
+            return oldItem.recordId == newItem.recordId
         }
 
         private const val TYPE_INCOME = 0
@@ -41,7 +49,7 @@ class IncomeExpenseAdapter(
         }
     }
 
-    override fun getItemCount(): Int = recordsList.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -79,6 +87,12 @@ class IncomeExpenseAdapter(
             binding.cardViewIncomeItem.setOnClickListener {
                 onTransactionClick(record)
             }
+            binding.buttonEditRecord.setOnClickListener {
+                onEditClick(record)
+            }
+            binding.receiptCardView.setOnClickListener {
+                onReceiptClick(record)
+            }
         }
     }
 
@@ -87,6 +101,12 @@ class IncomeExpenseAdapter(
             binding.expenseRecord = record
             binding.cardViewExpenseItem.setOnClickListener {
                 onTransactionClick(record)
+            }
+            binding.buttonEditRecord.setOnClickListener {
+                onEditClick(record)
+            }
+            binding.receiptCardView.setOnClickListener {
+                onReceiptClick(record)
             }
         }
     }

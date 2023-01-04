@@ -1,21 +1,30 @@
 package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
 import androidx.lifecycle.*
-import com.chrisojukwu.tallybookkeeping.data.models.*
+import com.chrisojukwu.tallybookkeeping.domain.model.*
+import com.chrisojukwu.tallybookkeeping.utils.Result
+import com.chrisojukwu.tallybookkeeping.domain.usecase.UpdateIncomeUseCase
 import com.chrisojukwu.tallybookkeeping.utils.formatDateToString
+import com.chrisojukwu.tallybookkeeping.utils.getRandomPaymentId
 import com.chrisojukwu.tallybookkeeping.utils.notifyObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
-class EditIncomeViewModel @Inject constructor() : ViewModel() {
+class EditIncomeViewModel @Inject constructor(
+    private val updateIncomeUseCase: UpdateIncomeUseCase
+) : ViewModel() {
 
+    private val _recordToEdit = MutableLiveData<RecordHolder.Income>()
+    val recordToEdit: LiveData<RecordHolder.Income> = _recordToEdit
 
-    private var _transactionDate = MutableLiveData(LocalDateTime.now())
+    private var _transactionDate = MutableLiveData(OffsetDateTime.now(ZoneId.systemDefault()))
     val transactionDate: LiveData<String> =
         Transformations.switchMap(_transactionDate) { date -> formatDateToString(date) }
 
@@ -68,8 +77,14 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
 
     private var _paymentMode: PaymentMode = PaymentMode.CASH
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    fun saveDate(date: LocalDateTime) {
+    fun setIsLoading(value: Boolean) {
+        _isLoading.value = value
+    }
+
+    fun saveDate(date: OffsetDateTime) {
         _transactionDate.value = date
     }
 
@@ -120,6 +135,12 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
         updateItemsTotalCost()
     }
 
+    fun addListToProductList(productList: MutableList<Product>) {
+        _productList.value?.addAll(productList)
+        _productList.notifyObserver()
+        updateItemsTotalCost()
+    }
+
     fun removeFromProductList(product: Product) {
         _productList.value?.remove(product)
         _productList.notifyObserver()
@@ -157,22 +178,25 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
         _description.value = desc
     }
 
-    fun saveAllDetails(): Boolean {
-        val income = RecordHolder.Income(
-            recordId = "${(0..50).random()}${(0..50).random()}${(0..50).random()}${(0..50).random()}",
-            date = _transactionDate.value!!,
-            totalAmount = _totalAmount.value!!,
-            amountReceived = _amountReceived.value!!,
-            discount = _discountAmount.value!!,
-            subTotal = _subTotalAmount.value!!,
-            balanceDue = _balanceDue.value!!,
-            description = _description.value!!,
-            productList = _productList.value,
-            paymentList = mutableListOf(
-                Payment(_amountReceived.value!!,_transactionDate.value!!,_paymentMode))
-        )
-        return true
-    }
+    fun saveEditIncomeDetails(): StateFlow<Result<String>> =
+        updateIncomeUseCase(
+            RecordHolder.Income(
+                recordId = _recordToEdit.value!!.recordId,
+                date = _transactionDate.value!!,
+                totalAmount = _totalAmount.value!!,
+                amountReceived = _amountReceived.value!!,
+                discount = _discountAmount.value!!,
+                subTotal = _subTotalAmount.value!!,
+                balanceDue = _balanceDue.value!!,
+                description = _description.value!!,
+                productList = _productList.value,
+                customer = customerInfo.value,
+                paymentList = mutableListOf(
+                    Payment(getRandomPaymentId(), _amountReceived.value!!, _transactionDate.value!!, _paymentMode)
+                )
+            )
+        ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Result.Loading)
+
 
     fun setCustomerRequirement(isCustomerRequired: Boolean) {
         _isCustomerRequired.value = isCustomerRequired
@@ -184,5 +208,9 @@ class EditIncomeViewModel @Inject constructor() : ViewModel() {
 
     fun setPaymentModeIncome(mode: PaymentMode) {
         _paymentMode = mode
+    }
+
+    fun setRecordToEdit(record: RecordHolder.Income) {
+        _recordToEdit.value = record
     }
 }

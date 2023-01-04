@@ -17,33 +17,6 @@ class LaunchViewModel @Inject constructor(
     private val preferenceStorage: PreferenceStorage
 ) : ViewModel() {
 
-    //var launchDestination: NavigationAction = NavigationAction.NavigateToSignInActivityAction
-    //lateinit var launchDestination: NavigationAction
-
-    //val launchDestination = chooseDestination()
-/*
-    private fun chooseDestination(): NavigationAction {
-        var destination: NavigationAction = NavigationAction.NavigateToSignInActivityAction
-        viewModelScope.launch {
-            var onboardingCompleted = false
-            var isSignedInStatus = false
-//            preferenceStorage.onboardingCompleted.collect { onboarding ->
-//                onboardingCompleted = onboarding
-//            }
-//            preferenceStorage.isUserSignedIn.collect { isSignedIn ->
-//                isSignedInStatus = isSignedIn
-//            }
-            if (isSignedInStatus) {
-                destination = NavigationAction.NavigateToMainActivityAction
-            } else if (!onboardingCompleted) {
-               destination = NavigationAction.NavigateToOnboardingAction
-            } else  destination = NavigationAction.NavigateToSignInActivityAction
-        }
-        return destination
-    }
-
- */
-
     val launchDestination = preferenceStorage.isUserSignedIn.map { isSignedIn ->
         if (isSignedIn) {
             NavigationAction.NavigateToHomePageActivityAction

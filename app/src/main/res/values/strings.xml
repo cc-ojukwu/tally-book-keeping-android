@@ -17,7 +17,7 @@
     <string name="password_reset_text">Enter your email address below to receive a link to reset your password</string>
     <string name="bookkeeping">Book Keeping</string>
     <string name="inventory">Inventory</string>
-    <string name="todos">Todo</string>
+    <string name="debt">Debt</string>
     <string name="account">Account</string>
     <string name="login"><u>Go to Login</u></string>
     <string name="create_new_account"><u>Create Account</u></string>
@@ -51,4 +51,5 @@
     <string name="phone_number">Phone number</string>
     <string name="phone_number_hint">07689775742</string>
     <string name="done">Done</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>

@@ -18,7 +18,7 @@
             android:id="@+id/toolbar_home_page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_700"
+            android:background="@color/primary_color"
             android:elevation="4dp"
             android:paddingHorizontal="16dp"
             android:paddingTop="42dp"
@@ -27,7 +27,59 @@
             app:title="Yello Yello"
             app:titleTextColor="@color/white" />
 
+        <LinearLayout
+            android:id="@+id/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_home_page"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="28dp"
+                android:background="@color/edit_text_background"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/edit_text_background"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="48dp"
+                android:background="@color/edit_text_background"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/edit_text_background"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/edit_text_background"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/edit_text_background"/>
+
+        </LinearLayout>
+
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -282,7 +334,6 @@
                         android:id="@+id/records_layout_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -313,8 +364,8 @@
                             android:paddingVertical="6dp">
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/ic_baseline_filter_list_24" />
 
@@ -327,7 +378,7 @@
                                 android:fontFamily="sans-serif"
                                 android:text="Filter"
                                 android:textColor="@color/text_color2"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -343,7 +394,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/records_layout_title"
-                        app:recordsList="@{sharedViewmodel.displayList}"
                         tools:listitem="@layout/record_item_expense" />
 
 

@@ -1,5 +1,6 @@
 package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,36 +11,48 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import com.chrisojukwu.tallybookkeeping.utils.Result
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
-import com.chrisojukwu.tallybookkeeping.data.models.Customer
-import com.chrisojukwu.tallybookkeeping.data.models.PaymentMode
-import com.chrisojukwu.tallybookkeeping.data.models.Product
+import com.chrisojukwu.tallybookkeeping.domain.model.Customer
+import com.chrisojukwu.tallybookkeeping.domain.model.PaymentMode
+import com.chrisojukwu.tallybookkeeping.domain.model.Product
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditIncomeBinding
+import com.chrisojukwu.tallybookkeeping.utils.getRandomProductId
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 @AndroidEntryPoint
 class EditIncomeFragment : Fragment() {
     private lateinit var binding: FragmentEditIncomeBinding
-    private val vm: EditIncomeViewModel by viewModels()
+    private val vm: EditIncomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val adapter = EditIncomeProductListAdapter(
+            mutableListOf(),
+            { productItem -> vm.removeFromProductList(productItem) },
+            { productItem -> openAddItemBottomSheet(productItem) })
+
         // Inflate the layout for this fragment
         binding = FragmentEditIncomeBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
+            productListRecyclerView.adapter = adapter
         }
 
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
@@ -49,13 +62,6 @@ class EditIncomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val adapter = EditIncomeProductListAdapter(
-            mutableListOf(),
-            { productItem -> vm.removeFromProductList(productItem) },
-            { productItem -> openAddItemBottomSheet(productItem) })
-
-        binding.productListRecyclerView.adapter = adapter
 
         setDateTime()
 
@@ -95,10 +101,38 @@ class EditIncomeFragment : Fragment() {
 
         callObservers()
 
+        setInitialValues()
+
     }
 
     private fun setDateTime() {
-        vm.saveDate(LocalDateTime.now())
+        vm.saveDate(
+            vm.recordToEdit.value!!.date
+        )
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setInitialValues() {
+        val record = vm.recordToEdit.value!!
+
+        binding.editTextTotalAmount.setText(record.totalAmount.toString())
+
+        if (record.discount.compareTo(BigDecimal.ZERO) != 0) {
+            vm.setDiscountAmount(record.discount)
+            vm.isDiscountAdded.value = true
+        }
+        binding.editTextAmountReceived.setText(record.amountReceived.toString())
+
+        if (record.productList!!.size > 0) {
+            vm.addListToProductList(record.productList!!)
+        } else {
+            binding.editTextDescription.setText(record.description)
+        }
+        if (record.customer != null) {
+            vm.updateCustomerInfo(record.customer!!)
+            vm.customerAdded(true)
+        }
+
     }
 
     private fun onEditTextChangedCallback() {
@@ -154,12 +188,6 @@ class EditIncomeFragment : Fragment() {
 
     private fun callObservers() {
         binding.addDiscount.isClickable = false
-
-//        vm.subTotalAmount.observe(viewLifecycleOwner) {
-//            vm.amountReceived.observe(viewLifecycleOwner) {
-//                vm.updateBalanceDue()
-//            }
-//        }
 
         vm.discountAmount.observe(viewLifecycleOwner) {
             binding.editTextAmountReceived.setText(vm.updateAmountReceived())
@@ -247,9 +275,9 @@ class EditIncomeFragment : Fragment() {
 
             val selectedDate = LocalDate.of(year, month, day)
             if (selectedDate.compareTo(LocalDate.now()) == 0) {
-                vm.saveDate(LocalDateTime.now())
+                vm.saveDate(OffsetDateTime.now(ZoneId.systemDefault()))
             } else {
-                val transactionDate = LocalDateTime.of(year, month, day, 0, 0)
+                val transactionDate = OffsetDateTime.of(year, month, day, 0, 0, 0, 0, OffsetDateTime.now().offset)
                 vm.saveDate(transactionDate)
             }
 
@@ -375,7 +403,7 @@ class EditIncomeFragment : Fragment() {
 
         addItemsBottomSheetDialog.setContentView(R.layout.add_item_bottomsheet)
 
-        val product = Product("${(0..20).random()}${(0..20).random()}${(0..20).random()}")
+        val product = Product(getRandomProductId(), "", BigDecimal.ZERO, 1, BigDecimal.ZERO)
 
         val itemCloseButton = addItemsBottomSheetDialog.findViewById<ImageView>(R.id.item_close_icon)
         val plusButton = addItemsBottomSheetDialog.findViewById<ImageView>(R.id.plus)
@@ -500,6 +528,7 @@ class EditIncomeFragment : Fragment() {
     }
 
     private fun onSaveButtonClicked() {
+        vm.setIsLoading(true)
         when (binding.radioGroup.checkedRadioButtonId) {
             R.id.radio_cash -> vm.setPaymentModeIncome(PaymentMode.CASH)
             R.id.radio_bank_transfer -> vm.setPaymentModeIncome(PaymentMode.BANK_TRANSFER)
@@ -519,12 +548,23 @@ class EditIncomeFragment : Fragment() {
                     !vm.isDiscountAdded.value!! ->
                 showErrorSnackBar(R.string.items_total_error1)
             vm.isCustomerRequired.value!! && !vm.isCustomerAdded.value!! -> showErrorSnackBar(R.string.customer_error)
-            else -> {
-                if (vm.saveAllDetails()) {
-                    Toast.makeText(requireContext(), "Entry saved!", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.action_editIncomeFragment_to_homeFragment)
+            else ->
+                lifecycleScope.launch {
+                    vm.saveEditIncomeDetails().collect { result ->
+                        when (result) {
+                            is Result.Success -> {
+                                vm.setIsLoading(false)
+                                Toast.makeText(requireContext(), "Entry saved!", Toast.LENGTH_LONG).show()
+                                findNavController().navigate(R.id.action_editIncomeFragment_to_homeFragment)
+                            }
+                            is Result.Error -> {
+                                vm.setIsLoading(false)
+                                Toast.makeText(requireContext(), "Error - please try again", Toast.LENGTH_LONG).show()
+                            }
+                            is Result.Loading -> {}
+                        }
+                    }
                 }
-            }
         }
     }
 

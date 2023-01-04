@@ -24,7 +24,9 @@ class ForgotPasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentForgotPasswordBinding.inflate(inflater)
+        binding = FragmentForgotPasswordBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
         return binding.root
     }
 

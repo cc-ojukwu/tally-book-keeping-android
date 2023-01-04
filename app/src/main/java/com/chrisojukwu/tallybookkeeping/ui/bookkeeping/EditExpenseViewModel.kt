@@ -1,21 +1,30 @@
 package com.chrisojukwu.tallybookkeeping.ui.bookkeeping
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import com.chrisojukwu.tallybookkeeping.data.models.*
+import androidx.lifecycle.*
+import com.chrisojukwu.tallybookkeeping.domain.model.*
+import com.chrisojukwu.tallybookkeeping.domain.usecase.UpdateExpenseUseCase
+import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.formatDateToString
+import com.chrisojukwu.tallybookkeeping.utils.getRandomPaymentId
 import com.chrisojukwu.tallybookkeeping.utils.notifyObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
-class EditExpenseViewModel @Inject constructor() : ViewModel() {
+class EditExpenseViewModel @Inject constructor(
+    private val updateExpenseUseCase: UpdateExpenseUseCase
+) : ViewModel() {
 
-    private var _transactionDate = MutableLiveData(LocalDateTime.now())
+    private val _recordToEdit = MutableLiveData<RecordHolder.Expense>()
+    val recordToEdit: LiveData<RecordHolder.Expense> = _recordToEdit
+
+    private var _transactionDate = MutableLiveData(OffsetDateTime.now(ZoneId.systemDefault()))
     val transactionDate: LiveData<String> =
         Transformations.switchMap(_transactionDate) { date -> formatDateToString(date) }
 
@@ -56,6 +65,13 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
 
     private var _paymentMode: PaymentMode = PaymentMode.CASH
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun setIsLoading(value: Boolean) {
+        _isLoading.value = value
+    }
+
     fun updateProductList(product: Product) {
         _productList.value?.filter { it.id == product.id }?.forEach {
             it.productName = product.productName
@@ -72,6 +88,12 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
         updateItemsTotalCost()
     }
 
+    fun addListToProductList(productList: MutableList<Product>) {
+        _productList.value?.addAll(productList)
+        _productList.notifyObserver()
+        updateItemsTotalCost()
+    }
+
     fun removeFromProductList(productItem: Product) {
         _productList.value?.remove(productItem)
         _productList.notifyObserver()
@@ -82,7 +104,7 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
         _itemsTotalCost.value = _productList.value?.sumOf { it.productTotalPrice }
     }
 
-    fun saveDate(date: LocalDateTime) {
+    fun saveDate(date: OffsetDateTime) {
         _transactionDate.value = date
     }
 
@@ -126,21 +148,26 @@ class EditExpenseViewModel @Inject constructor() : ViewModel() {
         _paymentMode = mode
     }
 
-    fun saveAllDetails(): Boolean {
-        val expense = RecordHolder.Expense(
-            recordId = "${(0..50).random()}${(0..50).random()}${(0..50).random()}${(0..50).random()}",
-            date = _transactionDate.value!!,
-            totalAmount = _totalAmount.value!!,
-            amountPaid = _amountPaid.value!!,
-            balanceDue = _balanceDue.value!!,
-            description = _description.value!!,
-            category = _category.value,
-            productList = _productList.value,
-            paymentList = mutableListOf(
-                Payment(_amountPaid.value!!, _transactionDate.value!!, _paymentMode)
+    fun saveEditExpenseDetails(): StateFlow<Result<String>> =
+        updateExpenseUseCase(
+            RecordHolder.Expense(
+                recordId = recordToEdit.value!!.recordId,
+                date = _transactionDate.value!!,
+                totalAmount = _totalAmount.value!!,
+                amountPaid = _amountPaid.value!!,
+                balanceDue = _balanceDue.value!!,
+                description = _description.value!!,
+                category = _category.value,
+                productList = _productList.value,
+                supplier = supplierInfo.value,
+                paymentList = mutableListOf(
+                    Payment(getRandomPaymentId(), _amountPaid.value!!, _transactionDate.value!!, _paymentMode)
+                )
             )
-        )
+        ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Result.Loading)
 
-        return true
+
+    fun setRecordToEdit(record: RecordHolder.Expense) {
+        _recordToEdit.value = record
     }
 }
