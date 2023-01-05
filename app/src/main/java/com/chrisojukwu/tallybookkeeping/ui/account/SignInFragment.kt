@@ -16,10 +16,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentSignInBinding
 import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
+import com.chrisojukwu.tallybookkeeping.utils.Constants
+import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.Identity
@@ -28,13 +31,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
-    private val accountViewModel: SignInViewModel by activityViewModels()
+    private val signInViewModel: SignInViewModel by activityViewModels()
 
     private lateinit var oneTapClient: SignInClient
     private lateinit var signUpRequest: BeginSignInRequest
@@ -48,17 +52,24 @@ class SignInFragment : Fragment() {
                 val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
                 val idToken = credential.googleIdToken
                 if (idToken != null) {
-                    Timber.d("idToken acquired")
+                    Timber.d("Sign In fragment - idToken acquired")
                     //Use idToken to authenticate with backend here
-                    accountViewModel.googleLogin(idToken).observe(viewLifecycleOwner) { returnValue ->
-                        if (returnValue == ServerResponse.SUCCESS) {
-                            val intent = Intent(this@SignInFragment.requireContext(), HomePageActivity::class.java)
-                            startActivity(intent)
-                        } else {
-                            Snackbar.make(binding.root, R.string.show_failure, Snackbar.LENGTH_LONG)
+                    lifecycleScope.launch {
+                        signInViewModel.signInWithGoogle(idToken).collect { result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    val intent =
+                                        Intent(this@SignInFragment.requireContext(), HomePageActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                is Result.Error -> {
+                                    Snackbar.make(binding.root, R.string.show_failure, Snackbar.LENGTH_LONG)
                                 .setTextColor(Color.WHITE)
                                 .setBackgroundTint(Color.RED)
                                 .show()
+                                }
+                                is Result.Loading -> {}
+                            }
                         }
                     }
 
@@ -69,6 +80,10 @@ class SignInFragment : Fragment() {
                         Timber.e("status code - cancelled ")
                     }
                     CommonStatusCodes.NETWORK_ERROR -> {
+                        Snackbar.make(binding.root, "No network connection", Snackbar.LENGTH_LONG)
+                            .setTextColor(Color.WHITE)
+                            .setBackgroundTint(Color.RED)
+                            .show()
                         Timber.e("status code - network error")
                     }
                 }
@@ -90,6 +105,7 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.textViewEmailSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_emailSignInPageFragment)
         }
@@ -105,7 +121,7 @@ class SignInFragment : Fragment() {
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId("1053376402234-4jnl17jv924e26s2b8c38an7oqjvqevd.apps.googleusercontent.com")
+                    .setServerClientId(Constants.SERVER_CLIENT_ID)
                     // Show previously signed in accounts on device.
                     .setFilterByAuthorizedAccounts(true)
                     .build()
@@ -117,7 +133,7 @@ class SignInFragment : Fragment() {
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId("1053376402234-4jnl17jv924e26s2b8c38an7oqjvqevd.apps.googleusercontent.com")
+                    .setServerClientId(Constants.SERVER_CLIENT_ID)
                     // Show all accounts on the device.
                     .setFilterByAuthorizedAccounts(false)
                     .build()

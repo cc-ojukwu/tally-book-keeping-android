@@ -18,6 +18,7 @@ import com.chrisojukwu.tallybookkeeping.databinding.FragmentInventoryBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -127,7 +128,7 @@ class InventoryFragment : Fragment() {
     }
 
     private fun updateStockItem() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             inventoryViewModel.updateInventoryItem().collect { result ->
                 when (result) {
                     is Result.Success -> {

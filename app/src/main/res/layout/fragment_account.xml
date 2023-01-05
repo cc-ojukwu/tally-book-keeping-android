@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.chrisojukwu.tallybookkeeping.ui.account.AccountViewModel" />
+    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,7 +70,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_alignParentStart="true"
-                        android:text="Account holder name"
+                        android:text="@{@string/firstNameLastName(viewModel.accountFirstName, viewModel.accountLastName)}"
                         tools:text="Chijioke Oj"/>
 
                     <TextView
@@ -75,7 +82,7 @@
                         android:textColor="@color/text_color3"
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/account_holder_name"
-                        android:text="account email goes here"
+                        android:text="@{viewModel.accountEmail}"
                         tools:text="cc.oj2022@gmail.com"/>
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -105,6 +112,7 @@
                     android:text="Account Details"/>
 
                 <RelativeLayout
+                    android:id="@+id/layout_account_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -135,7 +143,7 @@
                         android:textColor="@color/text_color3"
                         android:layout_alignStart="@+id/text_view_7"
                         android:layout_below="@+id/text_view_7"
-                        android:text="account holder name here"
+                        android:text="@{@string/firstNameLastName(viewModel.accountFirstName, viewModel.accountLastName)}"
                         tools:text="Chijioke Oj"/>
 
                     <ImageView
@@ -148,6 +156,7 @@
 
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/layout_account_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -178,7 +187,7 @@
                         android:textColor="@color/text_color3"
                         android:layout_alignStart="@+id/text_view_8"
                         android:layout_below="@+id/text_view_8"
-                        android:text="account email goes here"
+                        android:text="@{viewModel.accountEmail}"
                         tools:text="cc.oju2022@gmail.com"/>
 
                     <ImageView
@@ -191,6 +200,7 @@
 
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/layout_account_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -239,6 +249,7 @@
                     android:text="Business details"/>
 
                 <RelativeLayout
+                    android:id="@+id/layout_business_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -252,14 +263,27 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginEnd="16dp"/>
                     <TextView
+                        android:id="@+id/text_view_9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:layout_centerVertical="true"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_9"
                         android:text="Business Name"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/text_color3"
+                        android:layout_alignStart="@+id/text_view_9"
+                        android:layout_below="@+id/text_view_9"
+                        android:text="@{viewModel.businessName}"
+                        tools:text="business name"/>
+
 
                     <ImageView
                         android:id="@+id/image_view_arrow9"
@@ -272,6 +296,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layout_business_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -285,14 +310,26 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginEnd="16dp"/>
                     <TextView
+                        android:id="@+id/text_view_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:layout_centerVertical="true"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_10"
                         android:text="Business Address"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_view_10"
+                        android:layout_alignStart="@+id/text_view_10"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif"
+                        android:text="@{viewModel.businessAddress}"
+                        android:textColor="@color/text_color3"
+                        android:textSize="16sp"
+                        tools:text="business address" />
 
                     <ImageView
                         android:id="@+id/image_view_arrow10"
@@ -305,6 +342,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layout_business_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -318,14 +356,26 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginEnd="16dp"/>
                     <TextView
+                        android:id="@+id/text_view_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:layout_centerVertical="true"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_11"
                         android:text="Business Phone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/text_color3"
+                        android:layout_alignStart="@+id/text_view_11"
+                        android:layout_below="@+id/text_view_11"
+                        android:text="@{viewModel.businessPhone}"
+                        tools:text="+4477832233"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow11"
@@ -426,6 +476,7 @@
                     android:background="@drawable/line_divider"/>
 
                 <RelativeLayout
+                    android:id="@+id/layout_sign_out"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

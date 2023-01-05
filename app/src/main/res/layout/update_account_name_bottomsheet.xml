@@ -58,7 +58,7 @@
             app:hintTextColor="@color/text_color2">
 
             <EditText
-                android:id="@+id/edit_text_customer_name"
+                android:id="@+id/edit_text_account_first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_style2"
@@ -91,7 +91,7 @@
             app:hintTextColor="@color/outline_blue">
 
             <EditText
-                android:id="@+id/edit_text_customer_phone"
+                android:id="@+id/edit_text_account_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="12"
@@ -103,7 +103,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/customer_button_done"
+        android:id="@+id/change_account_name_button_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

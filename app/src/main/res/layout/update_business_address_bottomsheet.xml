@@ -58,7 +58,7 @@
             app:hintTextColor="@color/text_color2">
 
             <EditText
-                android:id="@+id/edit_text_customer_name"
+                android:id="@+id/edit_text_business_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_style2"
@@ -70,7 +70,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/customer_button_done"
+        android:id="@+id/update_business_address_button_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LaunchViewModel @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
+    preferenceStorage: PreferenceStorage
 ) : ViewModel() {
 
     val launchDestination = preferenceStorage.isUserSignedIn.map { isSignedIn ->

@@ -2,7 +2,6 @@ package com.chrisojukwu.tallybookkeeping.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.chrisojukwu.tallybookkeeping.ViewModelFactory
 import com.chrisojukwu.tallybookkeeping.di.ViewModelKey
 import com.chrisojukwu.tallybookkeeping.ui.LaunchViewModel
 import com.chrisojukwu.tallybookkeeping.ui.account.SignInViewModel
@@ -16,8 +15,8 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class ViewModelModule {
 
-    @Binds
-    abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+//    @Binds
+//    abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 
     @IntoMap
     @Binds

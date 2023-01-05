@@ -1,5 +1,6 @@
 package com.chrisojukwu.tallybookkeeping.ui.account
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,16 +10,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEmailCreateAccountBinding
+import com.chrisojukwu.tallybookkeeping.domain.model.Provider
+import com.chrisojukwu.tallybookkeeping.domain.model.User
+import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
+import com.chrisojukwu.tallybookkeeping.utils.Result
+import com.chrisojukwu.tallybookkeeping.utils.getRandomUserId
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EmailCreateAccountFragment : Fragment() {
-    private val accountViewModel: SignInViewModel by activityViewModels()
+    private val signInViewModel: SignInViewModel by activityViewModels()
     private lateinit var binding: FragmentEmailCreateAccountBinding
 
     override fun onCreateView(
@@ -70,8 +78,7 @@ class EmailCreateAccountFragment : Fragment() {
     }
 
     private fun passwordFocusListener() {
-        //var password = binding.editTextPassword.text.toString()
-        //var confirmPassword = binding.editTextPasswordConfirm.text.toString()
+
         binding.editTextPassword.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 val password = binding.editTextPassword.text.toString()
@@ -126,21 +133,21 @@ class EmailCreateAccountFragment : Fragment() {
     }
 
     private fun initiateAccountCreation(email: String, password: String) {
-        accountViewModel.createAccount(email, password).observe(viewLifecycleOwner) { result ->
-            when (result) {
-                (ServerResponse.SUCCESS) -> {
-                    findNavController().navigate(R.id.action_emailCreateAccountFragment_to_accountCreatedFragment)
-                }
-
-                (ServerResponse.DUPLICATE) -> {
-                    binding.emailContainer.helperText = "Email already registered"
-                    //binding.textViewStatus.visibility = View.VISIBLE
-                }
-                else -> {
-                    Snackbar.make(binding.buttonCreateAccount, R.string.registration_failed, Snackbar.LENGTH_LONG)
-                        .setTextColor(Color.WHITE)
-                        .setBackgroundTint(Color.RED)
-                        .show()
+        lifecycleScope.launch {
+            signInViewModel.createAccount(
+                User(
+                    email, password, getRandomUserId(), Provider.LOCAL, "", "",
+                    "My Business Name", "Business Address", "", enabled = true
+                )
+            ).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        findNavController().navigate(R.id.action_emailCreateAccountFragment_to_accountCreatedFragment)
+                    }
+                    is Result.Error -> {
+                        binding.emailContainer.helperText = result.exception.message
+                    }
+                    is Result.Loading -> {}
                 }
             }
         }

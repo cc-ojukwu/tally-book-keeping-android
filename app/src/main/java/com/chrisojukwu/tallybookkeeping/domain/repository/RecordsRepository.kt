@@ -1,12 +1,18 @@
 package com.chrisojukwu.tallybookkeeping.domain.repository
 
-import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import com.chrisojukwu.tallybookkeeping.utils.Result
 
 
 interface RecordsRepository {
+
+    fun changePassword(password: ChangePassword): Flow<Result<String>>
+    fun changeEmail(user: User): Flow<Result<TokenWithEmail>>
+    fun createNewAccount(user: User): Flow<Result<String>>
+    fun signInWithEmail(user: SignInUser): Flow<Result<Token>>
+    fun signInWithGoogle(idToken: String): Flow<Result<TokenWithEmail>>
+    fun updateUserInfo(user:User): Flow<Result<User>>
 
     fun getAllLocalIncome(): Flow<List<RecordHolder.Income>>
     fun refreshIncomeData(): Flow<Result<List<RecordHolder.Income>>>

@@ -32,7 +32,7 @@ interface PreferenceStorage {
     suspend fun userSignInStatus(signInStatus: Boolean)
     val isUserSignedIn: Flow<Boolean>
 
-    suspend fun authenticateUserToken(token: String)
+    suspend fun saveToken(token: String)
     val authenticationToken: Flow<String?>
 
     suspend fun saveUserEmail(value: String)
@@ -83,7 +83,15 @@ class DataStorePreferenceStorage(
 
     override suspend fun clearDatastore() {
         dataStore.edit {
-            it.clear()
+            it.remove(PREF_TOKEN)
+            it.remove(PREF_SIGNEDIN)
+            it.remove(PREF_EMAIL)
+            it.remove(PREF_USER_ID)
+            it.remove(PREF_BUSINESS_NAME)
+            it.remove(PREF_BUSINESS_ADDRESS)
+            it.remove(PREF_BUSINESS_PHONE)
+            it.remove(PREF_FIRST_NAME)
+            it.remove(PREF_LAST_NAME)
         }
     }
 
@@ -107,7 +115,7 @@ class DataStorePreferenceStorage(
         dataStore.data.map { it[PREF_SIGNEDIN] ?: true }
 
 
-    override suspend fun authenticateUserToken(token: String) {
+    override suspend fun saveToken(token: String) {
         dataStore.edit {
             it[PREF_TOKEN] = token
         }

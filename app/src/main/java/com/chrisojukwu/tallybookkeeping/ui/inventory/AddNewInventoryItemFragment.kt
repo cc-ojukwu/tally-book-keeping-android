@@ -14,6 +14,7 @@ import com.chrisojukwu.tallybookkeeping.databinding.FragmentAddNewInventoryItemB
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.checkIfValidNumber
 import com.chrisojukwu.tallybookkeeping.utils.getRandomSKU
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddNewInventoryItemFragment : Fragment() {
@@ -65,7 +66,7 @@ class AddNewInventoryItemFragment : Fragment() {
             }
             else -> {
                 inventoryViewModel.setIsLoading(true)
-                lifecycleScope.launch {
+                lifecycleScope.launch (Dispatchers.IO) {
                     inventoryViewModel.saveNewStockItem(
                         StockItem(
                             stockName = binding.editTextProductName.text.toString(),

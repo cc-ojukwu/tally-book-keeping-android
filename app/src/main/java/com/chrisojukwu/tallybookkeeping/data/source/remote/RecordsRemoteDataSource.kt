@@ -3,9 +3,18 @@ package com.chrisojukwu.tallybookkeeping.data.source.remote
 import com.chrisojukwu.tallybookkeeping.data.dto.NetworkExpense
 import com.chrisojukwu.tallybookkeeping.data.dto.NetworkIncome
 import com.chrisojukwu.tallybookkeeping.data.dto.NetworkStockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.*
 import com.chrisojukwu.tallybookkeeping.utils.Result
 
 interface RecordsRemoteDataSource {
+
+    suspend fun changePassword(changePassword: ChangePassword): Result<String?>
+    suspend fun changeEmail(user: User): Result<TokenWithEmail?>
+    suspend fun createNewAccount(user: User): Result<String?>
+    suspend fun signInWithEmail(userInfo: SignInUser): Result<Token?>
+    suspend fun signInWithGoogle(idToken: String): Result<TokenWithEmail?>
+    suspend fun updateUserInfo(user: User): Result<User?>
+
     suspend fun getAllIncome(): Result<List<NetworkIncome>?>
     suspend fun insertIncome(income: NetworkIncome): Result<String?>
     suspend fun updateIncome(income: NetworkIncome): Result<String?>

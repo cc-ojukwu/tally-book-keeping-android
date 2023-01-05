@@ -3,8 +3,7 @@ package com.chrisojukwu.tallybookkeeping.data.source.repository
 import com.chrisojukwu.tallybookkeeping.data.*
 import com.chrisojukwu.tallybookkeeping.data.source.local.RecordsLocalDataSource
 import com.chrisojukwu.tallybookkeeping.data.source.remote.RecordsRemoteDataSource
-import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.*
 import com.chrisojukwu.tallybookkeeping.domain.repository.RecordsRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -17,8 +16,95 @@ class RecordsRepositoryImpl @Inject constructor(
     private val localDataSource: RecordsLocalDataSource
 ) : RecordsRepository {
 
-//    Prevents multiple consumers requesting data at the same time
-//    private val loadDataLock = Any()
+    override fun changePassword(password: ChangePassword): Flow<Result<String>> = flow {
+        when (val remoteData = remoteDataSource.changePassword(password)) {
+            is Result.Success -> {
+                Timber.d("repo - change password success")
+                emit(Result.Success("Password changed successfully"))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
+    override fun changeEmail(user: User): Flow<Result<TokenWithEmail>> = flow {
+        when (val remoteData = remoteDataSource.changeEmail(user)) {
+            is Result.Success -> {
+                Timber.d("repo - change email success")
+                emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
+    override fun createNewAccount(user: User): Flow<Result<String>> = flow {
+        when (val remoteData = remoteDataSource.createNewAccount(user)) {
+            is Result.Success -> {
+                    Timber.d("repo - create account success")
+                    emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
+    override fun signInWithEmail(user: SignInUser): Flow<Result<Token>> = flow {
+        when (val remoteData = remoteDataSource.signInWithEmail(user)) {
+            is Result.Success -> {
+                Timber.d("repo - email sign in success")
+                emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
+    override fun signInWithGoogle(idToken: String): Flow<Result<TokenWithEmail>> = flow {
+        when (val remoteData = remoteDataSource.signInWithGoogle(idToken)) {
+            is Result.Success -> {
+                Timber.d("repo - google sign in success")
+                emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
+    override fun updateUserInfo(user: User): Flow<Result<User>> = flow {
+        when (val remoteData = remoteDataSource.updateUserInfo(user)) {
+            is Result.Success -> {
+                Timber.d("repo - update user info success")
+                emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
 
     override fun getAllLocalIncome(): Flow<List<RecordHolder.Income>> =
         localDataSource.getAllIncome().map {

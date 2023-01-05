@@ -14,6 +14,7 @@ import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditInventoryItemBin
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.checkIfValidNumber
 import com.chrisojukwu.tallybookkeeping.utils.toTwoDP
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditInventoryItemFragment : Fragment() {
@@ -84,7 +85,7 @@ class EditInventoryItemFragment : Fragment() {
                     )
                 )
                 inventoryViewModel.setIsLoading(true)
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     inventoryViewModel.updateInventoryItem().collect { result ->
                         when (result) {
                             is Result.Success -> {

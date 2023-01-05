@@ -9,19 +9,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentAccountCreatedBinding
+import com.chrisojukwu.tallybookkeeping.domain.model.SignInUser
 import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
+import com.chrisojukwu.tallybookkeeping.utils.Result
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AccountCreatedFragment : Fragment() {
 
     private lateinit var binding: FragmentAccountCreatedBinding
-    private val accountViewModel: SignInViewModel by activityViewModels()
+    private val signInViewModel: SignInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentAccountCreatedBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -93,21 +99,39 @@ class AccountCreatedFragment : Fragment() {
     }
 
     private fun signIn(email: String, password: String) {
-        accountViewModel.login(email, password).observe(viewLifecycleOwner) { result ->
-            when (result) {
-                (ServerResponse.SUCCESS) -> {
-                    val intent = Intent(this@AccountCreatedFragment.requireContext(), HomePageActivity::class.java)
-                    startActivity(intent)
+        lifecycleScope.launch {
+            signInViewModel.signInWithEmail(SignInUser(email, password))
+                .collect { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            val intent =
+                                Intent(this@AccountCreatedFragment.requireContext(), HomePageActivity::class.java)
+                            startActivity(intent)
+                        }
+                        is Result.Error -> {
+                            binding.emailContainer.helperText = result.exception.message
+                        }
+                        is Result.Loading -> {}
+                    }
                 }
-                (ServerResponse.UNAVAILABLE) -> {
-                    binding.emailContainer.helperText = "Sign in failed. Server unreachable"
-                }
-                else -> {
-                    binding.emailContainer.helperText = "Sign in failed. Invalid credentials"
-                }
-            }
-
         }
+
+
+//        signInViewModel.signInWithEmail(email, password).observe(viewLifecycleOwner) { result ->
+//            when (result) {
+//                (ServerResponse.SUCCESS) -> {
+//                    val intent = Intent(this@AccountCreatedFragment.requireContext(), HomePageActivity::class.java)
+//                    startActivity(intent)
+//                }
+//                (ServerResponse.UNAVAILABLE) -> {
+//                    binding.emailContainer.helperText = "Sign in failed. Server unreachable"
+//                }
+//                else -> {
+//                    binding.emailContainer.helperText = "Sign in failed. Invalid credentials"
+//                }
+//            }
+//
+//        }
     }
 
 }
