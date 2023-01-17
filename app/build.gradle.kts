@@ -27,8 +27,6 @@ android {
             useSupportLibrary = true
         }
 
-
-        
     }
 
     buildFeatures {
@@ -42,16 +40,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            if (project.hasProperty("keystore.properties")) {
-                signingConfig = signingConfigs.getByName("release")
-            }
+
             isDebuggable = false
         }
 
         getByName("debug") {
-            if (project.hasProperty("keystore.properties")) {
-                signingConfig = signingConfigs.getByName("debug")
-            }
+
             isDebuggable = true
         }
     }
