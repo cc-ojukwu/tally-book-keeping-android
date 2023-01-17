@@ -9,12 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.R
+import com.chrisojukwu.tallybookkeeping.domain.model.InventoryItem
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditInventoryItemBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.checkIfValidNumber
 import com.chrisojukwu.tallybookkeeping.utils.toTwoDP
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditInventoryItemFragment : Fragment() {
@@ -25,13 +25,14 @@ class EditInventoryItemFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentEditInventoryItemBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = inventoryViewModel
         }
 
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
         return binding.root
     }
 
@@ -39,10 +40,10 @@ class EditInventoryItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            editTextProductName.setText(inventoryViewModel.editStockItem.value?.stockName)
-            editTextCostPrice.setText(inventoryViewModel.editStockItem.value?.costPrice?.toTwoDP().toString())
-            editTextSellingPrice.setText(inventoryViewModel.editStockItem.value?.sellingPrice?.toTwoDP().toString())
-            editTextQuantity.setText(inventoryViewModel.editStockItem.value?.quantity.toString())
+            editTextProductName.setText(inventoryViewModel.editInventoryItem.value?.stockName)
+            editTextCostPrice.setText(inventoryViewModel.editInventoryItem.value?.costPrice?.toTwoDP().toString())
+            editTextSellingPrice.setText(inventoryViewModel.editInventoryItem.value?.sellingPrice?.toTwoDP().toString())
+            editTextQuantity.setText(inventoryViewModel.editInventoryItem.value?.quantity.toString())
         }
         binding.imageViewBackButton.setOnClickListener {
             findNavController().navigateUp()
@@ -75,9 +76,9 @@ class EditInventoryItemFragment : Fragment() {
             }
             else -> {
                 inventoryViewModel.updateStockItem(
-                    StockItem(
+                    InventoryItem(
                         stockName = binding.editTextProductName.text.toString(),
-                        sku = inventoryViewModel.editStockItem.value!!.sku,
+                        sku = inventoryViewModel.editInventoryItem.value!!.sku,
                         costPrice = binding.editTextCostPrice.text.toString().toBigDecimal(),
                         sellingPrice = binding.editTextSellingPrice.text.toString().toBigDecimal(),
                         quantity = binding.editTextQuantity.text.toString().toInt(),
@@ -85,11 +86,12 @@ class EditInventoryItemFragment : Fragment() {
                     )
                 )
                 inventoryViewModel.setIsLoading(true)
-                lifecycleScope.launch(Dispatchers.IO) {
+                lifecycleScope.launch {
                     inventoryViewModel.updateInventoryItem().collect { result ->
                         when (result) {
                             is Result.Success -> {
                                 inventoryViewModel.setIsLoading(false)
+                                inventoryViewModel.getInventoryData()
                                 Toast.makeText(requireContext(), "Entry updated!", Toast.LENGTH_LONG).show()
                                 findNavController().navigateUp()
                             }

@@ -1,11 +1,13 @@
 package com.chrisojukwu.tallybookkeeping.utils
 
+import android.content.res.Resources
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.domain.model.Product
+import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.CreateExpenseProductListAdapter
+import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.CreateIncomeProductListAdapter
 import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditExpenseProductListAdapter
 import com.chrisojukwu.tallybookkeeping.ui.bookkeeping.EditIncomeProductListAdapter
 import java.math.BigDecimal
@@ -23,28 +25,43 @@ fun showHideProgressBar(view: ProgressBar, isLoading: Boolean?) {
     } else {
         view.visibility = View.GONE
     }
-
-
 }
 
 @BindingAdapter("buttonLoadingStatus")
-fun showHideButtonText(view: Button, isLoading: Boolean?) {
+fun showHideSignInText(view: Button, isLoading: Boolean?) {
+    view.isEnabled = isLoading != true
+}
+
+@BindingAdapter("savingIncomeExpenseStatus")
+fun savingIncomeExpense(view: Button, isLoading: Boolean?) {
     if (isLoading == true) {
         view.isEnabled = false
         view.text = ""
     } else {
         view.isEnabled = true
-        view.setText(R.string.sign_in)
+        view.text = "Save"
     }
 }
 
 @BindingAdapter("incomeProductList")
+fun bindCreateIncomeRecyclerView(recyclerView: RecyclerView, data: MutableList<Product>?) {
+    val adapter = recyclerView.adapter as CreateIncomeProductListAdapter
+    adapter.updateItems(data)
+}
+
+@BindingAdapter("expenseProductList")
+fun bindCreateExpenseRecyclerView(recyclerView: RecyclerView, data: MutableList<Product>?) {
+    val adapter = recyclerView.adapter as CreateExpenseProductListAdapter
+    adapter.updateItems(data)
+}
+
+@BindingAdapter("editIncomeProductList")
 fun bindEditIncomeRecyclerView(recyclerView: RecyclerView, data: MutableList<Product>?) {
     val adapter = recyclerView.adapter as EditIncomeProductListAdapter
     adapter.updateItems(data)
 }
 
-@BindingAdapter("expenseProductList")
+@BindingAdapter("editExpenseProductList")
 fun bindEditExpenseRecyclerView(recyclerView: RecyclerView, data: MutableList<Product>?) {
     val adapter = recyclerView.adapter as EditExpenseProductListAdapter
     adapter.updateItems(data)

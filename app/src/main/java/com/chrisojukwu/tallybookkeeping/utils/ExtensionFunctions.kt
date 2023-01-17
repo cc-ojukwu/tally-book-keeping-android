@@ -2,14 +2,15 @@ package com.chrisojukwu.tallybookkeeping.utils
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.chrisojukwu.tallybookkeeping.domain.model.Customer
-import com.chrisojukwu.tallybookkeeping.domain.model.Supplier
 import com.chrisojukwu.tallybookkeeping.data.dto.NetworkCustomer
 import com.chrisojukwu.tallybookkeeping.data.dto.NetworkSupplier
+import com.chrisojukwu.tallybookkeeping.domain.model.Customer
+import com.chrisojukwu.tallybookkeeping.domain.model.Supplier
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 fun <T> MutableLiveData<T>.notifyObserver() {
     this.value = this.value
@@ -48,23 +49,15 @@ fun getRandomRecordId(): String {
 }
 
 fun getRandomProductId(): String {
-    return "product-${(0..50).random()}${(0..50).random()}${(0..50).random()}}"
+    return "product-${(0..50).random()}${(0..50).random()}${(0..50).random()}"
 }
 
 fun getRandomPaymentId(): String {
-    return "payment-${(0..50).random()}${(0..50).random()}${(0..50).random()}}"
+    return "payment-${(0..50).random()}${(0..50).random()}${(0..50).random()}"
 }
 
 fun getRandomUserId(): String {
-    return "user-${(0..50).random()}${(0..50).random()}${(0..50).random()}}"
-}
-
-fun getRandomInvoiceNo(): String {
-    return "inv-${(0..50).random()}${(0..50).random()}${(0..50).random()}${(0..50).random()}"
-}
-
-fun String.toOffsetDateTime(): OffsetDateTime {
-    return OffsetDateTime.parse(this)
+    return "user-${(0..50).random()}${(0..50).random()}${(0..50).random()}"
 }
 
 fun NetworkCustomer.toCustomer(): Customer {
@@ -92,12 +85,37 @@ fun BigDecimal.toTwoDP(): BigDecimal {
     return numberFormat.format(this).toBigDecimal()
 }
 
-//fun getRandomString(length: Int) : String {
-//    val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
-//    return (1..length)
-//        .map { charset.random() }
-//        .joinToString("")
-//}
+fun verifyNumberWithDecimal(string: String, maxBeforePoint: Int = 9, maxDecimal: Int = 2): String {
+    var input = string
+    if (input[0] == '.') input = "0$input"
+    val max = input.length
+    var rFinal = ""
+    var after = false
+    var i = 0
+    var up = 0
+    var decimal = 0
+    var t: Char
+    while (i < max) {
+        t = input[i]
+        if (t != '.' && !after) {
+            up++
+            if (up > maxBeforePoint) return rFinal
+        } else if (t == '.') {
+            after = true
+        } else {
+            decimal++
+            if (decimal > maxDecimal) return rFinal
+        }
+        rFinal = rFinal + t
+        i++
+    }
+    return rFinal
+}
+
+fun formatDateToString(offsetDateTime: OffsetDateTime) : MutableLiveData<String> {
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    return MutableLiveData(offsetDateTime.toLocalDate().format(formatter))
+}
 
 /*
 /**

@@ -39,7 +39,6 @@ class AllRecordsIncomeExpenseAdapter(
 
     }
 
-
     override fun getItemViewType(position: Int): Int {
         return when (allRecordsList[position]) {
             is RecordHolder.Income -> TYPE_INCOME

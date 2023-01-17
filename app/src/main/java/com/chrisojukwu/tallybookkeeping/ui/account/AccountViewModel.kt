@@ -6,21 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chrisojukwu.tallybookkeeping.data.prefs.PreferenceStorage
 import com.chrisojukwu.tallybookkeeping.di.IoDispatcher
-import com.chrisojukwu.tallybookkeeping.domain.model.ChangePassword
+import com.chrisojukwu.tallybookkeeping.domain.model.OldNewPassword
+import com.chrisojukwu.tallybookkeeping.domain.model.StringResponse
 import com.chrisojukwu.tallybookkeeping.domain.model.TokenWithEmail
 import com.chrisojukwu.tallybookkeeping.domain.model.User
 import com.chrisojukwu.tallybookkeeping.domain.usecase.ChangeEmailUseCase
 import com.chrisojukwu.tallybookkeeping.domain.usecase.ChangePasswordUseCase
+import com.chrisojukwu.tallybookkeeping.domain.usecase.DeleteAllDatabaseDataUseCase
 import com.chrisojukwu.tallybookkeeping.domain.usecase.UpdateUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -30,8 +31,9 @@ class AccountViewModel @Inject constructor(
     private val changeEmailUseCase: ChangeEmailUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
-    private val ioDispatcher: CoroutineDispatcher
-): ViewModel() {
+    private val deleteAllDatabaseDataUseCase: DeleteAllDatabaseDataUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : ViewModel() {
 
     private val _accountEmail = MutableLiveData<String>()
     val accountEmail: LiveData<String> = _accountEmail
@@ -52,29 +54,30 @@ class AccountViewModel @Inject constructor(
     val businessPhone: LiveData<String> = _businessPhone
 
     init {
-        getUserData()
+        getUserInfoFromPreferences()
     }
 
-    private fun getUserData() {
-        viewModelScope.launch (ioDispatcher) {
-            preferenceStorage.getUserEmail.collect {
-                _accountEmail.value = it
-            }
-            preferenceStorage.getUserFirstName.collect {
-                _accountFirstName.value = it
-            }
-            preferenceStorage.getUserLastName.collect {
-                _accountLastName.value = it
-            }
-            preferenceStorage.getBusinessName.collect {
-                _businessName.value = it
-            }
-            preferenceStorage.getBusinessAddress.collect {
-                _businessAddress.value = it
-            }
-            preferenceStorage.getBusinessPhone.collect {
-                _businessPhone.value = it
-            }
+    private fun getUserInfoFromPreferences() {
+        Timber.d("trying to get user details")
+        viewModelScope.launch(ioDispatcher) {
+            preferenceStorage.getUserEmail().map {
+                _accountEmail.postValue(it)
+            }.launchIn(viewModelScope)
+            preferenceStorage.getUserFirstName().map {
+                _accountFirstName.postValue(it)
+            }.launchIn(viewModelScope)
+            preferenceStorage.getUserLastName().map {
+                _accountLastName.postValue(it)
+            }.launchIn(viewModelScope)
+            preferenceStorage.getBusinessName().map {
+                _businessName.postValue(it)
+            }.launchIn(viewModelScope)
+            preferenceStorage.getBusinessAddress().map {
+                _businessAddress.postValue(it)
+            }.launchIn(viewModelScope)
+            preferenceStorage.getBusinessPhone().map {
+                _businessPhone.postValue(it)
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -95,6 +98,7 @@ class AccountViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is Result.Success -> {
+                        Timber.d("saving user data in preference")
                         preferenceStorage.saveUserFirstName(result.data.firstName)
                         preferenceStorage.saveUserLastName(result.data.lastName)
                         preferenceStorage.saveBusinessName(result.data.businessName)
@@ -105,15 +109,17 @@ class AccountViewModel @Inject constructor(
                 }
             }
 
-    fun changePassword(password: ChangePassword): Flow<Result<String>> =
+    fun changePassword(password: OldNewPassword): Flow<Result<StringResponse>> =
         changePasswordUseCase(password)
 
-    suspend fun signOut(): Boolean =
-        withContext(ioDispatcher) {
-            preferenceStorage.clearDatastore()
-            return@withContext true
-        }
-
-
-
+    fun signOut(): Flow<Boolean> = flow {
+        preferenceStorage.clearDatastore()
+        deleteAllDatabaseDataUseCase()
+            .collect { result ->
+                when (result) {
+                    is Result.Success -> emit(true)
+                    else -> emit(false)
+                }
+            }
+    }
 }

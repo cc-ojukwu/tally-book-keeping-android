@@ -4,7 +4,7 @@ import com.chrisojukwu.tallybookkeeping.data.dto.*
 import com.chrisojukwu.tallybookkeeping.domain.model.Payment
 import com.chrisojukwu.tallybookkeeping.domain.model.Product
 import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.InventoryItem
 import com.chrisojukwu.tallybookkeeping.data.source.local.entity.DBExpense
 import com.chrisojukwu.tallybookkeeping.data.source.local.entity.DBIncome
 import com.chrisojukwu.tallybookkeeping.data.source.local.entity.DBInventory
@@ -272,8 +272,8 @@ fun List<NetworkExpense>.toDBModel(): List<DBExpense> {
     }
 }
 
-fun NetworkStockItem.toDomainModel(): StockItem {
-    return StockItem(
+fun NetworkInventoryItem.toDomainModel(): InventoryItem {
+    return InventoryItem(
       stockName = this.stockName,
         sku = this.sku,
         costPrice = this.costPrice,
@@ -283,7 +283,7 @@ fun NetworkStockItem.toDomainModel(): StockItem {
     )
 }
 
-fun NetworkStockItem.toDBModel(): DBInventory {
+fun NetworkInventoryItem.toDBModel(): DBInventory {
     return DBInventory(
         stockName = this.stockName,
         sku = this.sku,
@@ -294,7 +294,7 @@ fun NetworkStockItem.toDBModel(): DBInventory {
     )
 }
 
-fun StockItem.toDBModel(): DBInventory {
+fun InventoryItem.toDBModel(): DBInventory {
     return DBInventory(
         stockName = this.stockName,
         sku = this.sku,
@@ -305,8 +305,8 @@ fun StockItem.toDBModel(): DBInventory {
     )
 }
 
-fun StockItem.toNetworkModel(): NetworkStockItem {
-    return NetworkStockItem(
+fun InventoryItem.toNetworkModel(): NetworkInventoryItem {
+    return NetworkInventoryItem(
         stockName = this.stockName,
         sku = this.sku,
         costPrice = this.costPrice,
@@ -316,8 +316,8 @@ fun StockItem.toNetworkModel(): NetworkStockItem {
     )
 }
 
-fun DBInventory.toDomain(): StockItem {
-    return StockItem(
+fun DBInventory.toDomain(): InventoryItem {
+    return InventoryItem(
         stockName = this.stockName,
         sku = this.sku,
         costPrice = this.costPrice,
@@ -328,9 +328,9 @@ fun DBInventory.toDomain(): StockItem {
 }
 
 
-fun List<NetworkStockItem>.toDomain(): List<StockItem> {
+fun List<NetworkInventoryItem>.toDomain(): List<InventoryItem> {
     return map {
-        StockItem(
+        InventoryItem(
             stockName = it.stockName,
             sku = it.sku,
             costPrice = it.costPrice,
@@ -341,7 +341,7 @@ fun List<NetworkStockItem>.toDomain(): List<StockItem> {
     }
 }
 
-fun List<NetworkStockItem>.toDB(): List<DBInventory> {
+fun List<NetworkInventoryItem>.toDB(): List<DBInventory> {
     return map {
         DBInventory(
             stockName = it.stockName,
@@ -354,9 +354,9 @@ fun List<NetworkStockItem>.toDB(): List<DBInventory> {
     }
 }
 
-fun List<DBInventory>.asDomain(): List<StockItem> {
+fun List<DBInventory>.asDomain(): List<InventoryItem> {
     return map {
-        StockItem(
+        InventoryItem(
             stockName = it.stockName,
             sku = it.sku,
             costPrice = it.costPrice,

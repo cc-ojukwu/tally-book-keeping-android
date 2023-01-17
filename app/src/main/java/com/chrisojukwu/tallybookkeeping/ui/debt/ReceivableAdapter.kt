@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chrisojukwu.tallybookkeeping.domain.model.Receivable
 import com.chrisojukwu.tallybookkeeping.databinding.ReceivableItemBinding
 
-class ReceivableAdapter(): RecyclerView.Adapter<ReceivableAdapter.ReceivableViewHolder>() {
+class ReceivableAdapter : RecyclerView.Adapter<ReceivableAdapter.ReceivableViewHolder>() {
 
     private val differ = AsyncListDiffer(this, DiffCallback)
     var receivableList: List<Receivable> = listOf()

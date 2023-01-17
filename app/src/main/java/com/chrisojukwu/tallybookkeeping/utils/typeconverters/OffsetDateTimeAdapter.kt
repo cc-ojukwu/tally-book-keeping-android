@@ -6,7 +6,7 @@ import java.time.OffsetDateTime
 
 class OffsetDateTimeAdapter {
     @FromJson
-    fun toDateTime(value: String) = OffsetDateTime.parse(value)
+    fun toDateTime(value: String): OffsetDateTime? = OffsetDateTime.parse(value)
 
     @ToJson
     fun fromDateTime(value: OffsetDateTime) = value.toString()

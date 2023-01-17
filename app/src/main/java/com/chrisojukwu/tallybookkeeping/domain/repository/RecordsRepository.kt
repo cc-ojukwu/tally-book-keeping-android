@@ -7,33 +7,33 @@ import com.chrisojukwu.tallybookkeeping.utils.Result
 
 interface RecordsRepository {
 
-    fun changePassword(password: ChangePassword): Flow<Result<String>>
+    fun changePassword(password: OldNewPassword): Flow<Result<StringResponse>>
+    fun resetPassword(resetPasswordEmail: ResetPasswordEmail): Flow<Result<StringResponse>>
     fun changeEmail(user: User): Flow<Result<TokenWithEmail>>
-    fun createNewAccount(user: User): Flow<Result<String>>
+    fun createNewAccount(user: User): Flow<Result<StringResponse>>
     fun signInWithEmail(user: SignInUser): Flow<Result<Token>>
     fun signInWithGoogle(idToken: String): Flow<Result<TokenWithEmail>>
     fun updateUserInfo(user:User): Flow<Result<User>>
+    fun getUserInfo(): Flow<Result<User>>
 
     fun getAllLocalIncome(): Flow<List<RecordHolder.Income>>
-    fun refreshIncomeData(): Flow<Result<List<RecordHolder.Income>>>
-    fun insertIncome(income: RecordHolder.Income): Flow<Result<String>>
-    fun updateIncome(income: RecordHolder.Income): Flow<Result<String>>
-    fun deleteIncome(income: RecordHolder.Income): Flow<Result<String>>
+    fun getRemoteIncomeList(): Flow<Result<List<RecordHolder.Income>>>
+    fun saveIncome(income: RecordHolder.Income): Flow<Result<StringResponse>>
+    fun updateIncome(income: RecordHolder.Income): Flow<Result<StringResponse>>
+    fun deleteIncome(income: RecordHolder.Income): Flow<Result<StringResponse>>
 
     fun getAllLocalExpense(): Flow<List<RecordHolder.Expense>>
-    fun refreshExpenseData(): Flow<Result<List<RecordHolder.Expense>>>
-    fun insertExpense(expense: RecordHolder.Expense): Flow<Result<String>>
-    fun updateExpense(expense: RecordHolder.Expense): Flow<Result<String>>
-    fun deleteExpense(expense: RecordHolder.Expense): Flow<Result<String>>
+    fun getRemoteExpenseList(): Flow<Result<List<RecordHolder.Expense>>>
+    fun saveExpense(expense: RecordHolder.Expense): Flow<Result<StringResponse>>
+    fun updateExpense(expense: RecordHolder.Expense): Flow<Result<StringResponse>>
+    fun deleteExpense(expense: RecordHolder.Expense): Flow<Result<StringResponse>>
 
-    fun getAllLocalInventory(): Flow<List<StockItem>>
-    fun refreshInventoryData(): Flow<Result<List<StockItem>>>
-    fun insertInventory(stockItem: StockItem): Flow<Result<String>>
-    fun updateInventory(stockItem: StockItem): Flow<Result<String>>
-    fun deleteInventory(stockItem: StockItem): Flow<Result<String>>
+    fun getAllLocalInventory(): Flow<List<InventoryItem>>
+    fun getRemoteInventoryList(): Flow<Result<List<InventoryItem>>>
+    fun saveInventoryItem(inventoryItem: InventoryItem): Flow<Result<StringResponse>>
+    fun updateInventoryItem(inventoryItem: InventoryItem): Flow<Result<StringResponse>>
+    fun deleteInventoryItem(inventoryItem: InventoryItem): Flow<Result<StringResponse>>
 
-
-    //suspend fun insertAllIncome(incomeList: List<RecordHolder.Income>)
-    //suspend fun deleteAllIncome()
+    fun deleteAllDatabaseData(): Flow<Result<String>>
 
 }

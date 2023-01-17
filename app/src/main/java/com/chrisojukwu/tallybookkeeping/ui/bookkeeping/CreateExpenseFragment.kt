@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,15 +23,17 @@ import com.chrisojukwu.tallybookkeeping.databinding.FragmentCreateExpenseBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.getRandomProductId
 import com.chrisojukwu.tallybookkeeping.utils.setupMaxHeight
+import com.chrisojukwu.tallybookkeeping.utils.verifyNumberWithDecimal
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+@AndroidEntryPoint
 class CreateExpenseFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateExpenseBinding
@@ -40,18 +43,13 @@ class CreateExpenseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val adapter = CreateExpenseProductListAdapter(
-            mutableListOf(),
-            { productItem -> vm.removeFromProductList(productItem) },
-            { productItem -> openAddItemBottomSheet(productItem) })
-
         // Inflate the layout for this fragment
         binding = FragmentCreateExpenseBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
-            productListRecyclerView.adapter = adapter
         }
+
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
 
         (activity as AppCompatActivity?)!!.supportActionBar?.hide()
 
@@ -60,6 +58,13 @@ class CreateExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adapter = CreateExpenseProductListAdapter(
+            mutableListOf(),
+            { productItem -> vm.removeFromProductList(productItem) },
+            { productItem -> openAddItemBottomSheet(productItem) })
+
+        binding.productListRecyclerView.adapter = adapter
 
         setDateTime()
 
@@ -109,30 +114,36 @@ class CreateExpenseFragment : Fragment() {
     }
 
     private fun onEditTextChangedCallback() {
-        binding.editTextTotalAmount.doOnTextChanged { text, _, _, _ ->
+        binding.editTextTotalAmount.doAfterTextChanged { text ->
             if (text!!.toString() == ".") {
                 binding.editTextTotalAmount.setText("0.")
                 binding.editTextAmountPaid.setText("0.")
                 binding.editTextTotalAmount.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
-                if (text.toString().toDouble() > 0.0) {
-                    vm.updateTotalAmount(text.toString().toBigDecimal())
-                    binding.editTextAmountPaid.setText(text)
+                val verifiedText = verifyNumberWithDecimal(text.toString())
+                if (text.toString() != verifiedText) {
+                    binding.editTextTotalAmount.setText(verifiedText)
                 }
+                binding.editTextTotalAmount.setSelection(verifiedText.length)
+                vm.updateTotalAmount(verifiedText.toBigDecimal())
+                binding.editTextAmountPaid.setText(verifiedText)
             } else {
                 vm.updateTotalAmount(BigDecimal.ZERO)
-                binding.editTextAmountPaid.setText(text)
+                binding.editTextAmountPaid.setText(text.toString())
             }
         }
 
-        binding.editTextAmountPaid.doOnTextChanged { text, _, _, _ ->
+        binding.editTextAmountPaid.doAfterTextChanged { text ->
             if (text!!.toString() == ".") {
                 binding.editTextAmountPaid.setText("0.")
                 binding.editTextAmountPaid.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
-                if (text.toString().toDouble() > 0.0) {
-                    vm.setAmountPaid(text.toString().toBigDecimal())
+                val verifiedText = verifyNumberWithDecimal(text.toString())
+                if (text.toString() != verifiedText) {
+                    binding.editTextAmountPaid.setText(verifiedText)
                 }
+                binding.editTextAmountPaid.setSelection(verifiedText.length)
+                vm.setAmountPaid(text.toString().toBigDecimal())
             } else {
                 vm.setAmountPaid(BigDecimal.ZERO)
             }
@@ -294,7 +305,7 @@ class CreateExpenseFragment : Fragment() {
                 saveButton?.isEnabled = editTextProductName!!.text.isNotBlank() &&
                         (editTextPrice!!.text.toString().toDouble() > 0) &&
                         editTextQuantity.text.toString().toInt() > 0
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
 
@@ -321,7 +332,7 @@ class CreateExpenseFragment : Fragment() {
 
                     addItemsBottomSheetDialog.dismiss()
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
 
@@ -415,7 +426,7 @@ class CreateExpenseFragment : Fragment() {
     }
 
     private fun onSaveButtonClicked() {
-        vm.setIsLoading(true)
+
         when (binding.radioGroup.checkedRadioButtonId) {
             R.id.radio_cash -> vm.setPaymentModeExpense(PaymentMode.CASH)
             R.id.radio_bank_transfer -> vm.setPaymentModeExpense(PaymentMode.BANK_TRANSFER)
@@ -432,6 +443,7 @@ class CreateExpenseFragment : Fragment() {
             vm.isSupplierRequired.value!! && !vm.isSupplierAdded.value!! -> showErrorSnackBar(R.string.supplier_error)
             else ->
                 lifecycleScope.launch {
+                    vm.setIsLoading(true)
                     vm.saveExpenseDetails().collect { result ->
                         when (result) {
                             is Result.Success -> {
@@ -443,7 +455,7 @@ class CreateExpenseFragment : Fragment() {
                                 vm.setIsLoading(false)
                                 Toast.makeText(requireContext(), "Error - please try again", Toast.LENGTH_LONG).show()
                             }
-                            is Result.Loading -> { }
+                            is Result.Loading -> {}
                         }
                     }
                 }
@@ -451,7 +463,7 @@ class CreateExpenseFragment : Fragment() {
     }
 
     private fun showErrorSnackBar(error_text: Int) {
-        Snackbar.make(binding.buttonSave, error_text, 4000)
+        Snackbar.make(binding.buttonSave, error_text, 3000)
             .setTextColor(Color.BLACK)
             .setBackgroundTint(requireContext().resources.getColor(R.color.expense_button_red, null))
             .show()

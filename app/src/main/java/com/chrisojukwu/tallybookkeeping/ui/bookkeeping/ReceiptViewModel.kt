@@ -26,10 +26,10 @@ class ReceiptViewModel @Inject constructor(
     private val _businessAddress = MutableLiveData<String>()
     val businessAddress: LiveData<String> = _businessAddress
 
-    private val _customerName = MutableLiveData<String>("")
+    private val _customerName = MutableLiveData("")
     val customerName: LiveData<String> = _customerName
 
-    private val _customerPhone = MutableLiveData<String>("")
+    private val _customerPhone = MutableLiveData("")
     val customerPhone: LiveData<String> = _customerPhone
 
     private val _paymentDate = MutableLiveData<OffsetDateTime>()
@@ -44,7 +44,7 @@ class ReceiptViewModel @Inject constructor(
     private val _receiptAmount = MutableLiveData<BigDecimal>()
     val receiptAmount: LiveData<BigDecimal> = _receiptAmount
 
-    private val _balanceDue = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    private val _balanceDue = MutableLiveData(BigDecimal.ZERO)
     val balanceDue: LiveData<BigDecimal> = _balanceDue
 
     private val _paymentMethod = MutableLiveData<String>()
@@ -53,14 +53,23 @@ class ReceiptViewModel @Inject constructor(
     private val _itemList = MutableLiveData<List<Product>>(mutableListOf())
     val itemList: LiveData<List<Product>> = _itemList
 
-    fun setReceiptDetails(payment: Payment, record: RecordHolder?) {
+    init {
+        fetchBusinessName()
+    }
+
+    private fun fetchBusinessName() {
         viewModelScope.launch {
-            preferencesStorage.getBusinessName.flowOn(ioDispatcher).collect { value ->
+            preferencesStorage.getBusinessName().flowOn(ioDispatcher).collect { value ->
                 value.let { _businessName.value = it }
             }
-            preferencesStorage.getBusinessAddress.flowOn(ioDispatcher).collect { value ->
+            preferencesStorage.getBusinessAddress().flowOn(ioDispatcher).collect { value ->
                 value.let { _businessAddress.value = it }
             }
+        }
+    }
+
+    fun setReceiptDetails(payment: Payment, record: RecordHolder?) {
+        viewModelScope.launch {
             when (record) {
                 is RecordHolder.Income -> {
                     _customerName.value = record.customer?.customerName
@@ -93,7 +102,7 @@ class ReceiptViewModel @Inject constructor(
                         _itemList.value =
                             mutableListOf(
                                 Product(
-                                    "8485",
+                                    "7574",
                                     record.description,
                                     record.totalAmount,
                                     1,

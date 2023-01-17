@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="incomeRecord"
-            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder.Income" />
     </data>
 
     <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="0dp">
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/background_color1">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_income_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            app:cardElevation="4dp">
+            android:layout_marginBottom="8dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/background_color2">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +45,7 @@
                         android:fontFamily="sans-serif-light"
                         android:maxLines="1"
                         android:text="@{incomeRecord.description}"
-                        android:textColor="@color/text_color1"
+                        android:textColor="@color/text_color2"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toStartOf="@+id/record_cost"
                         app:layout_constraintStart_toStartOf="parent"
@@ -79,11 +80,11 @@
                         android:layout_marginTop="6dp"
                         android:fontFamily="sans-serif-light"
                         android:text="@{incomeRecord.customer.customerName}"
-                        android:textColor="@color/text_color1"
+                        android:textColor="@color/text_color3"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/record_description"
-                        tools:text="Mama Peace" />
+                        tools:text="John Smith" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/receipt_card_view"
@@ -101,14 +102,13 @@
                             android:layout_height="wrap_content"
                             android:background="@color/light_blue_shade_1"
                             android:fontFamily="sans-serif-light"
-                            android:paddingStart="24dp"
+                            android:paddingHorizontal="24dp"
                             android:paddingTop="2dp"
-                            android:paddingEnd="24dp"
                             android:paddingBottom="4dp"
-                            android:text="Receipt"
+                            android:text="@string/receipt_small_letter"
                             android:textAlignment="center"
                             android:textColor="@color/text_color1"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>

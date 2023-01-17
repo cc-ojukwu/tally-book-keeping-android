@@ -21,8 +21,8 @@ class EditExpenseViewModel @Inject constructor(
     private val updateExpenseUseCase: UpdateExpenseUseCase
 ) : ViewModel() {
 
-    private val _recordToEdit = MutableLiveData<RecordHolder.Expense>()
-    val recordToEdit: LiveData<RecordHolder.Expense> = _recordToEdit
+    private val _recordToEdit = MutableLiveData<RecordHolder.Expense?>()
+    val recordToEdit: LiveData<RecordHolder.Expense?> = _recordToEdit
 
     private var _transactionDate = MutableLiveData(OffsetDateTime.now(ZoneId.systemDefault()))
     val transactionDate: LiveData<String> =
@@ -54,8 +54,8 @@ class EditExpenseViewModel @Inject constructor(
     private val _isCategorySelected = MutableLiveData(false)
     val isCategorySelected: LiveData<Boolean> = _isCategorySelected
 
-    private val _supplierInfo = MutableLiveData<Supplier>()
-    val supplierInfo: LiveData<Supplier> = _supplierInfo
+    private val _supplierInfo = MutableLiveData<Supplier?>()
+    val supplierInfo: LiveData<Supplier?> = _supplierInfo
 
     private val _isSupplierRequired = MutableLiveData(false)
     val isSupplierRequired: LiveData<Boolean> = _isSupplierRequired
@@ -148,7 +148,7 @@ class EditExpenseViewModel @Inject constructor(
         _paymentMode = mode
     }
 
-    fun saveEditExpenseDetails(): StateFlow<Result<String>> =
+    fun saveEditExpenseDetails(): StateFlow<Result<StringResponse>> =
         updateExpenseUseCase(
             RecordHolder.Expense(
                 recordId = recordToEdit.value!!.recordId,
@@ -169,5 +169,17 @@ class EditExpenseViewModel @Inject constructor(
 
     fun setRecordToEdit(record: RecordHolder.Expense) {
         _recordToEdit.value = record
+    }
+
+    fun resetDataFields() {
+        _productList.value = mutableListOf()
+        _recordToEdit.value = null
+        _transactionDate.value = OffsetDateTime.now(ZoneId.systemDefault())
+        _description.value = ""
+        _supplierInfo.value = null
+        _isSupplierAdded.value = false
+        _isSupplierRequired.value = false
+        _itemsTotalCost.value = BigDecimal.ZERO
+
     }
 }

@@ -3,7 +3,6 @@ package com.chrisojukwu.tallybookkeeping.ui.account
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +10,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentAccountBinding
-import com.chrisojukwu.tallybookkeeping.domain.model.ChangePassword
+import com.chrisojukwu.tallybookkeeping.domain.model.OldNewPassword
 import com.chrisojukwu.tallybookkeeping.domain.model.Provider
 import com.chrisojukwu.tallybookkeeping.domain.model.User
-import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -36,7 +35,11 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentAccountBinding.inflate(inflater, container, false)
+        binding = FragmentAccountBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = accountViewModel
+        }
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
         return binding.root
     }
 
@@ -61,7 +64,6 @@ class AccountFragment : Fragment() {
         binding.layoutBusinessPhone.setOnClickListener {
             openBusinessPhoneDialog()
         }
-
         binding.layoutSignOut.setOnClickListener {
             openSignOutDialog()
         }
@@ -90,7 +92,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun initiateChangeEmail(email: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             accountViewModel.changeEmail(
                 User(
                     email = email, "", "", Provider.LOCAL
@@ -189,7 +191,7 @@ class AccountFragment : Fragment() {
 
     private fun initiateChangePassword(oldPassword: String, newPassword: String) {
         lifecycleScope.launch {
-            accountViewModel.changePassword(ChangePassword(oldPassword, newPassword))
+            accountViewModel.changePassword(OldNewPassword(oldPassword, newPassword))
                 .collect { result ->
                     when (result) {
                         is Result.Success -> {
@@ -240,7 +242,17 @@ class AccountFragment : Fragment() {
                     businessAddress = accountViewModel.businessAddress.value!!,
                     businessPhone = accountViewModel.businessPhone.value!!
                 )
-            )
+            ).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Toast.makeText(requireContext(), "updated", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Error, try again later", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Loading -> {}
+                }
+            }
         }
     }
 
@@ -280,7 +292,17 @@ class AccountFragment : Fragment() {
                     businessAddress = businessAddress,
                     businessPhone = accountViewModel.businessPhone.value!!
                 )
-            )
+            ).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Toast.makeText(requireContext(), "updated", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Error, try again later", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Loading -> {}
+                }
+            }
         }
     }
 
@@ -319,7 +341,17 @@ class AccountFragment : Fragment() {
                     businessAddress = accountViewModel.businessAddress.value!!,
                     businessPhone = businessPhone
                 )
-            )
+            ).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Toast.makeText(requireContext(), "updated", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), "Error, try again later", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Loading -> {}
+                }
+            }
         }
     }
 
@@ -345,12 +377,17 @@ class AccountFragment : Fragment() {
 
     private fun initiateSignOut() {
         lifecycleScope.launch {
-            val isSignedOut = accountViewModel.signOut()
-            if (isSignedOut) {
-                val intent =
-                    Intent(this@AccountFragment.requireContext(), SignInActivity::class.java)
-                startActivity(intent)
-            }
+            accountViewModel.signOut()
+                .collect {
+                    if (it) {
+                        val intent =
+                            Intent(this@AccountFragment.requireContext(), SignInActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(requireContext(), "Couldn't complete sign out", Toast.LENGTH_LONG).show()
+                    }
+                }
+
         }
     }
 

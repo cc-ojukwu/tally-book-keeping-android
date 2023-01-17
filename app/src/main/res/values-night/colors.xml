@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="primary_color">#FF6200EE</color>
+    <color name="primary_color">#4A02B1</color>
+    <color name="primary_color_light_variant">#854AD8</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="offBlack">#373232</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#405DC5</color>
     <color name="grey">#76817D</color>
     <color name="red">#951924</color>
-    <color name="bottom_nav_color">#0E0B0B</color>
+    <color name="bottom_nav_color">#1B1919</color>
     <color name="green">#B5E499</color>
     <color name="alert_red">#E1A1A1</color>
     <color name="profile_icon_green">#94BC88</color>
-    <color name="expense_red">#5E0505</color>
-    <color name="income_green">#316510</color>
+    <color name="expense_red">#C54545</color>
+    <color name="income_green">#55AA20</color>
     <color name="outline_blue">#425195</color>
     <color name="text_color1">#F3F0F0</color>
-    <color name="income_button_green">#CDEABB</color>
-    <color name="expense_button_red">#F6C2C2</color>
-    <color name="background_color">#0B0101</color>
-    <color name="text_color2">#CAC5C5</color>
-    <color name="edit_text_background">#C95B5E5E</color>
-    <color name="light_blue_shade_1">#E1E5FA</color>
-    <color name="light_blue_shade_2">#DAE0FB</color>
+    <color name="text_color2">#D5D1D1</color>
+    <color name="text_color3">#A19F9F</color>
+    <color name="text_on_primary_color">#FFFFFF</color>
+    <color name="income_button_green">#204907</color>
+    <color name="expense_button_red">#6A0505</color>
+    <color name="background_color1">#141313</color>
+    <color name="background_color2">#1E1D1D</color>
+    <color name="background_color3">#1E1D1D</color>
+    <color name="edit_text_background">#C91C1C1C</color>
+    <color name="edit_icon_blue">#3656B1</color>
+    <color name="light_blue_shade_1">#292828</color>
+    <color name="light_blue_shade_2">#292828</color>
     <color name="faint_line_color">#C93F4040</color>
-    <color name="deep_sky_blue">#1a73e8</color>
     <color name="line_divider">#8F8988</color>
-
 
 </resources>

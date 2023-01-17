@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.InventoryItem
 import com.chrisojukwu.tallybookkeeping.databinding.InventoryItemBinding
 
 class InventoryAdapter(
-    val onStockItemClick: (stockItem: StockItem) -> Unit,
-    val onEditClick: (stockItem: StockItem) -> Unit,
-    val onAddStockClick: (stockItem: StockItem) -> Unit
+    val onStockItemClick: (inventoryItem: InventoryItem) -> Unit,
+    val onEditClick: (inventoryItem: InventoryItem) -> Unit,
+    val onAddStockClick: (inventoryItem: InventoryItem) -> Unit
 ): RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>() {
 
     private val differ = AsyncListDiffer(this, InventoryAdapter)
-    var stockItemList: List<StockItem> = listOf()
+    var inventoryItemList: List<InventoryItem> = listOf()
         set(value) {
             field = value
             differ.submitList(value)
@@ -27,7 +27,7 @@ class InventoryAdapter(
     }
 
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
-        val item = stockItemList[position]
+        val item = inventoryItemList[position]
         holder.bind(item)
 
         holder.binding.cardViewStockItem.setOnClickListener {
@@ -45,17 +45,17 @@ class InventoryAdapter(
 
     inner class InventoryViewHolder(val binding: InventoryItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(stockItem: StockItem) {
-            binding.stockItem = stockItem
+        fun bind(inventoryItem: InventoryItem) {
+            binding.stockItem = inventoryItem
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<StockItem>() {
-        override fun areItemsTheSame(oldItem: StockItem, newItem: StockItem): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<InventoryItem>() {
+        override fun areItemsTheSame(oldItem: InventoryItem, newItem: InventoryItem): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: StockItem, newItem: StockItem): Boolean {
+        override fun areContentsTheSame(oldItem: InventoryItem, newItem: InventoryItem): Boolean {
             return oldItem.sku == newItem.sku
         }
 

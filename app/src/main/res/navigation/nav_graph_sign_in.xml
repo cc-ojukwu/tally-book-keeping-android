@@ -10,10 +10,16 @@
         android:label="EmailSignInPageFragment" >
         <action
             android:id="@+id/action_emailSignInPageFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_down" />
         <action
             android:id="@+id/action_emailSignInPageFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_emailSignInPageFragment_to_emailCreateAccountFragment"
             app:destination="@id/emailCreateAccountFragment"
@@ -26,10 +32,14 @@
         tools:layout="@layout/fragment_sign_in" >
         <action
             android:id="@+id/action_signInFragment_to_emailSignInPageFragment"
-            app:destination="@id/emailSignInPageFragment" />
+            app:destination="@id/emailSignInPageFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_signInFragment_to_emailCreateAccountFragment"
-            app:destination="@id/emailCreateAccountFragment" />
+            app:destination="@id/emailCreateAccountFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/emailCreateAccountFragment"
@@ -37,7 +47,11 @@
         android:label="EmailCreateAccountFragment" >
         <action
             android:id="@+id/action_emailCreateAccountFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_down" />
         <action
             android:id="@+id/action_emailCreateAccountFragment_to_emailSignInPageFragment"
             app:destination="@id/emailSignInPageFragment"
@@ -53,7 +67,11 @@
         android:label="ForgotPasswordFragment" >
         <action
             android:id="@+id/action_forgotPasswordFragment_to_emailSignInPageFragment"
-            app:destination="@id/emailSignInPageFragment" />
+            app:destination="@id/emailSignInPageFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
     </fragment>
     <fragment
         android:id="@+id/accountCreatedFragment"
@@ -61,7 +79,9 @@
         android:label="AccountCreatedFragment" >
         <action
             android:id="@+id/action_accountCreatedFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:exitAnim="@anim/slide_out_down"
+            app:popExitAnim="@anim/slide_out_down" />
         <action
             android:id="@+id/action_accountCreatedFragment_to_emailSignInPageFragment"
             app:destination="@id/emailSignInPageFragment" />

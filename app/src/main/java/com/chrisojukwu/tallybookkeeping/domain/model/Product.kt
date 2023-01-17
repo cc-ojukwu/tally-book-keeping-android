@@ -5,6 +5,7 @@ import java.math.BigDecimal
 
 
 data class Product(
+
     @Json(name="id")
     val id: String,
 

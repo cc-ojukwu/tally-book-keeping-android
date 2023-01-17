@@ -12,8 +12,10 @@ import com.chrisojukwu.tallybookkeeping.ui.onboarding.OnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class LauncherActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,8 +47,6 @@ class LauncherActivity : AppCompatActivity() {
                     }
                     finish()
                 }
-
-
             }
         }
     }

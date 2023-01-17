@@ -4,7 +4,7 @@
     <data>
         <variable
             name="header"
-            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder.Header" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,13 +12,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="0dp">
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/background_color1">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/background_color2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +52,7 @@
                     app:formatDate="@{header.date}"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/grey"/>
+                    android:textColor="@color/text_color3"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,10 +82,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OUT"
+                    android:text="@string/out"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/grey"/>
+                    android:textColor="@color/text_color3"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,7 +93,7 @@
                     tools:text="$5,260.00"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif"
-                    android:textColor="#670E0E"/>
+                    android:textColor="@color/expense_red"/>
 
 
             </LinearLayout>
@@ -109,10 +111,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="IN"
+                    android:text="@string/in"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/grey"/>
+                    android:textColor="@color/text_color3"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,7 +122,7 @@
                     tools:text="$1,860.00"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif"
-                    android:textColor="#22470C"/>
+                    android:textColor="@color/income_green"/>
 
 
             </LinearLayout>

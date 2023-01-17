@@ -6,6 +6,7 @@ import java.math.BigDecimal
 
 @JsonClass(generateAdapter = true)
 data class NetworkProduct(
+
     @Json(name="id")
     val id: String,
 

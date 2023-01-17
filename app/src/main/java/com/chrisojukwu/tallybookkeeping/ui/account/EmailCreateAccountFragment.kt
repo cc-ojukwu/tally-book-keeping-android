@@ -1,7 +1,5 @@
 package com.chrisojukwu.tallybookkeeping.ui.account
 
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -17,25 +15,25 @@ import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEmailCreateAccountBinding
 import com.chrisojukwu.tallybookkeeping.domain.model.Provider
 import com.chrisojukwu.tallybookkeeping.domain.model.User
-import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.getRandomUserId
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EmailCreateAccountFragment : Fragment() {
+
     private val signInViewModel: SignInViewModel by activityViewModels()
     private lateinit var binding: FragmentEmailCreateAccountBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentEmailCreateAccountBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+            viewModel = signInViewModel
         }
 
         return binding.root
@@ -133,6 +131,7 @@ class EmailCreateAccountFragment : Fragment() {
     }
 
     private fun initiateAccountCreation(email: String, password: String) {
+        signInViewModel.setIsLoading(true)
         lifecycleScope.launch {
             signInViewModel.createAccount(
                 User(
@@ -142,9 +141,11 @@ class EmailCreateAccountFragment : Fragment() {
             ).collect { result ->
                 when (result) {
                     is Result.Success -> {
+                        signInViewModel.setIsLoading(false)
                         findNavController().navigate(R.id.action_emailCreateAccountFragment_to_accountCreatedFragment)
                     }
                     is Result.Error -> {
+                        signInViewModel.setIsLoading(false)
                         binding.emailContainer.helperText = result.exception.message
                     }
                     is Result.Loading -> {}

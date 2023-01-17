@@ -6,8 +6,8 @@ import com.chrisojukwu.tallybookkeeping.domain.usecase.GetLocalExpenseListUseCas
 import com.chrisojukwu.tallybookkeeping.domain.usecase.GetLocalIncomeListUseCase
 import com.chrisojukwu.tallybookkeeping.utils.getRandomRecordId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.zip
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
@@ -41,7 +41,7 @@ class AllRecordsViewModel @Inject constructor(
     }
 
     private fun getAllRecords() {
-        getLocalIncomeListUseCase().zip(getLocalExpenseListUseCase()) { incomeList, expenseList ->
+        getLocalIncomeListUseCase().combine(getLocalExpenseListUseCase()) { incomeList, expenseList ->
             _allRecordsList.value = incomeList + expenseList
             sortList()
         }.launchIn(viewModelScope)
@@ -53,8 +53,11 @@ class AllRecordsViewModel @Inject constructor(
         _sortedRecordsList.value = addHeaders(recordsByDate)
     }
 
+    //add a header for each unique local date in the list
     private fun addHeaders(recordsByDate: Map<LocalDate, List<RecordHolder>>?): List<RecordHolder> {
+
         val finalList = mutableListOf<RecordHolder>()
+
         recordsByDate?.keys?.forEach {
             var headerIncomeSum = BigDecimal.ZERO
             var headerExpenseSum = BigDecimal.ZERO

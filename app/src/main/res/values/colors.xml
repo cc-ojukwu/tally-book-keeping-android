@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="primary_color">#FF6200EE</color>
+    <color name="primary_color">#6A09F4</color>
+    <color name="primary_color_light_variant">#4A02B1</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="offBlack">#373232</color>
     <color name="white">#FFFFFFFF</color>
@@ -23,14 +22,17 @@
     <color name="text_color2">#222121</color>
     <color name="text_color3">#636161</color>
     <color name="reverse_text_color">#FFFFFF</color>
+    <color name="text_on_primary_color">#FFFFFF</color>
     <color name="edit_text_background">#C9EFF1F1</color>
     <color name="light_blue_shade_1">#F0F1FC</color>
     <color name="light_blue_shade_2">#DAE0FB</color>
-    <color name="background_color">#FFFFFF</color>
+    <color name="background_color1">#FFFFFF</color>
+    <color name="background_color2">#FFFFFF</color>
+    <color name="background_color3">#FFFFFF</color>
     <color name="outline_blue">#425195</color>
+    <color name="edit_icon_blue">#09122C</color>
     <color name="faint_line_color">#C9DDE1E1</color>
     <color name="very_light_red">#FDEEEE</color>
-    <color name="deep_sky_blue">#1a73e8</color>
     <color name="line_divider">#8F8988</color>
 
 

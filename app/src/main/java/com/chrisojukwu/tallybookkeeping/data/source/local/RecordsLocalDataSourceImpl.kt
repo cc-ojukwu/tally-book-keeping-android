@@ -5,10 +5,10 @@ import com.chrisojukwu.tallybookkeeping.data.source.local.entity.DBExpense
 import com.chrisojukwu.tallybookkeeping.data.source.local.entity.DBIncome
 import com.chrisojukwu.tallybookkeeping.data.source.local.entity.DBInventory
 import com.chrisojukwu.tallybookkeeping.di.IoDispatcher
-import com.chrisojukwu.tallybookkeeping.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class RecordsLocalDataSourceImpl @Inject constructor(
@@ -16,10 +16,10 @@ class RecordsLocalDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : RecordsLocalDataSource {
 
-    override suspend fun insertAllIncome(incomeList: List<DBIncome>) =
+    override suspend fun insertIncomeList(incomeList: List<DBIncome>) =
         withContext(ioDispatcher) {
             recordsDao.deleteAllIncome()
-            recordsDao.insertAllIncome(incomeList)
+            recordsDao.insertIncomeList(incomeList)
         }
 
     override suspend fun deleteAllIncome() =
@@ -27,16 +27,16 @@ class RecordsLocalDataSourceImpl @Inject constructor(
             recordsDao.deleteAllIncome()
         }
 
-    override fun getAllIncome(): Flow<List<DBIncome>> = recordsDao.getAllIncome()
+    override fun getIncomeList(): Flow<List<DBIncome>> = recordsDao.getIncomeList()
 
     override suspend fun insertIncome(income: DBIncome) = recordsDao.insertIncome(income)
 
     override suspend fun deleteIncome(income: DBIncome) = recordsDao.deleteIncome(income.recordId)
 
-    override suspend fun insertAllExpense(expenseList: List<DBExpense>) =
+    override suspend fun insertExpenseList(expenseList: List<DBExpense>) =
         withContext(ioDispatcher) {
             recordsDao.deleteAllExpense()
-            recordsDao.insertAllExpense(expenseList)
+            recordsDao.insertExpenseList(expenseList)
         }
 
     override suspend fun deleteAllExpense() =
@@ -44,15 +44,15 @@ class RecordsLocalDataSourceImpl @Inject constructor(
             recordsDao.deleteAllExpense()
         }
 
-    override fun getAllExpense(): Flow<List<DBExpense>> = recordsDao.getAllExpense()
+    override fun getExpenseList(): Flow<List<DBExpense>> = recordsDao.getExpenseList()
 
     override suspend fun insertExpense(expense: DBExpense) = recordsDao.insertExpense(expense)
 
     override suspend fun deleteExpense(expense: DBExpense) = recordsDao.deleteExpense(expense.recordId)
 
-    override suspend fun insertAllInventory(stockItemList: List<DBInventory>) =
+    override suspend fun insertInventoryList(inventoryList: List<DBInventory>) =
         withContext(ioDispatcher) {
-            recordsDao.insertAllInventory(stockItemList)
+            recordsDao.insertInventoryList(inventoryList)
         }
 
     override suspend fun deleteAllInventory() =
@@ -60,11 +60,10 @@ class RecordsLocalDataSourceImpl @Inject constructor(
             recordsDao.deleteAllInventory()
         }
 
-    override fun getAllInventory(): Flow<List<DBInventory>> =
-        recordsDao.getAllInventory()
+    override fun getInventoryList(): Flow<List<DBInventory>> = recordsDao.getInventoryList()
 
-    override suspend fun insertInventory(stock: DBInventory) = recordsDao.insertInventory(stock)
+    override suspend fun insertInventory(inventoryItem: DBInventory) = recordsDao.insertInventoryItem(inventoryItem)
 
-    override suspend fun deleteInventory(stock: DBInventory) = recordsDao.deleteInventory(stock.sku)
+    override suspend fun deleteInventory(inventoryItem: DBInventory) = recordsDao.deleteInventory(inventoryItem.sku)
 
 }

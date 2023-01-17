@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,15 +24,17 @@ import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditExpenseBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.getRandomProductId
 import com.chrisojukwu.tallybookkeeping.utils.setupMaxHeight
+import com.chrisojukwu.tallybookkeeping.utils.verifyNumberWithDecimal
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+@AndroidEntryPoint
 class EditExpenseFragment : Fragment() {
 
     private lateinit var binding: FragmentEditExpenseBinding
@@ -41,31 +44,30 @@ class EditExpenseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val adapter = EditExpenseProductListAdapter(
-            mutableListOf(),
-            { productItem -> vm.removeFromProductList(productItem) },
-            { productItem -> openAddItemBottomSheet(productItem) })
-
         // Inflate the layout for this fragment
         binding = FragmentEditExpenseBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
-            productListRecyclerView.adapter = adapter
         }
 
-        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
-
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = EditExpenseProductListAdapter(
+            mutableListOf(),
+            { productItem -> vm.removeFromProductList(productItem) },
+            { productItem -> openAddItemBottomSheet(productItem) })
+
+        binding.productListRecyclerView.adapter = adapter
+
         setDateTime()
 
         binding.imageViewBackButton.setOnClickListener {
-            Navigation.findNavController(it).navigateUp()
+            findNavController().navigateUp()
         }
 
         binding.datePicker.setOnClickListener {
@@ -121,11 +123,11 @@ class EditExpenseFragment : Fragment() {
 
         binding.editTextAmountPaid.setText(record.amountPaid.toString())
 
-        if (record.productList!!.size > 0) {
-            vm.addListToProductList(record.productList!!)
-        } else {
-            binding.editTextDescription.setText(record.description)
-        }
+//        if (record.productList!!.size > 0) {
+//            vm.addListToProductList(record.productList!!)
+//        } else {
+        binding.editTextDescription.setText(record.description)
+        //}
         if (record.supplier != null) {
             vm.updateSupplierInfo(record.supplier!!)
             vm.supplierAdded(true)
@@ -134,30 +136,38 @@ class EditExpenseFragment : Fragment() {
     }
 
     private fun onEditTextChangedCallback() {
-        binding.editTextTotalAmount.doOnTextChanged { text, _, _, _ ->
+        binding.editTextTotalAmount.doAfterTextChanged { text ->
             if (text!!.toString() == ".") {
                 binding.editTextTotalAmount.setText("0.")
                 binding.editTextAmountPaid.setText("0.")
                 binding.editTextTotalAmount.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
-                if (text.toString().toDouble() > 0.0) {
-                    vm.updateTotalAmount(text.toString().toBigDecimal())
-                    binding.editTextAmountPaid.setText(text)
+                val verifiedText = verifyNumberWithDecimal(text.toString())
+                if (text.toString() != verifiedText) {
+                    binding.editTextTotalAmount.setText(verifiedText)
                 }
+                binding.editTextTotalAmount.setSelection(verifiedText.length)
+                vm.updateTotalAmount(verifiedText.toBigDecimal())
+                binding.editTextAmountPaid.setText(verifiedText)
+
             } else {
                 vm.updateTotalAmount(BigDecimal.ZERO)
                 binding.editTextAmountPaid.setText(text)
             }
         }
 
-        binding.editTextAmountPaid.doOnTextChanged { text, _, _, _ ->
+        binding.editTextAmountPaid.doAfterTextChanged { text ->
             if (text!!.toString() == ".") {
                 binding.editTextAmountPaid.setText("0.")
                 binding.editTextAmountPaid.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
-                if (text.toString().toDouble() > 0.0) {
-                    vm.setAmountPaid(text.toString().toBigDecimal())
+                val verifiedText = verifyNumberWithDecimal(text.toString())
+                if (text.toString() != verifiedText) {
+                    binding.editTextAmountPaid.setText(verifiedText)
                 }
+                binding.editTextAmountPaid.setSelection(verifiedText.length)
+                vm.setAmountPaid(verifiedText.toBigDecimal())
+
             } else {
                 vm.setAmountPaid(BigDecimal.ZERO)
             }
@@ -245,7 +255,9 @@ class EditExpenseFragment : Fragment() {
             if (selectedDate.compareTo(LocalDate.now()) == 0) {
                 vm.saveDate(OffsetDateTime.now(ZoneId.systemDefault()))
             } else {
-                val transactionDate = OffsetDateTime.of(year, month, day, 0, 0, 0, 0, OffsetDateTime.now().offset)
+                val transactionDate = OffsetDateTime.of(
+                    year, month, day, 0, 0, 0, 0, OffsetDateTime.now().offset
+                )
                 vm.saveDate(transactionDate)
             }
 
@@ -319,7 +331,7 @@ class EditExpenseFragment : Fragment() {
                 saveButton?.isEnabled = editTextProductName!!.text.isNotBlank() &&
                         (editTextPrice!!.text.toString().toDouble() > 0) &&
                         editTextQuantity.text.toString().toInt() > 0
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
 
@@ -346,7 +358,7 @@ class EditExpenseFragment : Fragment() {
 
                     addItemsBottomSheetDialog.dismiss()
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
 
@@ -440,7 +452,6 @@ class EditExpenseFragment : Fragment() {
     }
 
     private fun onSaveButtonClicked() {
-        vm.setIsLoading(true)
 
         when (binding.radioGroup.checkedRadioButtonId) {
             R.id.radio_cash -> vm.setPaymentModeExpense(PaymentMode.CASH)
@@ -458,6 +469,7 @@ class EditExpenseFragment : Fragment() {
             vm.isSupplierRequired.value!! && !vm.isSupplierAdded.value!! -> showErrorSnackBar(R.string.supplier_error)
             else -> {
                 lifecycleScope.launch {
+                    vm.setIsLoading(true)
                     vm.saveEditExpenseDetails().collect { result ->
                         when (result) {
                             is Result.Success -> {
@@ -482,6 +494,11 @@ class EditExpenseFragment : Fragment() {
             .setTextColor(Color.BLACK)
             .setBackgroundTint(requireContext().resources.getColor(R.color.expense_button_red, null))
             .show()
+    }
+
+    override fun onDestroy() {
+        vm.resetDataFields()
+        super.onDestroy()
     }
 }
 

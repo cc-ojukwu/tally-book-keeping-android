@@ -18,10 +18,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.chrisojukwu.tallybookkeeping.BuildConfig
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentSignInBinding
 import com.chrisojukwu.tallybookkeeping.ui.HomePageActivity
-import com.chrisojukwu.tallybookkeeping.utils.Constants
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
@@ -121,7 +121,7 @@ class SignInFragment : Fragment() {
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId(Constants.SERVER_CLIENT_ID)
+                    .setServerClientId(BuildConfig.SERVER_CLIENT_ID)
                     // Show previously signed in accounts on device.
                     .setFilterByAuthorizedAccounts(true)
                     .build()
@@ -133,7 +133,7 @@ class SignInFragment : Fragment() {
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId(Constants.SERVER_CLIENT_ID)
+                    .setServerClientId(BuildConfig.SERVER_CLIENT_ID)
                     // Show all accounts on the device.
                     .setFilterByAuthorizedAccounts(false)
                     .build()
@@ -169,7 +169,7 @@ class SignInFragment : Fragment() {
 
     private fun signUpWithGoogle() {
         oneTapClient.beginSignIn(signUpRequest)
-            .addOnSuccessListener() { result: BeginSignInResult ->
+            .addOnSuccessListener { result: BeginSignInResult ->
                 try {
                     val isr = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
                     oneTapResult.launch(isr)
@@ -177,9 +177,8 @@ class SignInFragment : Fragment() {
                     Timber.e("Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener() { e: Exception ->
+            .addOnFailureListener {
                 // No Google account found on device
-                Timber.d(e.localizedMessage)
                 Timber.e("Didn't find any google account on device")
             }
     }

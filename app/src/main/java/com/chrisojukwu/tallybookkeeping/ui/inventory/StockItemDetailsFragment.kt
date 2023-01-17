@@ -14,12 +14,14 @@ import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentStockItemDetailsBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class StockItemDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentStockItemDetailsBinding
-    private val viewModel: InventoryViewModel by activityViewModels()
+    private val inventoryViewModel: InventoryViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +30,10 @@ class StockItemDetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentStockItemDetailsBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            sharedViewModel = viewModel
+            sharedViewModel = inventoryViewModel
         }
+
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
 
         return binding.root
     }
@@ -68,9 +72,10 @@ class StockItemDetailsFragment : Fragment() {
 
     private fun deleteInventory() {
         lifecycleScope.launch {
-            viewModel.deleteInventory().collect { result ->
+            inventoryViewModel.deleteInventory().collect { result ->
                 when (result) {
                     is Result.Success -> {
+                        inventoryViewModel.getInventoryData()
                         Toast.makeText(requireContext(), "Item deleted!", Toast.LENGTH_LONG).show()
                         findNavController().navigate(R.id.action_stockItemDetailsFragment_to_inventoryFragment)
                     }

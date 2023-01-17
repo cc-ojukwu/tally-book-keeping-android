@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-/**
- * Logic to pick a screen to navigate to
- */
+
 @HiltViewModel
 class LaunchViewModel @Inject constructor(
     preferenceStorage: PreferenceStorage

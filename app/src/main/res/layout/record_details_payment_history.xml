@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
         android:orientation="horizontal"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:background="@color/background_color2">
 
         <TextView
             android:id="@+id/text_view_item_name"
@@ -49,9 +50,9 @@
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
             android:paddingStart="4dp"
-            android:text="Receipt"
+            android:text="@string/receipt_small_letter"
             android:textAlignment="center"
-            android:textColor="@color/blue"
+            android:textColor="@color/primary_color_light_variant"
             android:textSize="16sp" />
     </LinearLayout>
 </layout>

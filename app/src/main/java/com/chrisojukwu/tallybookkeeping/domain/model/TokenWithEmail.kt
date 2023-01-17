@@ -4,6 +4,6 @@ import com.squareup.moshi.Json
 
 
 data class TokenWithEmail(
-    @Json(name="jwt-token")val jwtToken: String,
+    @Json(name="jwt_token")val jwtToken: String,
     @Json(name="email")val email: String,
 )

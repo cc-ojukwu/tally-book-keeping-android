@@ -4,7 +4,7 @@
     <data>
         <variable
             name="expenseRecord"
-            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder.Expense" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,6 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/background_color1"
         app:cardElevation="0dp">
 
     <androidx.cardview.widget.CardView
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/background_color2"
         app:cardElevation="4dp">
 
 

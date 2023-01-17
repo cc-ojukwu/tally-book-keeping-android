@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -21,6 +22,8 @@ class SignInActivity : AppCompatActivity(R.layout.activity_sign_in) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
+
+        this.window.statusBarColor = this.resources.getColor(R.color.background_color1, null)
 
         //setup navController
         val navHostFragment = supportFragmentManager

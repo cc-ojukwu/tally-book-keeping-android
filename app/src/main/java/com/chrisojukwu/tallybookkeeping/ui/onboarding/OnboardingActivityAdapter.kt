@@ -17,7 +17,6 @@ class OnboardingActivityAdapter(fragmentActivity: FragmentActivity) :
     override fun getItemCount(): Int = fragmentList.size
 
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance in createFragment(int)
         return fragmentList[position]
     }
 

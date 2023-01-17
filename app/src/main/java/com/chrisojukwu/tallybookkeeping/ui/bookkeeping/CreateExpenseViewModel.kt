@@ -140,7 +140,7 @@ class CreateExpenseViewModel @Inject constructor(
         _paymentMode = mode
     }
 
-    fun saveExpenseDetails(): StateFlow<Result<String>> =
+    fun saveExpenseDetails(): StateFlow<Result<StringResponse>> =
         saveExpenseUseCase(
             RecordHolder.Expense(
                 recordId = getRandomRecordId(),

@@ -5,27 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.chrisojukwu.tallybookkeeping.ui.account.SignInViewModel"/>
+            type="com.chrisojukwu.tallybookkeeping.ui.account.SignInViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.account.EmailCreateAccountFragment"
+        android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:clickable="true">
+        android:orientation="vertical"
+        tools:context=".ui.account.EmailCreateAccountFragment">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/close_page_icon"
             android:layout_width="36dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/ic_baseline_close_24"/>
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_close_24" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,16 +35,16 @@
             android:paddingStart="36dp"
             android:paddingEnd="36dp">
 
-        <TextView
-            android:id="@+id/text_view_page_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="2dp"
-            android:fontFamily="@font/chakra_petch_semibold"
-            android:text="@string/create_account"
-            android:textColor="@color/black"
-            android:textSize="28sp"/>
+            <TextView
+                android:id="@+id/text_view_page_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/create_account"
+                android:textColor="@color/text_color2"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/text_view_status"
@@ -51,107 +52,135 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
+                android:background="@color/alert_red"
+                android:fontFamily="@font/chakra_petch"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:visibility="gone"
-                android:fontFamily="@font/chakra_petch"
                 android:text="@string/account_status"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:background="@color/alert_red" />
+                android:visibility="gone" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_container"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/email"
-            android:textColorHint="@color/grey"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:helperTextTextColor="@color/red">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_email"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_container"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:maxLength="60"/>
+                android:layout_marginTop="16dp"
+                android:hint="@string/email"
+                android:textColorHint="@color/grey"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:helperTextTextColor="@color/red">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="60" />
 
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_container"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="@string/password"
-            android:textColorHint="@color/grey"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:endIconMode="password_toggle"
-            app:helperTextTextColor="@color/red">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_password"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_container"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:maxLength="30"/>
+                android:layout_marginTop="24dp"
+                android:hint="@string/password"
+                android:textColorHint="@color/grey"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:endIconMode="password_toggle"
+                app:helperTextTextColor="@color/red">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLength="30" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirm_password_container"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/confirm_password"
-            android:textColorHint="@color/grey"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:endIconMode="password_toggle"
-            app:helperTextTextColor="@color/red">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_password_confirm"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/confirm_password_container"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:maxLength="30"/>
+                android:layout_marginTop="16dp"
+                android:hint="@string/confirm_password"
+                android:textColorHint="@color/grey"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:endIconMode="password_toggle"
+                app:helperTextTextColor="@color/red">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLength="30" />
 
-        <TextView
-            android:id="@+id/text_view_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/chakra_petch"
-            android:text="@string/terms_and_conditions"
-            android:textColor="@color/blue"
-            android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/button_create_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/chakra_petch_semibold"
-            android:text="@string/create_account"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/text_view_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/terms_and_conditions"
+                android:textColor="@color/primary_color_light_variant"
+                android:textSize="12sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
+
+                <Button
+                    android:id="@+id/button_create_account"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/create_account"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_on_primary_color"
+                    android:textSize="16sp"
+                    android:paddingVertical="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:buttonLoadingStatus="@{viewModel.isLoading}"/>
+
+                <ProgressBar
+                    android:id="@+id/image_view_progress_bar"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:elevation="4dp"
+                    android:indeterminateTint="@color/primary_color"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/button_create_account"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_create_account"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:imageLoadingStatus="@{viewModel.isLoading}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -159,16 +188,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
-        <TextView
-            android:id="@+id/text_view_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:fontFamily="@font/chakra_petch_semibold"
-            android:textColor="@color/offBlack"
-            android:layout_marginTop="10dp"
-            android:textSize="24sp"
-            android:layout_gravity="bottom"/>
+
+            <TextView
+                android:id="@+id/text_view_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginVertical="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/login"
+                android:textColor="@color/text_color2"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>

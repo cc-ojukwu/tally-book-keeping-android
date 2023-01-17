@@ -35,22 +35,37 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_editIncomeFragment"
-            app:destination="@id/editIncomeFragment" />
+            app:destination="@id/editIncomeFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_homeFragment_to_editExpenseFragment"
-            app:destination="@id/editExpenseFragment" />
+            app:destination="@id/editExpenseFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_homeFragment_to_incomeExpenseDetailsFragment"
-            app:destination="@id/incomeExpenseDetailsFragment" />
+            app:destination="@id/incomeExpenseDetailsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_homeFragment_to_createIncomeFragment"
-            app:destination="@id/createIncomeFragment" />
+            app:destination="@id/createIncomeFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_homeFragment_to_createExpenseFragment"
-            app:destination="@id/createExpenseFragment" />
+            app:destination="@id/createExpenseFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_homeFragment_to_allRecordsFragment"
-            app:destination="@id/allRecordsFragment" />
+            app:destination="@id/allRecordsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_receiptFragment"
+            app:destination="@id/receiptFragment" />
     </fragment>
     <fragment
         android:id="@+id/editIncomeFragment"
@@ -134,7 +149,11 @@
         android:label="AllRecordsFragment" >
         <action
             android:id="@+id/action_allRecordsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
         <action
             android:id="@+id/action_allRecordsFragment_to_incomeExpenseDetailsFragment"
             app:destination="@id/incomeExpenseDetailsFragment" />

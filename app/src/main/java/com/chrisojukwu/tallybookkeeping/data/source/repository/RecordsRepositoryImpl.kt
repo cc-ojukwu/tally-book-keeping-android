@@ -16,11 +16,26 @@ class RecordsRepositoryImpl @Inject constructor(
     private val localDataSource: RecordsLocalDataSource
 ) : RecordsRepository {
 
-    override fun changePassword(password: ChangePassword): Flow<Result<String>> = flow {
+    override fun changePassword(password: OldNewPassword): Flow<Result<StringResponse>> = flow {
         when (val remoteData = remoteDataSource.changePassword(password)) {
             is Result.Success -> {
                 Timber.d("repo - change password success")
-                emit(Result.Success("Password changed successfully"))
+                emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
+    override fun resetPassword(resetPasswordEmail: ResetPasswordEmail): Flow<Result<StringResponse>> = flow {
+        when (val remoteData = remoteDataSource.resetPassword(resetPasswordEmail)) {
+            is Result.Success -> {
+                Timber.d("repo - forgot password success")
+                emit(Result.Success(remoteData.data!!))
             }
             is Result.Error -> {
                 emit(Result.Error(remoteData.exception))
@@ -46,7 +61,7 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun createNewAccount(user: User): Flow<Result<String>> = flow {
+    override fun createNewAccount(user: User): Flow<Result<StringResponse>> = flow {
         when (val remoteData = remoteDataSource.createNewAccount(user)) {
             is Result.Success -> {
                     Timber.d("repo - create account success")
@@ -106,21 +121,37 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getUserInfo(): Flow<Result<User>> = flow {
+        when (val remoteData = remoteDataSource.getUserInfo()) {
+            is Result.Success -> {
+                Timber.d("repo - get user info success")
+                emit(Result.Success(remoteData.data!!))
+            }
+            is Result.Error -> {
+                Timber.e(remoteData.exception)
+                emit(Result.Error(remoteData.exception))
+            }
+            else -> {
+                emit(Result.Loading)
+            }
+        }
+    }
+
     override fun getAllLocalIncome(): Flow<List<RecordHolder.Income>> =
-        localDataSource.getAllIncome().map {
+        localDataSource.getIncomeList().map {
             Timber.d("inside get local income data flow")
             it.asDomainModel()
         }
 
 
-    override fun refreshIncomeData(): Flow<Result<List<RecordHolder.Income>>> = flow {
+    override fun getRemoteIncomeList(): Flow<Result<List<RecordHolder.Income>>> = flow {
         when (val remoteData = remoteDataSource.getAllIncome()) {
             is Result.Success -> {
                 if (remoteData.data != null) {
                     Timber.d("got non-null remote income data")
                     emit(Result.Success(remoteData.data.asDMModel()))
 
-                    localDataSource.insertAllIncome(remoteData.data.asDBModel())
+                    localDataSource.insertIncomeList(remoteData.data.asDBModel())
                     Timber.d("inserted remote income data into database")
                 }
             }
@@ -133,8 +164,8 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertIncome(income: RecordHolder.Income): Flow<Result<String>> = flow {
-        when (val remoteData = remoteDataSource.insertIncome(income.asNetworkModel())) {
+    override fun saveIncome(income: RecordHolder.Income): Flow<Result<StringResponse>> = flow {
+        when (val remoteData = remoteDataSource.saveIncome(income.asNetworkModel())) {
             is Result.Success -> {
                     Timber.d("insert income success")
                     emit(Result.Success(remoteData.data!!))
@@ -151,7 +182,7 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updateIncome(income: RecordHolder.Income): Flow<Result<String>> = flow {
+    override fun updateIncome(income: RecordHolder.Income): Flow<Result<StringResponse>> = flow {
         when (val remoteData = remoteDataSource.updateIncome(income.asNetworkModel())) {
             is Result.Success -> {
                 Timber.d("update income success")
@@ -169,7 +200,7 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteIncome(income: RecordHolder.Income): Flow<Result<String>> = flow {
+    override fun deleteIncome(income: RecordHolder.Income): Flow<Result<StringResponse>> = flow {
         when (val remoteData = remoteDataSource.deleteIncome(income.asNetworkModel())) {
             is Result.Success -> {
                 Timber.d("delete income success")
@@ -191,19 +222,19 @@ class RecordsRepositoryImpl @Inject constructor(
 
 
     override fun getAllLocalExpense(): Flow<List<RecordHolder.Expense>> =
-        localDataSource.getAllExpense().map {
+        localDataSource.getExpenseList().map {
             Timber.d("inside get local expense data flow")
             it.toDomainModel()
         }
 
-    override fun refreshExpenseData(): Flow<Result<List<RecordHolder.Expense>>> = flow {
+    override fun getRemoteExpenseList(): Flow<Result<List<RecordHolder.Expense>>> = flow {
         when (val remoteData = remoteDataSource.getAllExpense()) {
             is Result.Success -> {
                 if (remoteData.data != null) {
                     Timber.d("got non-null remote expense data")
                     emit(Result.Success(remoteData.data.toDMModel()))
 
-                    localDataSource.insertAllExpense(remoteData.data.toDBModel())
+                    localDataSource.insertExpenseList(remoteData.data.toDBModel())
                     Timber.d("inserted remote expense data into database")
                 }
             }
@@ -216,8 +247,8 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertExpense(expense: RecordHolder.Expense): Flow<Result<String>> = flow {
-        when (val remoteData = remoteDataSource.insertExpense(expense.asNetworkModel())) {
+    override fun saveExpense(expense: RecordHolder.Expense): Flow<Result<StringResponse>> = flow {
+        when (val remoteData = remoteDataSource.saveExpense(expense.asNetworkModel())) {
             is Result.Success -> {
                 Timber.d("insert expense success")
                 emit(Result.Success(remoteData.data!!))
@@ -234,7 +265,7 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updateExpense(expense: RecordHolder.Expense): Flow<Result<String>> = flow {
+    override fun updateExpense(expense: RecordHolder.Expense): Flow<Result<StringResponse>> = flow {
         when (val remoteData = remoteDataSource.updateExpense(expense.asNetworkModel())) {
             is Result.Success -> {
                 Timber.d("update expense success")
@@ -252,7 +283,7 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteExpense(expense: RecordHolder.Expense): Flow<Result<String>> = flow {
+    override fun deleteExpense(expense: RecordHolder.Expense): Flow<Result<StringResponse>> = flow {
         when (val remoteData = remoteDataSource.deleteExpense(expense.asNetworkModel())) {
             is Result.Success -> {
                 Timber.d("delete expense success")
@@ -271,19 +302,19 @@ class RecordsRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getAllLocalInventory(): Flow<List<StockItem>> =
-        localDataSource.getAllInventory().map {
+    override fun getAllLocalInventory(): Flow<List<InventoryItem>> =
+        localDataSource.getInventoryList().map {
             it.asDomain()
         }
 
-    override fun refreshInventoryData(): Flow<Result<List<StockItem>>> = flow {
+    override fun getRemoteInventoryList(): Flow<Result<List<InventoryItem>>> = flow {
         when (val remoteData = remoteDataSource.getAllInventory()) {
             is Result.Success -> {
                 if (remoteData.data != null) {
                     Timber.d("got non-null remote inventory data")
                     emit(Result.Success(remoteData.data.toDomain()))
 
-                    localDataSource.insertAllInventory(remoteData.data.toDB())
+                    localDataSource.insertInventoryList(remoteData.data.toDB())
                     Timber.d("inserted remote inventory data into database")
                 }
             }
@@ -296,13 +327,13 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertInventory(stockItem: StockItem): Flow<Result<String>> = flow {
-        when (val remoteData = remoteDataSource.insertInventory(stockItem.toNetworkModel())) {
+    override fun saveInventoryItem(inventoryItem: InventoryItem): Flow<Result<StringResponse>> = flow {
+        when (val remoteData = remoteDataSource.saveInventoryItem(inventoryItem.toNetworkModel())) {
             is Result.Success -> {
                 Timber.d("insert inventory success")
                 emit(Result.Success(remoteData.data!!))
 
-                localDataSource.insertInventory(stockItem.toDBModel())
+                localDataSource.insertInventory(inventoryItem.toDBModel())
                 Timber.d("inserted inventory into database")
             }
             is Result.Error -> {
@@ -314,13 +345,13 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updateInventory(stockItem: StockItem): Flow<Result<String>> = flow {
-        when (val remoteData = remoteDataSource.updateInventory(stockItem.toNetworkModel())) {
+    override fun updateInventoryItem(inventoryItem: InventoryItem): Flow<Result<StringResponse>> = flow {
+        when (val remoteData = remoteDataSource.updateInventoryItem(inventoryItem.toNetworkModel())) {
             is Result.Success -> {
                 Timber.d("update inventory success")
                 emit(Result.Success(remoteData.data!!))
 
-                localDataSource.insertInventory(stockItem.toDBModel())
+                localDataSource.insertInventory(inventoryItem.toDBModel())
                 Timber.d("updated inventory in database")
             }
             is Result.Error -> {
@@ -332,13 +363,13 @@ class RecordsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteInventory(stockItem: StockItem): Flow<Result<String>> = flow {
-        when (val remoteData = remoteDataSource.deleteInventory(stockItem.toNetworkModel())) {
+    override fun deleteInventoryItem(inventoryItem: InventoryItem): Flow<Result<StringResponse>> = flow {
+        when (val remoteData = remoteDataSource.deleteInventoryItem(inventoryItem.toNetworkModel())) {
             is Result.Success -> {
                 Timber.d("delete inventory success")
                 emit(Result.Success(remoteData.data!!))
 
-                localDataSource.deleteInventory(stockItem.toDBModel())
+                localDataSource.deleteInventory(inventoryItem.toDBModel())
                 Timber.d("deleted inventory from database")
             }
             is Result.Error -> {
@@ -347,6 +378,18 @@ class RecordsRepositoryImpl @Inject constructor(
             else -> {
                 emit(Result.Loading)
             }
+        }
+    }
+
+    override fun deleteAllDatabaseData(): Flow<Result<String>> = flow {
+        try {
+            Timber.e("repo - starting database wipe ")
+            localDataSource.deleteAllIncome()
+            localDataSource.deleteAllExpense()
+            localDataSource.deleteAllInventory()
+            emit(Result.Success("success"))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
         }
     }
 

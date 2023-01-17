@@ -4,16 +4,37 @@ import com.squareup.moshi.Json
 
 
 data class User(
-    @Json(name="email")val email: String,
-    @Json(name="password")val password: String,
-    @Json(name="user_id")val userId: String,
-    @Json(name="provider")val provider: Provider,
-    @Json(name="first_name")val firstName: String = "",
-    @Json(name="last_name")val lastName: String = "",
-    @Json(name="business_name")val businessName: String = "",
-    @Json(name="business_address")val businessAddress: String = "",
-    @Json(name="business_phone")val businessPhone: String = "",
-    @Json(name="role")val role: String = "ROLE_USER",
-    @Json(name="enabled")val enabled: Boolean = true
-    )
+    @Json(name = "email")
+    val email: String,
+
+    @Json(name = "password")
+    val password: String?,
+
+    @Json(name = "user_id")
+    val userId: String,
+
+    @Json(name = "provider")
+    val provider: Provider,
+
+    @Json(name = "first_name")
+    val firstName: String = "",
+
+    @Json(name = "last_name")
+    val lastName: String = "",
+
+    @Json(name = "business_name")
+    val businessName: String = "My Business Name",
+
+    @Json(name = "business_address")
+    val businessAddress: String = "",
+
+    @Json(name = "business_phone")
+    val businessPhone: String = "",
+
+    @Json(name = "role")
+    val role: String = "ROLE_USER",
+
+    @Json(name = "enabled")
+    val enabled: Boolean = true
+)
 

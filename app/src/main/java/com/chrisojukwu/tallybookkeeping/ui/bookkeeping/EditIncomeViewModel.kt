@@ -21,15 +21,14 @@ class EditIncomeViewModel @Inject constructor(
     private val updateIncomeUseCase: UpdateIncomeUseCase
 ) : ViewModel() {
 
-    private val _recordToEdit = MutableLiveData<RecordHolder.Income>()
-    val recordToEdit: LiveData<RecordHolder.Income> = _recordToEdit
+    private val _recordToEdit = MutableLiveData<RecordHolder.Income?>()
+    val recordToEdit: LiveData<RecordHolder.Income?> = _recordToEdit
 
     private var _transactionDate = MutableLiveData(OffsetDateTime.now(ZoneId.systemDefault()))
     val transactionDate: LiveData<String> =
         Transformations.switchMap(_transactionDate) { date -> formatDateToString(date) }
 
     private val _discountIsPercent = MutableLiveData(true)
-    val discountIsPercent: LiveData<Boolean> = _discountIsPercent
 
     private val _showPercent = MutableLiveData(true)
     val showPercent: LiveData<Boolean> = _showPercent
@@ -70,8 +69,8 @@ class EditIncomeViewModel @Inject constructor(
     private val _isCustomerAdded = MutableLiveData(false)
     val isCustomerAdded: LiveData<Boolean> = _isCustomerAdded
 
-    private val _customerInfo = MutableLiveData<Customer>()
-    val customerInfo: LiveData<Customer> = _customerInfo
+    private val _customerInfo = MutableLiveData<Customer?>()
+    val customerInfo: LiveData<Customer?> = _customerInfo
 
     private val _description = MutableLiveData("")
 
@@ -178,7 +177,7 @@ class EditIncomeViewModel @Inject constructor(
         _description.value = desc
     }
 
-    fun saveEditIncomeDetails(): StateFlow<Result<String>> =
+    fun saveEditIncomeDetails(): StateFlow<Result<StringResponse>> =
         updateIncomeUseCase(
             RecordHolder.Income(
                 recordId = _recordToEdit.value!!.recordId,
@@ -212,5 +211,22 @@ class EditIncomeViewModel @Inject constructor(
 
     fun setRecordToEdit(record: RecordHolder.Income) {
         _recordToEdit.value = record
+    }
+
+    fun resetDataFields() {
+        _productList.value = mutableListOf()
+        isDiscountAdded.value = false
+        _recordToEdit.value = null
+        _discountIsPercent.value = true
+        _transactionDate.value = OffsetDateTime.now(ZoneId.systemDefault())
+        _showPercent.value = true
+        _discountAmount.value = BigDecimal.ZERO
+        _discountPercentage.value = 0.0
+        isDiscountAdded.value = false
+        _description.value = ""
+        _customerInfo.value = null
+        _isCustomerAdded.value = false
+        _isCustomerRequired.value = false
+        _itemsTotalCost.value = BigDecimal.ZERO
     }
 }

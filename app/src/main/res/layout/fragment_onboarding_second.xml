@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         tools:context=".ui.onboarding.OnboardingSecondFragment">
 
         <TextView
+            android:id="@+id/text_view_onboard_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Screen Two"
-            android:textSize="36sp" />
+            android:layout_above="@+id/image_onboard_2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="126dp"
+            android:textColor="@color/text_color2"
+            android:text="@string/track_all_receivables_and_payables"
+            android:textAlignment="center"
+            android:textSize="24sp" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/image_onboard_2"
+            android:layout_width="320dp"
+            android:layout_height="500dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/screenshot4" />
+
+
+    </RelativeLayout>
 </layout>

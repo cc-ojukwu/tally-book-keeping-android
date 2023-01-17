@@ -12,14 +12,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar_home_page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="4dp"
-            android:paddingTop="36dp"
+            android:paddingTop="16dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -81,19 +82,19 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-light"
-                                    android:text="Income"
+                                    android:text="@string/income"
                                     android:textColor="@color/text_color1"
-                                    android:textSize="12sp" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/text_view_income_today"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="sans-serif-black"
+                                    android:fontFamily="sans-serif-medium"
                                     android:layout_marginTop="8dp"
                                     formatBigDecimal="@{allRecordsViewModel.incomeSum}"
                                     android:textColor="@color/income_green"
-                                    android:textSize="18sp"
+                                    android:textSize="20sp"
                                     tools:text="$5,500.00" />
 
                         </LinearLayout>
@@ -110,19 +111,19 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-light"
-                                    android:text="Expense"
+                                    android:text="@string/expense"
                                     android:textColor="@color/text_color1"
-                                    android:textSize="12sp" />
+                                    android:textSize="14sp" />
 
                                 <TextView
                                     android:id="@+id/text_view_income_alltime"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="sans-serif-black"
+                                    android:fontFamily="sans-serif-medium"
                                     android:layout_marginTop="8dp"
                                     formatBigDecimal="@{allRecordsViewModel.expenseSum}"
                                     android:textColor="@color/expense_red"
-                                    android:textSize="18sp"
+                                    android:textSize="20sp"
                                     tools:text="$45,500.00" />
 
                         </LinearLayout>
@@ -149,7 +150,7 @@
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp"
                             android:fontFamily="sans-serif-medium"
-                            android:text="All Records"
+                            android:text="@string/all_records"
                             android:textAlignment="viewStart"
                             android:textColor="@color/text_color2"
                             android:textSize="18sp" />
@@ -178,7 +179,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="4dp"
                                 android:fontFamily="sans-serif"
-                                android:text="Filter"
+                                android:text="@string/filter"
                                 android:textColor="@color/text_color2"
                                 android:textSize="16sp" />
 

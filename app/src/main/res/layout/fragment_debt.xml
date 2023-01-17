@@ -11,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color1">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_debt_page"
@@ -19,19 +20,19 @@
             android:layout_height="wrap_content"
             android:background="@color/primary_color"
             android:elevation="4dp"
+            android:minHeight="70dp"
             android:paddingHorizontal="16dp"
-            android:paddingTop="42dp"
-            android:paddingBottom="16dp"
+            android:paddingVertical="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="Account Payable and Receivable"
+            app:titleTextAppearance="@style/MyTitleTextAppearance"
+            app:title="Payables and Receivables"
             app:titleTextColor="@color/white" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_debt_page"
-            android:background="@color/edit_text_background">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_debt_page">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +45,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="24dp"
-                    app:cardCornerRadius="16dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="16dp"
+                    app:cardBackgroundColor="@color/background_color2">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -58,7 +61,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Accounts Receivable:"
+                                android:text="@string/accounts_receivable"
                                 android:fontFamily="sans-serif"
                                 android:textColor="@color/text_color2"
                                 android:textSize="18sp"
@@ -69,7 +72,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
                                 app:formatBigDecimal="@{debtViewModel.receivableSum}"
-                                tools:text="$670.00"
+                                tools:text="£370.00"
                                 android:textColor="@color/income_green"
                                 android:textSize="20sp"/>
 
@@ -81,7 +84,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Accounts Payable:"
+                                android:text="@string/accounts_payable"
                                 android:fontFamily="sans-serif"
                                 android:textColor="@color/text_color2"
                                 android:textSize="18sp"
@@ -92,7 +95,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
-                                tools:text="$4,500.00"
+                                tools:text="£85.00"
                                 app:formatBigDecimal="@{debtViewModel.payableSum}"
                                 android:textColor="@color/expense_red"
                                 android:textSize="20sp"/>
@@ -109,7 +112,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="32dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Receivables"
+                    android:text="@string/receivables"
                     android:textColor="@color/text_color3"
                     android:textSize="18sp" />
 
@@ -124,12 +127,27 @@
                     tools:itemCount="3"/>
 
                 <TextView
+                    android:id="@+id/empty_list_receivables"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_receivables_to_display"
+                    android:visibility="gone"
+                    android:paddingVertical="36dp"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/text_color3"
+                    android:textSize="18sp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/rounded_corner_empty_list_4dp"
+                    android:layout_marginTop="24dp"
+                    android:textAlignment="center" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Payables"
+                    android:text="@string/payables"
                     android:textColor="@color/text_color3"
                     android:textSize="18sp" />
 
@@ -142,6 +160,21 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/payable_item"
                     tools:itemCount="3"/>
+
+                <TextView
+                    android:id="@+id/empty_list_payables"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_payables_to_display"
+                    android:visibility="gone"
+                    android:paddingVertical="36dp"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/text_color3"
+                    android:textSize="18sp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/rounded_corner_empty_list_4dp"
+                    android:layout_marginTop="24dp"
+                    android:textAlignment="center" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

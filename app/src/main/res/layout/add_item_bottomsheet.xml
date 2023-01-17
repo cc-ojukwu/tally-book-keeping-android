@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Add Item"
+            android:text="@string/add_item"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/text_color1"
             android:textSize="20sp" />
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Product/Service name"
+            android:hint="@string/product_service_name"
             android:textColorHint="@color/text_color1"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxStrokeWidth="0dp"
@@ -59,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_style2"
                 android:inputType="text"
+                android:maxLength="30"
                 android:textSize="16sp"
                 android:textCursorDrawable="@drawable/edit_text_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -74,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Price"
+            android:hint="@string/price"
             android:textColorHint="@color/black"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusTopStart="8dp"
@@ -90,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="12"
                 android:background="@drawable/edit_text_style2"
-                android:hint="0.00"
+                android:hint="@string/_0_00"
                 android:inputType="numberDecimal"
                 android:textCursorDrawable="@drawable/edit_text_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +113,7 @@
             android:paddingStart="12dp"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
-            android:text="Quantity"
+            android:text="@string/quantity"
             android:textColor="@color/text_color1"
             android:textSize="16sp" />
         <ImageView
@@ -143,7 +144,7 @@
             android:maxLength="9"
             android:maxLines="1"
             android:paddingHorizontal="8dp"
-            android:text="1" />
+            android:text="@string/_1" />
 
 
 
@@ -157,6 +158,6 @@
         android:layout_marginTop="16dp"
         android:enabled="false"
         android:textAllCaps="false"
-        android:text="Save"
+        android:text="@string/save"
         android:textColor="@color/reverse_text_color" />
 </LinearLayout>

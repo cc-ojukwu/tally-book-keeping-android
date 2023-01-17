@@ -12,6 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/background_color1"
         app:cardElevation="0dp">
 
         <androidx.cardview.widget.CardView
@@ -19,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/background_color2"
             app:cardElevation="4dp">
 
 
@@ -43,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/contact_icon"
-                    tools:text="Chinelo Bakery"
+                    tools:text="Sarah Bradford"
                     android:text="@{receivable.customer.customerName}"
                     android:layout_marginHorizontal="16dp"
                     android:fontFamily="sans-serif-medium"
@@ -66,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     app:formatBigDecimal="@{receivable.amount}"
-                    tools:text="$450.00"
+                    tools:text="£45.00"
                     android:layout_centerVertical="true"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/income_green"

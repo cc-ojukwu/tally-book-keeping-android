@@ -13,12 +13,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.domain.model.InventoryItem
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentInventoryBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,13 +29,15 @@ class InventoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // Inflate the layout for this fragment
         binding = FragmentInventoryBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = inventoryViewModel
         }
+
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.primary_color, null)
 
         return binding.root
     }
@@ -59,22 +60,22 @@ class InventoryFragment : Fragment() {
 
         inventoryViewModel.inventoryList.observe(viewLifecycleOwner) { list ->
             (binding.recyclerViewInventory.adapter as InventoryAdapter)
-                .stockItemList = list
+                .inventoryItemList = list
         }
 
     }
 
-    private fun navigateToStockDetails(stockItem: StockItem) {
-        inventoryViewModel.setStockDetails(stockItem)
+    private fun navigateToStockDetails(inventoryItem: InventoryItem) {
+        inventoryViewModel.setStockDetails(inventoryItem)
         findNavController().navigate(R.id.action_inventoryFragment_to_stockItemDetailsFragment)
     }
 
-    private fun navigateToStockEditPage(stockItem: StockItem) {
-        inventoryViewModel.setEditStockDetails(stockItem)
+    private fun navigateToStockEditPage(inventoryItem: InventoryItem) {
+        inventoryViewModel.setEditStockDetails(inventoryItem)
         findNavController().navigate(R.id.action_inventoryFragment_to_editInventoryItemFragment)
     }
 
-    private fun openAddStockBottomSheet(stockItem: StockItem) {
+    private fun openAddStockBottomSheet(inventoryItem: InventoryItem) {
         val addStockDialog = BottomSheetDialog(requireContext())
 
         addStockDialog.setContentView(R.layout.add_stock_bottomsheet)
@@ -88,14 +89,14 @@ class InventoryFragment : Fragment() {
         val plusButton = addStockDialog.findViewById<ImageView>(R.id.stock_qty_plus)
         val minusButton = addStockDialog.findViewById<ImageView>(R.id.stock_qty_minus)
 
-        stockName?.text = stockItem.stockName
-        stockPrice?.text = stockItem.sellingPrice.toString()
-        stockQtyLeft?.text = stockItem.quantity.toString()
+        stockName?.text = inventoryItem.stockName
+        stockPrice?.text = inventoryItem.sellingPrice.toString()
+        stockQtyLeft?.text = inventoryItem.quantity.toString()
 
         plusButton?.setOnClickListener {
             try {
                 var newQty = editTextQty?.text.toString().toInt()
-                editTextQty?.setText(++newQty)
+                editTextQty?.setText((++newQty).toString())
             } catch (_: Exception) {
             }
         }
@@ -103,7 +104,7 @@ class InventoryFragment : Fragment() {
             try {
                 if (editTextQty?.text.toString().toInt() > 0) {
                     var newQty = editTextQty?.text.toString().toInt()
-                    editTextQty?.setText(--newQty)
+                    editTextQty?.setText((--newQty).toString())
                 }
             } catch (_: Exception) {
             }
@@ -113,8 +114,8 @@ class InventoryFragment : Fragment() {
             try {
                 val qty = editTextQty?.text.toString().toInt()
                 if (qty > 0) {
-                    stockItem.quantity = stockItem.quantity + qty
-                    inventoryViewModel.updateStockItem(stockItem)
+                    inventoryItem.quantity = inventoryItem.quantity + qty
+                    inventoryViewModel.updateStockItem(inventoryItem)
                     updateStockItem()
                     addStockDialog.dismiss()
                 }
@@ -128,10 +129,11 @@ class InventoryFragment : Fragment() {
     }
 
     private fun updateStockItem() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             inventoryViewModel.updateInventoryItem().collect { result ->
                 when (result) {
                     is Result.Success -> {
+                        inventoryViewModel.getInventoryData()
                         Toast.makeText(requireContext(), "Entry updated!", Toast.LENGTH_LONG).show()
                     }
                     is Result.Error -> {

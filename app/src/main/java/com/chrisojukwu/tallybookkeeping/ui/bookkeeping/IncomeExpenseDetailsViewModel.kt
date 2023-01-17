@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chrisojukwu.tallybookkeeping.domain.model.Payment
-import com.chrisojukwu.tallybookkeeping.domain.model.PaymentMode
-import com.chrisojukwu.tallybookkeeping.domain.model.Product
-import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
+import com.chrisojukwu.tallybookkeeping.domain.model.*
 import com.chrisojukwu.tallybookkeeping.domain.usecase.DeleteExpenseUseCase
 import com.chrisojukwu.tallybookkeeping.domain.usecase.DeleteIncomeUseCase
 import com.chrisojukwu.tallybookkeeping.domain.usecase.UpdateExpenseUseCase
@@ -59,8 +56,8 @@ class IncomeExpenseDetailsViewModel @Inject constructor(
     private val _isFullyPaid = MutableLiveData(true)
     val isFullyPaid: LiveData<Boolean> = _isFullyPaid
 
-    private val _updateRecordResult = MutableStateFlow<Result<String>>(Result.Loading)
-    val updateRecordResult: StateFlow<Result<String>> = _updateRecordResult
+    private val _updateRecordResult = MutableStateFlow<Result<StringResponse>>(Result.Loading)
+    val updateRecordResult: StateFlow<Result<StringResponse>> = _updateRecordResult
 
 
     fun setRecord(record: RecordHolder) {
@@ -102,10 +99,10 @@ class IncomeExpenseDetailsViewModel @Inject constructor(
         }
     }
 
-    fun deleteIncome(): Flow<Result<String>> =
+    fun deleteIncome(): Flow<Result<StringResponse>> =
         deleteIncomeUseCase(_recordToDisplay.value as RecordHolder.Income)
 
-    fun deleteExpense(): Flow<Result<String>> =
+    fun deleteExpense(): Flow<Result<StringResponse>> =
         deleteExpenseUseCase(_recordToDisplay.value as RecordHolder.Expense)
 
     fun addNewPayment(paymentAmount: BigDecimal) {
@@ -126,7 +123,19 @@ class IncomeExpenseDetailsViewModel @Inject constructor(
                     }.launchIn(viewModelScope)
             }
             is RecordHolder.Expense -> {
-
+                (_recordToDisplay.value as RecordHolder.Expense)
+                    .paymentList.add(
+                        Payment(
+                            getRandomPaymentId(),
+                            paymentAmount,
+                            OffsetDateTime.now(ZoneId.systemDefault()),
+                            PaymentMode.CASH
+                        )
+                    )
+                updateExpenseUseCase(_recordToDisplay.value as RecordHolder.Expense)
+                    .onEach { result ->
+                        _updateRecordResult.value = result
+                    }.launchIn(viewModelScope)
             }
             else -> {}
         }

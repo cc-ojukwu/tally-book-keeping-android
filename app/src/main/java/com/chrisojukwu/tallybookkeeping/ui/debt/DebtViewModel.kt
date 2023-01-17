@@ -7,8 +7,8 @@ import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
 import com.chrisojukwu.tallybookkeeping.domain.usecase.GetLocalExpenseListUseCase
 import com.chrisojukwu.tallybookkeeping.domain.usecase.GetLocalIncomeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -33,13 +33,16 @@ class DebtViewModel @Inject constructor(
     private val _payableSum = MutableLiveData(BigDecimal.ZERO)
     val payableSum: LiveData<BigDecimal> = _payableSum
 
+    private val _responseReceived = MutableLiveData(false)
+    val responseReceived: LiveData<Boolean> = _responseReceived
+
     init {
         getIncomeExpenseList()
     }
 
     private fun getIncomeExpenseList() {
         getLocalIncomeListUseCase()
-            .zip(getLocalExpenseListUseCase()) { incomeList, expenseList ->
+            .combine (getLocalExpenseListUseCase()) { incomeList, expenseList ->
                 _transactionList = incomeList + expenseList
                 getDebtList()
             }.launchIn(viewModelScope)
@@ -71,6 +74,7 @@ class DebtViewModel @Inject constructor(
 
             _receivableSum.value = receivablesList.sumOf { it.amount }
             _payableSum.value = payablesList.sumOf { it.amount }
+            _responseReceived.value = true
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import com.chrisojukwu.tallybookkeeping.utils.Result
@@ -22,10 +23,10 @@ import com.chrisojukwu.tallybookkeeping.domain.model.PaymentMode
 import com.chrisojukwu.tallybookkeeping.domain.model.Product
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentEditIncomeBinding
 import com.chrisojukwu.tallybookkeeping.utils.getRandomProductId
+import com.chrisojukwu.tallybookkeeping.utils.verifyNumberWithDecimal
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -43,26 +44,25 @@ class EditIncomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentEditIncomeBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = vm
+        }
+
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val adapter = EditIncomeProductListAdapter(
             mutableListOf(),
             { productItem -> vm.removeFromProductList(productItem) },
             { productItem -> openAddItemBottomSheet(productItem) })
 
-        // Inflate the layout for this fragment
-        binding = FragmentEditIncomeBinding.inflate(inflater, container, false).apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = vm
-            productListRecyclerView.adapter = adapter
-        }
-
-        (activity as AppCompatActivity?)!!.supportActionBar?.hide()
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.productListRecyclerView.adapter = adapter
 
         setDateTime()
 
@@ -137,40 +137,46 @@ class EditIncomeFragment : Fragment() {
     }
 
     private fun onEditTextChangedCallback() {
-        binding.editTextTotalAmount.doOnTextChanged { text, _, _, _ ->
+        binding.editTextTotalAmount.doAfterTextChanged { text ->
             vm.clearDiscountFields()
             if (text!!.toString() == ".") {
                 binding.editTextTotalAmount.setText("0.")
                 binding.editTextAmountReceived.setText("0.")
                 binding.editTextTotalAmount.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
-                if (text.toString().toDouble() > 0.0) {
-                    vm.updateTotalAmount(text.toString().toBigDecimal())
-                    binding.editTextAmountReceived.setText(text)
-                    binding.textViewAddDiscount.setTextColor(
-                        requireContext().resources.getColor(
-                            R.color.outline_blue,
-                            null
-                        )
-                    )
-                    binding.addDiscount.isClickable = true
+                val verifiedText = verifyNumberWithDecimal(text.toString())
+                if (text.toString() != verifiedText) {
+                    binding.editTextTotalAmount.setText(verifiedText)
                 }
+                binding.editTextTotalAmount.setSelection(verifiedText.length)
+                vm.updateTotalAmount(verifiedText.toBigDecimal())
+                binding.editTextAmountReceived.setText(verifiedText)
+                binding.textViewAddDiscount.setTextColor(
+                    requireContext().resources.getColor(
+                        R.color.outline_blue,
+                        null
+                    )
+                )
+                binding.addDiscount.isClickable = true
             } else {
                 vm.updateTotalAmount(BigDecimal.ZERO)
-                binding.editTextAmountReceived.setText(text)
+                binding.editTextAmountReceived.setText(text.toString())
                 binding.textViewAddDiscount.setTextColor(requireContext().resources.getColor(R.color.grey, null))
                 binding.addDiscount.isClickable = false
             }
 
         }
-        binding.editTextAmountReceived.doOnTextChanged { text, _, _, _ ->
+        binding.editTextAmountReceived.doAfterTextChanged { text ->
             if (text!!.toString() == ".") {
                 binding.editTextAmountReceived.setText("0.")
                 binding.editTextAmountReceived.setSelection(text.length + 1)
             } else if (text.isNotBlank()) {
-                if (text.toString().toDouble() > 0.0) {
-                    vm.setAmountReceived(text.toString().toBigDecimal())
+                val verifiedText = verifyNumberWithDecimal(text.toString())
+                if (text.toString() != verifiedText) {
+                    binding.editTextAmountReceived.setText(verifiedText)
                 }
+                binding.editTextAmountReceived.setSelection(verifiedText.length)
+                vm.setAmountReceived(text.toString().toBigDecimal())
             } else {
                 vm.setAmountReceived(BigDecimal.ZERO)
             }
@@ -180,11 +186,6 @@ class EditIncomeFragment : Fragment() {
             binding.buttonSave.isEnabled = text!!.isNotBlank()
         }
 
-//        binding.editTextDescription.setOnFocusChangeListener { view, focus ->
-//            if (focus) {
-//                binding.editTextDescription.hint = ""
-//            } else {binding.editTextDescription.hint = "2 boxes"}
-//        }
     }
 
     private fun callObservers() {
@@ -457,7 +458,7 @@ class EditIncomeFragment : Fragment() {
                 saveButton?.isEnabled = editTextProductName!!.text.isNotBlank() &&
                         (editTextPrice!!.text.toString().toDouble() > 0) &&
                         editTextQuantity.text.toString().toInt() > 0
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
 
@@ -485,7 +486,7 @@ class EditIncomeFragment : Fragment() {
 
                     addItemsBottomSheetDialog.dismiss()
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
 
@@ -529,7 +530,7 @@ class EditIncomeFragment : Fragment() {
     }
 
     private fun onSaveButtonClicked() {
-        vm.setIsLoading(true)
+
         when (binding.radioGroup.checkedRadioButtonId) {
             R.id.radio_cash -> vm.setPaymentModeIncome(PaymentMode.CASH)
             R.id.radio_bank_transfer -> vm.setPaymentModeIncome(PaymentMode.BANK_TRANSFER)
@@ -551,6 +552,7 @@ class EditIncomeFragment : Fragment() {
             vm.isCustomerRequired.value!! && !vm.isCustomerAdded.value!! -> showErrorSnackBar(R.string.customer_error)
             else ->
                 lifecycleScope.launch {
+                    vm.setIsLoading(true)
                     vm.saveEditIncomeDetails().collect { result ->
                         when (result) {
                             is Result.Success -> {
@@ -574,6 +576,11 @@ class EditIncomeFragment : Fragment() {
             .setTextColor(Color.BLACK)
             .setBackgroundTint(requireContext().resources.getColor(R.color.expense_button_red, null))
             .show()
+    }
+
+    override fun onDestroy() {
+        vm.resetDataFields()
+        super.onDestroy()
     }
 
 }

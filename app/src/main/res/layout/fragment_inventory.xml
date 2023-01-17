@@ -20,17 +20,17 @@
             android:layout_height="wrap_content"
             android:background="@color/primary_color"
             android:elevation="4dp"
+            android:minHeight="70dp"
             android:paddingHorizontal="16dp"
-            android:paddingTop="42dp"
-            android:paddingBottom="16dp"
+            android:paddingVertical="16dp"
             app:layout_constraintTop_toTopOf="parent"
+            app:titleTextAppearance="@style/MyTitleTextAppearance"
             app:title="Inventory"
             app:titleTextColor="@color/white" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/edit_text_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_debt_page">
 
@@ -44,6 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="24dp"
+                    app:cardElevation="16dp"
+                    app:cardBackgroundColor="@color/background_color2"
                     app:cardCornerRadius="16dp">
 
                         <LinearLayout

@@ -6,7 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/background_color2">
 
         <TextView
             android:id="@+id/text_view_category_item"
@@ -15,7 +16,7 @@
             android:layout_marginHorizontal="16dp"
             android:paddingVertical="4dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Transport"
+            android:text="@string/transport"
             android:textColor="@color/text_color2"
             android:textSize="18sp" />
 

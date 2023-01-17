@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/background_color"
-            android:paddingTop="42dp"
+            android:background="@color/background_color1"
+            android:paddingTop="16dp"
             android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Account"
+                android:text="@string/account"
                 android:textColor="@color/text_color1"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,8 +70,8 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_alignParentStart="true"
-                        android:text="@{@string/firstNameLastName(viewModel.accountFirstName, viewModel.accountLastName)}"
-                        tools:text="Chijioke Oj"/>
+                        android:text="@{`Hi ` + viewModel.accountFirstName}"
+                        tools:text="Hi Chijioke"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/text_color3"
-                    android:text="Account Details"/>
+                    android:text="@string/account_details"/>
 
                 <RelativeLayout
                     android:id="@+id/layout_account_name"
@@ -133,8 +133,9 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_7"
-                        android:text="Account Name"/>
+                        android:text="@string/account_name"/>
                     <TextView
+                        android:id="@+id/text_view_7_first_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
@@ -143,8 +144,21 @@
                         android:textColor="@color/text_color3"
                         android:layout_alignStart="@+id/text_view_7"
                         android:layout_below="@+id/text_view_7"
-                        android:text="@{@string/firstNameLastName(viewModel.accountFirstName, viewModel.accountLastName)}"
-                        tools:text="Chijioke Oj"/>
+                        android:text="@{viewModel.accountFirstName}"
+                        tools:text="Cj"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/text_color3"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_toEndOf="@+id/text_view_7_first_name"
+                        android:layout_below="@+id/text_view_7"
+                        android:text="@{viewModel.accountLastName}"
+                        tools:text="Oj"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow7"
@@ -177,7 +191,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_8"
-                        android:text="Account Email"/>
+                        android:text="@string/account_email"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -221,7 +235,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_1"
-                        android:text="Password"/>
+                        android:text="@string/password"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow"
@@ -246,7 +260,7 @@
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/text_color3"
-                    android:text="Business details"/>
+                    android:text="@string/business_details"/>
 
                 <RelativeLayout
                     android:id="@+id/layout_business_name"
@@ -270,7 +284,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_9"
-                        android:text="Business Name"/>
+                        android:text="@string/business_name"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -317,7 +331,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_10"
-                        android:text="Business Address"/>
+                        android:text="@string/business_address"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -363,7 +377,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_11"
-                        android:text="Business Phone"/>
+                        android:text="@string/business_phone"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -400,7 +414,7 @@
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/text_color3"
-                    android:text="Get Support"/>
+                    android:text="@string/get_support"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -423,7 +437,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_2"
-                        android:text="077 734 8734"/>
+                        android:text="@string/_077_734_8734"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow2"
@@ -457,7 +471,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_3"
-                        android:text="support@tallyapp.co.uk"/>
+                        android:text="@string/support_tallyapp_co_uk"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow3"
@@ -498,7 +512,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_4"
-                        android:text="Sign Out"/>
+                        android:text="@string/sign_out"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow4"
@@ -538,7 +552,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_5"
-                        android:text="Privacy policy"/>
+                        android:text="@string/privacy_policy"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow5"
@@ -572,7 +586,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_color2"
                         android:layout_toEndOf="@+id/image_view_6"
-                        android:text="Terms and conditions"/>
+                        android:text="@string/terms_and_conditions2"/>
 
                     <ImageView
                         android:id="@+id/image_view_arrow6"

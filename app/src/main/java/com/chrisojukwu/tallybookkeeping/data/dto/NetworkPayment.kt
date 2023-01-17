@@ -8,6 +8,7 @@ import java.time.OffsetDateTime
 
 @JsonClass(generateAdapter = true)
 data class NetworkPayment(
+
     @Json(name="id")
     val id: String,
 

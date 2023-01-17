@@ -54,11 +54,9 @@ object AndroidX : Libraries {
         const val androidx_core = "1.7.0"
         const val appCompat = "1.5.0"
         const val lifeCycle = "2.5.1"
-        const val preferences = "1.1.1"
         const val work = "2.7.1"
         const val paging = "3.1.1"
         const val fragment = "1.3.0-alpha06"
-
         const val archCoreTesting = "2.1.0"
         const val coreKtxTest = "1.3.0"
         const val testExt = "1.1.2"
@@ -72,7 +70,6 @@ object AndroidX : Libraries {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifeCycle}"
     const val lifeCycleCommon =
         "androidx.lifecycle:lifecycle-common-java8:${Versions.lifeCycle}"
-    const val preferences = "androidx.preference:preference-ktx:${Versions.preferences}"
 
     const val workManager = "androidx.work:work-runtime-ktx:${Versions.work}"
     const val paging = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
@@ -84,7 +81,7 @@ object AndroidX : Libraries {
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragment}"
 
     override val components: List<String>
-        get() = listOf(coreKtx, viewModel, appCompat, lifeCycleCommon, liveData, preferences)
+        get() = listOf(coreKtx, viewModel, appCompat, lifeCycleCommon, liveData)
 
 }
 
@@ -112,9 +109,10 @@ object Network : Libraries {
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val moshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
-    //const val okhttpInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
+    const val okhttpInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
     const val moshi = "com.squareup.moshi:moshi:${Versions.moshi}"
+    const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
 
 
     override val components: List<String>
@@ -168,7 +166,6 @@ object View : Libraries {
     const val swipeRefresh =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefresh}"
     const val recyclerView = "androidx.recyclerview:recyclerview:${Versions.recyclerView}"
-    const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreen}"
 
     override val components = listOf(
         material, constraintLayout, viewPager, swipeRefresh,
@@ -180,7 +177,7 @@ object Utils : Libraries {
 
     private object Versions {
         const val timber = "4.7.1"
-        const val datastore = "1.0.0"
+        const val datastore = "1.1.0-alpha01"
     }
 
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
@@ -218,7 +215,6 @@ object AndroidTest : Libraries {
     const val junitExt = "androidx.test.ext:junit:${Versions.junitExt}"
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
     const val espressoIntent = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
-    const val idlingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
 
     override val components: List<String>
         get() = listOf(espresso, junitExt)

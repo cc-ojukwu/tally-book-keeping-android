@@ -4,5 +4,6 @@ import com.squareup.moshi.Json
 
 
 data class Token(
-    @Json(name="jwt-token")val jwtToken: String
+    @Json(name="jwt_token")
+    val jwtToken: String
 )

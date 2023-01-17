@@ -16,47 +16,46 @@ interface RecordDao {
     suspend fun insertIncome(income: DBIncome)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllIncome(incomeList: List<DBIncome>)
+    suspend fun insertIncomeList(incomeList: List<DBIncome>)
 
-    @Query("DELETE FROM income_table WHERE record_id MATCH :recordId")
+    @Query("DELETE FROM income_table WHERE record_id = :recordId")
     suspend fun deleteIncome(recordId: String)
 
     @Query("DELETE FROM income_table")
     suspend fun deleteAllIncome()
 
     @Query("SELECT * FROM income_table")
-    fun getAllIncome(): Flow<List<DBIncome>>
+    fun getIncomeList(): Flow<List<DBIncome>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpense(expense: DBExpense)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllExpense(expenseList: List<DBExpense>)
+    suspend fun insertExpenseList(expenseList: List<DBExpense>)
 
-    @Query("DELETE FROM expense_table WHERE record_id MATCH :recordId")
+    @Query("DELETE FROM expense_table WHERE record_id = :recordId")
     suspend fun deleteExpense(recordId: String)
 
     @Query("DELETE FROM expense_table")
     suspend fun deleteAllExpense()
 
     @Query("SELECT * FROM expense_table")
-    fun getAllExpense(): Flow<List<DBExpense>>
-
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertInventory(vararg stockItem: DBInventory)
+    fun getExpenseList(): Flow<List<DBExpense>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllInventory(stockItemList: List<DBInventory>)
+    suspend fun insertInventoryItem(inventoryItem: DBInventory)
 
-    @Query("DELETE FROM inventory_table WHERE sku MATCH :sku")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertInventoryList(inventoryItemList: List<DBInventory>)
+
+    @Query("DELETE FROM inventory_table WHERE sku = :sku")
     suspend fun deleteInventory(sku: String)
 
     @Query("DELETE FROM inventory_table")
     suspend fun deleteAllInventory()
 
     @Query("SELECT * FROM inventory_table")
-    fun getAllInventory(): Flow<List<DBInventory>>
+    fun getInventoryList(): Flow<List<DBInventory>>
 
 
 }

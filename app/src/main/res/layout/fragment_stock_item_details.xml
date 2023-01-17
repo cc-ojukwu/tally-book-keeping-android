@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/background_color"
-            android:paddingTop="42dp"
+            android:background="@color/background_color1"
+            android:paddingTop="16dp"
             android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Stock Item"
+                android:text="@string/inventory_item"
                 android:textColor="@color/text_color1"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -74,11 +74,37 @@
                 android:layout_marginHorizontal="16dp"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="24dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/stock_name"
+                        android:textColor="@color/text_color2"
+                        android:textSize="18sp"
+                        android:layout_alignParentStart="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@{sharedViewModel.stockName}"
+                        tools:text="Walkers Crisps 100g"
+                        android:maxLines="1"
+                        android:maxWidth="260dp"
+                        android:textColor="@color/text_color1"
+                        android:textSize="18sp"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:gravity="center_horizontal"
                     android:padding="24dp"
                     android:background="@drawable/edit_text_style">
@@ -95,7 +121,7 @@
                         android:fontFamily="sans-serif"
                         android:paddingVertical="8dp"
                         android:paddingHorizontal="16dp"
-                        android:text="Add Item Image"
+                        android:text="@string/add_item_image"
                         android:layout_marginTop="16dp"
                         android:textColor="@color/text_color1"
                         android:textSize="16sp"/>
@@ -112,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Stock left:"
+                        android:text="@string/stock_left"
                         android:textColor="@color/income_green"
                         android:textSize="18sp"
                         android:layout_alignParentStart="true"/>
@@ -122,6 +148,8 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="@{sharedViewModel.quantityLeft.toString()}"
                         tools:text="11"
+                        android:maxLines="1"
+                        android:maxWidth="200dp"
                         android:textColor="@color/text_color1"
                         android:textSize="18sp"
                         android:layout_alignParentEnd="true"/>
@@ -141,7 +169,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Cost Price"
+                        android:text="@string/cost_price"
                         android:textColor="@color/text_color3"
                         android:textSize="18sp"
                         android:layout_alignParentStart="true"/>
@@ -151,6 +179,8 @@
                         android:fontFamily="sans-serif-medium"
                         app:formatBigDecimal="@{sharedViewModel.costPrice}"
                         tools:text="$34.00"
+                        android:maxLines="1"
+                        android:maxWidth="180dp"
                         android:textColor="@color/text_color1"
                         android:textSize="18sp"
                         android:layout_alignParentEnd="true"/>
@@ -170,7 +200,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Selling Price"
+                        android:text="@string/selling_price"
                         android:textColor="@color/text_color3"
                         android:textSize="18sp"
                         android:layout_alignParentStart="true"/>
@@ -180,6 +210,8 @@
                         android:fontFamily="sans-serif-medium"
                         app:formatBigDecimal="@{sharedViewModel.sellingPrice}"
                         tools:text="$46.00"
+                        android:maxLines="1"
+                        android:maxWidth="180dp"
                         android:textColor="@color/text_color1"
                         android:textSize="18sp"
                         android:layout_alignParentEnd="true"/>

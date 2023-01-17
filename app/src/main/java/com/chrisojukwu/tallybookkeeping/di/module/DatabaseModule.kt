@@ -27,7 +27,7 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideWeatherDao(database: RecordsDatabase): RecordDao {
+    fun provideRecordsDao(database: RecordsDatabase): RecordDao {
         return database.recordDao
     }
 }

@@ -4,7 +4,7 @@
     <data>
         <variable
             name="stockItem"
-            type="com.chrisojukwu.tallybookkeeping.domain.model.StockItem" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.InventoryItem" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,13 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/edit_text_background">
+        app:cardBackgroundColor="@color/background_color1">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_stock_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/background_color2"
             app:cardElevation="4dp">
 
 
@@ -29,6 +30,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="8dp">
+
                 <ImageView
                     android:id="@+id/inventory_icon"
                     android:layout_width="28dp"
@@ -43,10 +45,13 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/inventory_icon"
                     android:text="@{stockItem.stockName}"
-                    tools:text="Walkers Crisps 100g"
+                    tools:text="Walkers Crisp 100g"
                     android:layout_marginHorizontal="8dp"
+                    android:maxWidth="200dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/text_color3"
+                    android:textColor="@color/text_color2"
                     android:textSize="16sp"/>
 
                 <TextView
@@ -55,25 +60,32 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/inventory_item_name"
                     app:formatBigDecimal="@{stockItem.sellingPrice}"
-                    tools:text="$1.20"
+                    tools:text="$100,000,670.20"
+                    android:ellipsize="end"
+                    android:maxWidth="100dp"
+                    android:maxLines="1"
                     android:layout_marginTop="4dp"
                     android:layout_alignStart="@+id/inventory_item_name"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/text_color3"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{`.  Qty: ` + String.valueOf(stockItem.quantity)}"
-                    tools:text="Qty: 18"
+                    android:text="@{`. Qty: ` + String.valueOf(stockItem.quantity)}"
+                    tools:text="Qty: 1800"
                     android:layout_toEndOf="@+id/inventory_price"
                     android:fontFamily="sans-serif"
                     android:layout_marginTop="4dp"
+                    android:maxLines="1"
+                    android:maxWidth="80dp"
+                    android:ellipsize="end"
                     android:layout_below="@+id/inventory_item_name"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginStart="8dp"
+
                     android:textColor="@color/text_color1"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/text_view_add_stock"
@@ -82,14 +94,14 @@
                     android:background="@drawable/rounded_corner_light_blue_color"
                     android:fontFamily="sans-serif"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="16dp"
-                    android:text="Add stock"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/add_stock"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/stock_edit_icon"
                     android:textAlignment="center"
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/text_color1"
-                    android:textSize="16sp"/>
+                    android:textSize="14sp"/>
 
                 <ImageView
                     android:id="@+id/stock_edit_icon"

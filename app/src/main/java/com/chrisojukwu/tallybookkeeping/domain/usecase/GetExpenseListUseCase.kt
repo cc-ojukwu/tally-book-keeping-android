@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetExpenseListUseCase @Inject constructor(private val repository: RecordsRepository) {
 
     operator fun invoke(): Flow<Result<List<RecordHolder.Expense>>> {
-        return repository.refreshExpenseData()
+        return repository.getRemoteExpenseList()
     }
 }

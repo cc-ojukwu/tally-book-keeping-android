@@ -99,39 +99,25 @@ class AccountCreatedFragment : Fragment() {
     }
 
     private fun signIn(email: String, password: String) {
+        signInViewModel.setIsLoading(true)
         lifecycleScope.launch {
             signInViewModel.signInWithEmail(SignInUser(email, password))
                 .collect { result ->
                     when (result) {
                         is Result.Success -> {
+                            signInViewModel.setIsLoading(false)
                             val intent =
                                 Intent(this@AccountCreatedFragment.requireContext(), HomePageActivity::class.java)
                             startActivity(intent)
                         }
                         is Result.Error -> {
+                            signInViewModel.setIsLoading(false)
                             binding.emailContainer.helperText = result.exception.message
                         }
                         is Result.Loading -> {}
                     }
                 }
         }
-
-
-//        signInViewModel.signInWithEmail(email, password).observe(viewLifecycleOwner) { result ->
-//            when (result) {
-//                (ServerResponse.SUCCESS) -> {
-//                    val intent = Intent(this@AccountCreatedFragment.requireContext(), HomePageActivity::class.java)
-//                    startActivity(intent)
-//                }
-//                (ServerResponse.UNAVAILABLE) -> {
-//                    binding.emailContainer.helperText = "Sign in failed. Server unreachable"
-//                }
-//                else -> {
-//                    binding.emailContainer.helperText = "Sign in failed. Invalid credentials"
-//                }
-//            }
-//
-//        }
     }
 
 }

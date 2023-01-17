@@ -7,30 +7,33 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecordsLocalDataSource {
 
-    suspend fun insertAllIncome(incomeList: List<DBIncome>)
+    suspend fun insertIncomeList(incomeList: List<DBIncome>)
 
     suspend fun deleteAllIncome()
 
-    fun getAllIncome(): Flow<List<DBIncome>>
+    fun getIncomeList(): Flow<List<DBIncome>>
 
     suspend fun insertIncome(income: DBIncome)
+
     suspend fun deleteIncome(income: DBIncome)
 
-    suspend fun insertAllExpense(expenseList: List<DBExpense>)
+    suspend fun insertExpenseList(expenseList: List<DBExpense>)
 
     suspend fun deleteAllExpense()
 
-    fun getAllExpense(): Flow<List<DBExpense>>
+    fun getExpenseList(): Flow<List<DBExpense>>
 
     suspend fun insertExpense(expense: DBExpense)
+
     suspend fun deleteExpense(expense: DBExpense)
 
-    suspend fun insertAllInventory(stockItemList: List<DBInventory>)
+    suspend fun insertInventoryList(inventoryList: List<DBInventory>)
 
     suspend fun deleteAllInventory()
 
-    fun getAllInventory(): Flow<List<DBInventory>>
+    fun getInventoryList(): Flow<List<DBInventory>>
 
-    suspend fun insertInventory(stock: DBInventory)
-    suspend fun deleteInventory(stock: DBInventory)
+    suspend fun insertInventory(inventoryItem: DBInventory)
+
+    suspend fun deleteInventory(inventoryItem: DBInventory)
 }

@@ -7,6 +7,7 @@ import java.time.OffsetDateTime
 
 @JsonClass(generateAdapter = true)
 data class NetworkIncome(
+
     @Json(name="record_id")
     val recordId: String,
 

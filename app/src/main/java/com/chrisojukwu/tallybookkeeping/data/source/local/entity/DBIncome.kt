@@ -12,6 +12,7 @@ import java.time.OffsetDateTime
 
 @Entity(tableName = "income_table")
 data class DBIncome(
+
     @ColumnInfo(name = "record_id")
     @PrimaryKey
     val recordId: String,

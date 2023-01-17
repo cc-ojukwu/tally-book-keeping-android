@@ -8,7 +8,7 @@ import com.chrisojukwu.tallybookkeeping.databinding.ExpenseProductItemBinding
 
 
 class CreateExpenseProductListAdapter(
-    var list: MutableList<Product> = mutableListOf<Product>(),
+    var list: MutableList<Product> = mutableListOf(),
     private val onDeleteClick: (item: Product) -> Unit,
     private val onEditClick: (item: Product) -> Unit
 ) :

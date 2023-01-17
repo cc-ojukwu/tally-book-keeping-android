@@ -4,7 +4,7 @@
     <data>
         <variable
             name="incomeRecord"
-            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder.Income" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -13,14 +13,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="0dp">
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/background_color1">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_income_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/background_color2">
 
             <LinearLayout
                 android:layout_width="match_parent"

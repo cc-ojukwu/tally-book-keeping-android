@@ -11,6 +11,7 @@ import com.chrisojukwu.tallybookkeeping.databinding.PayableItemBinding
 class PayableAdapter(): RecyclerView.Adapter<PayableAdapter.PayableViewHolder>() {
 
     private val differ = AsyncListDiffer(this, PayableAdapter)
+
     var payableList: List<Payable> = listOf()
     set(value) {
         field = value
@@ -28,11 +29,6 @@ class PayableAdapter(): RecyclerView.Adapter<PayableAdapter.PayableViewHolder>()
     }
 
     override fun getItemCount(): Int = differ.currentList.size
-
-//    fun updateList(list: List<Payable>?) {
-//        payableList = list ?: mutableListOf()
-//        notifyDataSetChanged()
-//    }
 
     inner class PayableViewHolder(val binding: PayableItemBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -52,4 +48,3 @@ class PayableAdapter(): RecyclerView.Adapter<PayableAdapter.PayableViewHolder>()
 
     }
 }
-

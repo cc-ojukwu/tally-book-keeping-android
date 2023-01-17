@@ -18,21 +18,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SettingsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.TallyBookKeeping" />
-        <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.Onboarding" />
         <activity
             android:name=".ui.LauncherActivity"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -45,7 +39,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -28,12 +29,13 @@ class EmailSignInPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentEmailSignInPageBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = signInViewModel
         }
+
         return binding.root
     }
 
@@ -108,17 +110,19 @@ class EmailSignInPageFragment : Fragment() {
     }
 
     private fun signIn(email: String, password: String) {
-
+        signInViewModel.setIsLoading(true)
         lifecycleScope.launch {
             signInViewModel.signInWithEmail(SignInUser(email, password))
                 .collect { result ->
                     when (result) {
                         is Result.Success -> {
+                            signInViewModel.setIsLoading(false)
                             val intent =
                                 Intent(this@EmailSignInPageFragment.requireContext(), HomePageActivity::class.java)
                             startActivity(intent)
                         }
                         is Result.Error -> {
+                            signInViewModel.setIsLoading(false)
                             binding.emailContainer.helperText = result.exception.message
                         }
                         is Result.Loading -> {}

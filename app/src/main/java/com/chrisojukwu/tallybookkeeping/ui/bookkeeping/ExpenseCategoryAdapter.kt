@@ -27,7 +27,6 @@ class ExpenseCategoryAdapter(val onClickCategory: (string: String) -> Unit) :
     override fun getItemCount(): Int = categoryList.size
 
     fun filterList(newList: MutableList<String>) {
-        // below line is to add our filtered list in our course array list.
         categoryList = newList
         notifyDataSetChanged()
     }
@@ -40,7 +39,7 @@ class ExpenseCategoryAdapter(val onClickCategory: (string: String) -> Unit) :
 
 }
 
-val expenseCategoryList = mutableListOf("Advances","Advertising", "Bank fees and charges", "Branding", "Daily Savings", "Depreciation", "Damages",
+val expenseCategoryList = listOf("Advances","Advertising", "Bank fees and charges", "Branding", "Daily Savings", "Depreciation", "Damages",
     "Employee Benefits", "Entertainment", "Equipment", "Electricity", "Furniture and Fittings","Interest Payments", "Investment", "IT and Internet", "Loans",
     "Licenses", "Marketing", "Meals", "Miscellaneous", "Office Supplies", "Payroll", "Packaging Materials", "Plant and Machinery",
     "Postage", "Professional Fees", "Printing", "Purchase Discounts", "Raw Materials",  "Refund",

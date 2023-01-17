@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:background="@color/background_color"
-            android:paddingTop="42dp"
+            android:background="@color/background_color1"
+            android:paddingTop="16dp"
             android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
                     android:fontFamily="sans-serif"
                     android:textColor="@color/text_color2"
                     android:textSize="18sp"
-                    android:text="Total Amount" />
+                    android:text="@string/total_amount" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -126,8 +126,8 @@
                     android:fontFamily="sans-serif"
                     android:textColor="@color/text_color2"
                     android:textSize="14sp"
-                    android:text="Discount Amount:"
-                    android:layout_marginHorizontal="16dp"/>
+                    android:text="@string/discount_amount2"
+                    android:layout_marginHorizontal="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -193,7 +193,7 @@
                     android:textColor="@color/text_color2"
                     android:textSize="16sp"
                     android:paddingHorizontal="16dp"
-                    android:text="Fully Paid"/>
+                    android:text="@string/fully_paid"/>
 
                 <TextView
                     android:id="@+id/text_view_update_payment"
@@ -207,9 +207,9 @@
                     android:fontFamily="sans-serif"
                     android:paddingVertical="10dp"
                     android:textAlignment="center"
-                    android:textColor="@color/reverse_text_color"
+                    android:textColor="@color/text_on_primary_color"
                     android:textSize="16sp"
-                    android:text="Update Payment" />
+                    android:text="@string/update_payment" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -217,7 +217,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Items"
+                    android:text="@string/items_small_letter"
                     android:textColor="@color/text_color3"
                     android:textSize="24sp" />
 
@@ -242,7 +242,7 @@
                             android:layout_weight="50"
                             android:fontFamily="sans-serif"
                             android:textAlignment="viewStart"
-                            android:text="Item"
+                            android:text="@string/item"
                             android:textColor="@color/text_color2"
                             android:textSize="16sp" />
 
@@ -253,7 +253,7 @@
                             android:layout_weight="12"
                             android:textAlignment="center"
                             android:fontFamily="sans-serif"
-                            android:text="Qty"
+                            android:text="@string/qty"
                             android:textColor="@color/text_color2"
                             android:textSize="16sp" />
 
@@ -264,7 +264,7 @@
                             android:layout_weight="38"
                             android:textAlignment="viewEnd"
                             android:fontFamily="sans-serif"
-                            android:text="Amount"
+                            android:text="@string/amount"
                             android:textColor="@color/text_color2"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -293,7 +293,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Payment History"
+                    android:text="@string/payment_history"
                     android:textColor="@color/text_color3"
                     android:textSize="24sp" />
 
@@ -318,9 +318,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="6dp"
-                            android:layout_weight="40"
+                            android:layout_weight="60"
                             android:fontFamily="sans-serif"
-                            android:text="Date"
+                            android:text="@string/date"
                             android:textColor="@color/text_color2"
                             android:textSize="16sp" />
 
@@ -328,9 +328,9 @@
                             android:id="@+id/title_amount2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="35"
+                            android:layout_weight="30"
                             android:fontFamily="sans-serif"
-                            android:text="Amount"
+                            android:text="@string/amount"
                             android:textColor="@color/text_color2"
                             android:textSize="16sp" />
                     </LinearLayout>

@@ -63,8 +63,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_style2"
                 android:inputType="text"
+                android:maxLength="30"
                 android:textSize="16sp"
-                android:textCursorDrawable="@drawable/edit_text_cursor" />
+                android:textCursorDrawable="@drawable/edit_text_cursor"
+                android:autofillHints="name" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </RelativeLayout>
@@ -94,7 +96,8 @@
                 android:id="@+id/edit_text_customer_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="12"
+                android:maxLength="24"
+                android:autofillHints="phone"
                 android:background="@drawable/edit_text_style2"
                 android:hint="@string/phone_number_hint"
                 android:inputType="phone"
@@ -113,5 +116,5 @@
         android:textSize="18sp"
         android:enabled="true"
         android:text="@string/done"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/text_on_primary_color" />
 </LinearLayout>

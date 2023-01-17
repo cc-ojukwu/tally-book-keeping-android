@@ -16,10 +16,10 @@ sealed class RecordHolder() {
         var discount: BigDecimal = BigDecimal.ZERO,
         var subTotal: BigDecimal = BigDecimal.ZERO,
         var balanceDue: BigDecimal = BigDecimal.ZERO,
-        var description: String = "",
+        var description: String,
         var productList: MutableList<Product>? = mutableListOf(),
         var customer: Customer?,
-        val paymentList: MutableList<Payment>
+        var paymentList: MutableList<Payment>
     ) : RecordHolder()
 
 
@@ -33,12 +33,12 @@ sealed class RecordHolder() {
         var category: String?,
         var productList: MutableList<Product>? = mutableListOf(),
         var supplier: Supplier?,
-        val paymentList: MutableList<Payment>
+        var paymentList: MutableList<Payment>
     ) : RecordHolder()
 
     data class Header(
         override val recordId: String,
-        override var date: OffsetDateTime = OffsetDateTime.now(),
+        override var date: OffsetDateTime,
         var incomeTotal: BigDecimal = BigDecimal.ZERO,
         var expenseTotal: BigDecimal = BigDecimal.ZERO,
         var balance: BigDecimal = BigDecimal.ZERO

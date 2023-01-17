@@ -7,6 +7,7 @@ import java.math.BigDecimal
 
 @Entity(tableName = "inventory_table")
 data class DBInventory(
+
     @ColumnInfo(name = "stock_name")
     var stockName: String,
 

@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -17,16 +21,18 @@ android {
         targetSdk = Config.targetSdkVersion
         versionCode = Config.versionCode
         versionName = Config.versionName
-
         testInstrumentationRunner = Config.testInstrumentationRunner
+
         vectorDrawables {
             useSupportLibrary = true
         }
+
+
+        
     }
 
     buildFeatures {
         dataBinding = true
-        compose = true
     }
 
     buildTypes {
@@ -36,6 +42,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            if (project.hasProperty("keystore.properties")) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+            isDebuggable = false
+        }
+
+        getByName("debug") {
+            if (project.hasProperty("keystore.properties")) {
+                signingConfig = signingConfigs.getByName("debug")
+            }
+            isDebuggable = true
         }
     }
     compileOptions {
@@ -45,12 +62,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
-    }
+
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("src\\main\\java", "src\\sharedTest\\java", "src\\main\\java")
+            }
         }
     }
 
@@ -70,17 +92,9 @@ dependencies {
 
     // Material Design
     implementation(View.material)
-    implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("com.google.android.material:material:1.7.0")
     implementation("com.google.android.gms:play-services-auth:20.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    //implementation ("com.google.code.gson:gson:2.10")
-    //implementation ("com.squareup.retrofit2:converter-gson:2.1.0")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
 
     // AndroidX Test - JVM testing
     testImplementation(AndroidX.testExt)
@@ -105,18 +119,16 @@ dependencies {
 
     // Dagger-Hilt
     implementation(Dagger.daggerHilt)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
     kapt(Dagger.hiltCompiler)
 
     // Retrofit
     implementation(Network.retrofit)
     implementation(Network.moshiConverter)
     implementation(Network.okhttp)
+    implementation(Network.okhttpInterceptor)
     implementation(Network.moshiKotlin)
     implementation(Network.moshi)
-    kapt ("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    kapt (Network.moshiCodegen)
 
     // Lifecycle KTX
     implementation(AndroidX.viewModel)
@@ -133,16 +145,10 @@ dependencies {
     //Datastore
     implementation(Utils.datastore)
 
-    //Splashscreen
-    implementation(View.splashScreen)
-
     // Room
     implementation(Database.roomRuntime)
     kapt(Database.roomCompiler)
     implementation(Database.roomKtx)
-
-    // Preferences
-    implementation(AndroidX.preferences)
 
     // Timber
     implementation(Utils.timber)

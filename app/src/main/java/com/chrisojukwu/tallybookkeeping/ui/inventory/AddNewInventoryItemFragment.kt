@@ -9,14 +9,16 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.chrisojukwu.tallybookkeeping.domain.model.StockItem
+import com.chrisojukwu.tallybookkeeping.R
+import com.chrisojukwu.tallybookkeeping.domain.model.InventoryItem
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentAddNewInventoryItemBinding
 import com.chrisojukwu.tallybookkeeping.utils.Result
 import com.chrisojukwu.tallybookkeeping.utils.checkIfValidNumber
 import com.chrisojukwu.tallybookkeeping.utils.getRandomSKU
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddNewInventoryItemFragment : Fragment() {
 
     private lateinit var binding: FragmentAddNewInventoryItemBinding
@@ -25,14 +27,13 @@ class AddNewInventoryItemFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentAddNewInventoryItemBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
-        binding.imageViewBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
+
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
 
         return binding.root
     }
@@ -40,12 +41,32 @@ class AddNewInventoryItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.imageViewBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.newStockProductSaveButton.setOnClickListener {
             checkAllInputFields()
         }
 
         inventoryViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.newStockProductSaveButton.isEnabled = !loading
+        }
+
+        binding.plus.setOnClickListener {
+            try {
+                var newQty = binding.editTextQuantity.text.toString().toInt()
+                binding.editTextQuantity.setText((++newQty).toString())
+            } catch (_: Exception) { }
+        }
+
+        binding.minus.setOnClickListener {
+            try {
+                if (binding.editTextQuantity.text.toString().toInt() > 0) {
+                    var newQty = binding.editTextQuantity.text.toString().toInt()
+                    binding.editTextQuantity.setText((--newQty).toString())
+                }
+            } catch (_: Exception) { }
         }
     }
 
@@ -66,9 +87,9 @@ class AddNewInventoryItemFragment : Fragment() {
             }
             else -> {
                 inventoryViewModel.setIsLoading(true)
-                lifecycleScope.launch (Dispatchers.IO) {
+                lifecycleScope.launch {
                     inventoryViewModel.saveNewStockItem(
-                        StockItem(
+                        InventoryItem(
                             stockName = binding.editTextProductName.text.toString(),
                             sku = getRandomSKU(),
                             costPrice = binding.editTextCostPrice.text.toString().toBigDecimal(),
@@ -81,6 +102,7 @@ class AddNewInventoryItemFragment : Fragment() {
                             is Result.Success -> {
                                 inventoryViewModel.setIsLoading(false)
                                 Toast.makeText(requireContext(), "Stock added", Toast.LENGTH_LONG).show()
+                                inventoryViewModel.getInventoryData()
                                 findNavController().navigateUp()
                             }
                             is Result.Error -> {

@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chrisojukwu.tallybookkeeping.R
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class OnboardingThirdFragment : Fragment() {
 
     override fun onCreateView(

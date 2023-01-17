@@ -1,8 +1,10 @@
 package com.chrisojukwu.tallybookkeeping.ui.onboarding
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.chrisojukwu.tallybookkeeping.R
@@ -35,13 +37,13 @@ class OnboardingActivity : AppCompatActivity() {
         val textViewNextButton: TextView = binding.textViewNextButton
 
         textViewNextButton.setOnClickListener {
-            if (viewPager2.currentItem == 0) {
-                viewPager2.setCurrentItem(1, true)
-            } else if (viewPager2.currentItem == 1) {
-                viewPager2.setCurrentItem(2, true)
-            } else {
-                startActivity(Intent(this@OnboardingActivity, SignInActivity::class.java))
-                finish()
+            when(viewPager2.currentItem) {
+                0 -> viewPager2.setCurrentItem(1, true)
+                1 -> viewPager2.setCurrentItem(2, true)
+                else -> {
+                    startActivity(Intent(this@OnboardingActivity, SignInActivity::class.java))
+                    finish()
+                }
             }
 
         }
@@ -56,5 +58,14 @@ class OnboardingActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            window.setDecorFitsSystemWindows(false)
+//        } else {
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//        }
     }
 }

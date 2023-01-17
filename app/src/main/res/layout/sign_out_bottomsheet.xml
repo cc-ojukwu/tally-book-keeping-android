@@ -14,12 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:text="Are you sure you want to sign out?"
+        android:text="@string/are_you_sure_you_want_to_sign_out"
         android:layout_gravity="center"
         android:layout_marginVertical="16dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textColor="@color/text_color2"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/sign_out_yes_button"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
         android:layout_marginHorizontal="16dp"
-        android:text="YES"
+        android:text="@string/yes"
         android:textAlignment="center"
         android:paddingVertical="12dp"
         android:textColor="@color/reverse_text_color"
@@ -39,10 +39,10 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
         android:layout_marginHorizontal="16dp"
-        android:text="NO"
+        android:text="@string/no"
         android:textAlignment="center"
         android:paddingVertical="12dp"
-        android:textColor="@color/text_color2"
+        android:textColor="@color/text_color1"
         android:background="@drawable/no_button_background"/>
 
 </LinearLayout>

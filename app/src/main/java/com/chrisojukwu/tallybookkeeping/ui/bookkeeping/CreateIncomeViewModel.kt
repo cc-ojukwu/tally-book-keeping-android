@@ -23,12 +23,11 @@ class CreateIncomeViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private var _transactionDate = MutableLiveData(OffsetDateTime.now(ZoneId.systemDefault()))
+    private val _transactionDate = MutableLiveData(OffsetDateTime.now(ZoneId.systemDefault()))
     val transactionDate: LiveData<String> =
         Transformations.switchMap(_transactionDate) { date -> formatDateToString(date) }
 
     private val _discountIsPercent = MutableLiveData(true)
-    val discountIsPercent: LiveData<Boolean> = _discountIsPercent
 
     private val _showPercent = MutableLiveData(true)
     val showPercent: LiveData<Boolean> = _showPercent
@@ -171,7 +170,7 @@ class CreateIncomeViewModel @Inject constructor(
         _description.value = desc
     }
 
-    fun saveIncomeDetails(): StateFlow<Result<String>> =
+    fun saveIncomeDetails(): StateFlow<Result<StringResponse>> =
         saveIncomeUseCase(
             RecordHolder.Income(
                 recordId = getRandomRecordId(),
@@ -183,7 +182,7 @@ class CreateIncomeViewModel @Inject constructor(
                 balanceDue = _balanceDue.value!!,
                 description = _description.value!!,
                 productList = _productList.value,
-                customer = null,
+                customer = _customerInfo.value,
                 paymentList = mutableListOf(
                     Payment(getRandomPaymentId(), _amountReceived.value!!, _transactionDate.value!!, _paymentMode)
                 )

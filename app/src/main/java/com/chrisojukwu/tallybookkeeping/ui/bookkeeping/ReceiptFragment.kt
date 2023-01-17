@@ -9,7 +9,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.chrisojukwu.tallybookkeeping.R
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentReceiptBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReceiptFragment : Fragment() {
 
     private lateinit var binding: FragmentReceiptBinding
@@ -18,10 +20,12 @@ class ReceiptFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentReceiptBinding.inflate(inflater, container, false).apply {
             viewModel = sharedViewModel
+            lifecycleOwner = viewLifecycleOwner
         }
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.primary_color, null)
         return binding.root
     }
 

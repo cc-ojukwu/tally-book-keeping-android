@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         tools:context=".ui.onboarding.OnboardingFirstFragment">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Screen One"
-            android:textSize="36sp" />
+            android:text="@string/introducing_tally"
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="20dp"
+            android:textColor="@color/text_color2"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/text_view_onboard_1"
+            android:textSize="28sp" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/text_view_onboard_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/best_in_book_keeping"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/text_color3"
+            android:layout_marginHorizontal="20dp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/image_onboard_1"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/image_onboard_1"
+            android:layout_width="280dp"
+            android:layout_height="600dp"
+            android:src="@drawable/screenshot"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
 </layout>

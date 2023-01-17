@@ -4,7 +4,7 @@
     <data>
         <variable
             name="expenseRecord"
-            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder" />
+            type="com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder.Expense" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,6 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/background_color1"
         app:cardElevation="0dp">
 
     <androidx.cardview.widget.CardView
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/background_color2"
         app:cardElevation="4dp">
 
 
@@ -43,9 +45,9 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-light"
                 android:maxLines="1"
-                tools:text="2 bags of flour, 3 cartons of Indomie"
+                tools:text="2 bags of flour, 3 tins of baked beans"
                 android:text="@{expenseRecord.description}"
-                android:textColor="@color/text_color1"
+                android:textColor="@color/text_color2"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/record_cost"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +65,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/button_edit_record"
                 app:layout_constraintTop_toTopOf="parent"
                 app:formatBigDecimal="@{expenseRecord.amountPaid}"
-                tools:text="$13,250.00" />
+                tools:text="£16.40" />
 
             <ImageView
                 android:id="@+id/button_edit_record"
@@ -79,7 +81,7 @@
                 android:layout_marginTop="6dp"
                 android:fontFamily="sans-serif-light"
                 android:text="@{expenseRecord.supplier.supplierName}"
-                tools:text="Emeka Bakery"
+                tools:text="St. John's catering"
                 android:textColor="@color/text_color3"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,11 +103,10 @@
                     android:layout_height="wrap_content"
                     android:background="@color/light_blue_shade_1"
                     android:fontFamily="sans-serif-light"
-                    android:paddingStart="24dp"
+                    android:paddingHorizontal="24dp"
                     android:paddingTop="2dp"
-                    android:paddingEnd="24dp"
                     android:paddingBottom="4dp"
-                    android:text="Receipt"
+                    android:text="@string/receipt_small_letter"
                     android:textAlignment="center"
                     android:textColor="@color/text_color1"
                     android:textSize="16sp" />

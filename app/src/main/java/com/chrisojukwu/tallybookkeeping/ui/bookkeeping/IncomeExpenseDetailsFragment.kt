@@ -20,9 +20,11 @@ import com.chrisojukwu.tallybookkeeping.domain.model.Payment
 import com.chrisojukwu.tallybookkeeping.domain.model.RecordHolder
 import com.chrisojukwu.tallybookkeeping.databinding.FragmentIncomeExpenseDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
+@AndroidEntryPoint
 class IncomeExpenseDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentIncomeExpenseDetailsBinding
@@ -38,15 +40,17 @@ class IncomeExpenseDetailsFragment : Fragment() {
             viewModel = sharedViewModel
             lifecycleOwner = viewLifecycleOwner
         }
+        requireActivity().window.statusBarColor = requireActivity().resources.getColor(R.color.background_color1, null)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.itemsRecyclerView.adapter = TransactionPageItemAdapter(sharedViewModel.itemList.value!!)
+        binding.itemsRecyclerView.adapter = IncomeExpenseDetailsPageItemAdapter(sharedViewModel.itemList.value!!)
 
-        binding.paymentsRecyclerView.adapter = TransactionPagePaymentAdapter(
+        binding.paymentsRecyclerView.adapter = IncomeExpenseDetailsPagePaymentAdapter(
             sharedViewModel.paymentList.value!!
         ) { payment -> onReceiptClick(payment) }
 
