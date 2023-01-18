@@ -144,7 +144,7 @@ class SignInFragment : Fragment() {
             signInWithGoogle()
         }
 
-        //disable back button for this fragment
+//        //disable back button for this fragment
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             // With blank your fragment BackPressed will be disabled.
         }

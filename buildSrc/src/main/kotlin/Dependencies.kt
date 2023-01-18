@@ -9,7 +9,7 @@ object Config {
     const val compileSdkVersion = 33
     const val targetSdkVersion = 33
     const val versionName = "1.0"
-    const val versionCode = 1
+    const val versionCode = 2
     val javaVersion = JavaVersion.VERSION_1_8
     const val applicationId = "com.chrisojukwu.tallybookkeeping"
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

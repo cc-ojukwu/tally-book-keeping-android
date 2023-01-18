@@ -20,6 +20,10 @@
     <style name="Theme.Onboarding" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowFullscreen">true</item>
+
+<!--        <item name="android:windowEnterAnimation">@null</item>-->
+<!--        <item name="android:windowExitAnimation">@null</item>-->
+<!--        <item name="android:windowAnimationStyle">@null</item>-->
     </style>
 
     <style name="MyTitleTextAppearance" parent="@android:style/TextAppearance.Medium">
@@ -45,16 +49,4 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">32dp</item>
     </style>
-
-    <!--    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">-->
-    <!--        <item name="bottomSheetStyle">@style/AppModalStyle</item>-->
-    <!--        <item name="android:windowIsFloating">false</item>-->
-    <!--        <item name="colorOnPrimary">@color/purple_500</item>-->
-    <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
-    <!--        <item name="android:windowSoftInputMode">adjustResize</item>-->
-    <!--    </style>-->
-
-    <!--    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">-->
-    <!--        <item name="android:background">@drawable/rounded_corner_dialog</item>-->
-    <!--    </style>-->
 </resources>

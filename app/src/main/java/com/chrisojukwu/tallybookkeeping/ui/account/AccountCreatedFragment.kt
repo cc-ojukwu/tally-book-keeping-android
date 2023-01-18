@@ -109,6 +109,7 @@ class AccountCreatedFragment : Fragment() {
                             val intent =
                                 Intent(this@AccountCreatedFragment.requireContext(), HomePageActivity::class.java)
                             startActivity(intent)
+                            requireActivity().finish()
                         }
                         is Result.Error -> {
                             signInViewModel.setIsLoading(false)

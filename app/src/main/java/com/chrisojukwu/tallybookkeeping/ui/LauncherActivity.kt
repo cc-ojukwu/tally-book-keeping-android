@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class LauncherActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,9 +27,11 @@ class LauncherActivity : AppCompatActivity() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launchViewModel.launchDestination.collect { action ->
                     when (action) {
-                        is NavigationAction.NavigateToHomePageActivityAction -> startActivity(
-                            Intent(this@LauncherActivity, HomePageActivity::class.java)
-                        )
+                        is NavigationAction.NavigateToHomePageActivityAction -> {
+                            startActivity(
+                                Intent(this@LauncherActivity, HomePageActivity::class.java)
+                            )
+                        }
                         is NavigationAction.NavigateToNextCondition -> {
                             launchViewModel.alternateDestination.collect { alternateAction ->
                                 if (alternateAction == NavigationAction.NavigateToSignInActivityAction) {
@@ -40,12 +43,10 @@ class LauncherActivity : AppCompatActivity() {
                                         Intent(this@LauncherActivity, OnboardingActivity::class.java)
                                     )
                                 }
-
                             }
                         }
                         else -> {}
                     }
-                    finish()
                 }
             }
         }
